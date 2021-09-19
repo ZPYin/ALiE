@@ -19,6 +19,7 @@ p.KeepUnmatched = true;
 
 addRequired(p, 'file', @ischar);
 addParameter(p, 'flagDebug', false, @islogical)
+addParameter(p, 'nMaxBin', 1300, @isnumeric)
 
 parse(p, file, varargin{:});
 
@@ -39,9 +40,15 @@ lidarData = textscan(fid, '%f%f', 'HeaderLines', 0, 'Delimiter', '\t');
 
 fclose(fid);
 
+if length(lidarData{1}) < p.Results.nMaxBin
+    errStruct.message = sprintf('Wrong configuration for nMaxBin. nMaxBin is too large (%f > %f)', p.Results.nMaxBin, length(lidarData{1}));
+    errStruct.identifier = 'LEToolbox:Err003';
+    error(errStruct);
+end
+
 oData = struct;
-oData.height = lidarData{1};   % distance. (m)
-oData.rawSignal = lidarData{2};
+oData.height = lidarData{1}(1:p.Results.nMaxBin);   % distance. (m)
+oData.sig1064 = lidarData{2}(1:p.Results.nMaxBin);
 oData.mTime = mTime;
 
 end

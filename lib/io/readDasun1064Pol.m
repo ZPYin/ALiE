@@ -1,7 +1,7 @@
-function [oData] = readWHU1064(file, varargin)
-% READWHU1064 read data of Wuhan University (WHU) ceilometer at 1064 nm.
+function [oData] = readDasun1064Pol(file, varargin)
+% READDASUN1064POL read data of Dasun polarization ceilometer at 1064 nm.
 % USAGE:
-%    [oData] = readWHU1064(file)
+%    [oData] = readDasun1064Pol(file)
 % INPUTS:
 %    file: char
 %        absolute paht of data file.
@@ -19,7 +19,7 @@ p.KeepUnmatched = true;
 
 addRequired(p, 'file', @ischar);
 addParameter(p, 'flagDebug', false, @islogical);
-addParameter(p, 'nMaxBin', 2048, @isnumeric);
+addParameter(p, 'nMaxBin', 1300, @isnumeric);
 
 parse(p, file, varargin{:});
 
@@ -27,15 +27,12 @@ if exist(file, 'file') ~= 2
     error('Data file does not exist.\n%s', file);
 end
 
-mTime = datenum(file((end-16):(end-4)), 'yymmdd-HHMMSS') + datenum(0, 1, 0, 8, 0, 0);
-
-if p.Results.flagDebug
-    fprintf('Reading %s\n', file);
-end
+[~, fileBasename, ~] = fileparts(file);
+mTime = datenum(fileBasename(1:15), 'yyyymmdd-HHMMSS');
 
 fid = fopen(file, 'r');
 
-lidarData = textscan(fid, '%f', 'HeaderLines', 19, 'Delimiter', ' ');
+lidarData = textscan(fid, '%f%f%f', 'HeaderLines', 0, 'Delimiter', '\t');
 
 fclose(fid);
 
@@ -46,8 +43,9 @@ if length(lidarData{1}) < p.Results.nMaxBin
 end
 
 oData = struct;
-oData.height = (transpose(1:length(lidarData{1}(1:p.Results.nMaxBin))) - 16) * 15 + 7.5;   % distance. (m)
-oData.sig1064 = lidarData{1}(1:p.Results.nMaxBin);
+oData.height = lidarData{1}(1:p.Results.nMaxBin);   % distance. (m)
+oData.sig1064P = lidarData{2}(1:p.Results.nMaxBin);
+oData.sig1064S = lidarData{3}(1:p.Results.nMaxBin);
 oData.mTime = mTime;
 
 end
