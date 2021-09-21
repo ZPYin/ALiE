@@ -143,14 +143,57 @@ case 4
 
 case 5
     % REAL
+    mergeRange = [1000, 2000];   % height range for signal merge. (m)
+    mergeSlope = [1, 1, 1];   % normalization ratio for 532S, 532P, 607 (High / Low)
+    mergeOffset = [0, 0, 0];
 
     % search files
     dataFiles = listfile(dataFolder, p.Results.dataFilePattern);
     fprintf('[%s] %d data files were found!\n', tNow, length(dataFiles));
 
+    sig532SHNoBG = [];
+    sig532PHNoBG = [];
+    sig532SLNoBG = [];
+    sig532PLNoBG = [];
+    sig607LNoBG = [];
+    sig607HNoBG = [];
+    bg532SH = [];
+    bg532PH = [];
+    bg532SL = [];
+    bg532PL = [];
+    bg607L = [];
+    bg607H = [];
     for iFile = 1:length(dataFiles)
-        
+        lidarData = readREAL(dataFiles{iFile}, varargin{:});
+
+        oData.mTime = cat(2, oData.mTime, lidarData.mTime);
+        oData.height = lidarData.height;
+        sig532SHNoBG = cat(2, sig532SHNoBG, lidarData.sig532SHNoBG);
+        sig532PHNoBG = cat(2, sig532PHNoBG, lidarData.sig532PHNoBG);
+        sig532SLNoBG = cat(2, sig532SLNoBG, lidarData.sig532SLNoBG);
+        sig532PLNoBG = cat(2, sig532PLNoBG, lidarData.sig532PLNoBG);
+        sig607LNoBG = cat(2, sig607LNoBG, lidarData.sig607LNoBG);
+        sig607HNoBG = cat(2, sig607HNoBG, lidarData.sig607HNoBG);
+        bg532SH = cat(2, bg532SH, lidarData.bg532SH);
+        bg532PH = cat(2, bg532PH, lidarData.bg532PH);
+        bg532SL = cat(2, bg532SL, lidarData.bg532SL);
+        bg532PL = cat(2, bg532PL, lidarData.bg532PL);
+        bg607L = cat(2, bg607L, lidarData.bg607L);
+        bg607H = cat(2, bg607H, lidarData.bg607H);
     end
+
+    % diagnose signal merge
+    if p.Results.flagDebug
+
+        displayREALSigMerge(oData.height, oData.mTime, sig532SHNoBG, sig532SLNoBG, mergeRange, 'channelTag', '532S');
+        displayREALSigMerge(oData.height, oData.mTime, sig532PHNoBG, sig532PLNoBG, mergeRange, 'channelTag', '532P');
+        displayREALSigMerge(oData.height, oData.mTime, sig607HNoBG, sig607LNoBG, mergeRange, 'channelTag', '607');
+    end
+
+    % signal merge
+    oData.sig532S = sigMergeREAL(sig532SHNoBG, sig532SLNoBG, bg532SH, bg532SL, oData.height, mergeRange, mergeSlope(1), mergeOffset(1));
+    oData.sig532P = sigMergeREAL(sig532PHNoBG, sig532PLNoBG, bg532PH, bg532PL, oData.height, mergeRange, mergeSlope(2), mergeOffset(2));
+    oData.sig607 = sigMergeREAL(sig607HNoBG, sig607LNoBG, bg607H, bg607L, oData.height, mergeRange, mergeSlope(3), mergeOffset(3));
 
 otherwise
     error('LE:Err001', 'Unknown lidar data format %d', p.Results.dataFormat);

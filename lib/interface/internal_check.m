@@ -8,6 +8,11 @@ fprintf('[%s] Config file: %s\n', configFile);
 config = yaml.ReadYaml(configFile);
 fprintf('[%s] Finish!\n', tNow);
 
+%% backup configuration
+configFileSave = fullfile(config.evaluationReportPath, sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));
+fprintf('[%s] Config file saved as: %s\n', configFileSave);
+copyfile(configFile, configFileSave);
+
 %% log output
 logFile = fullfile(config.evaluationReportPath, 'lidar_internal_check.log');
 diaryon(logFile);
@@ -52,7 +57,7 @@ for iLidar = 1:length(lidarType)
             fprintf('Reading lidar data of %s\n', lidarConfig.chTag{iCh});
         end
 
-        lidarData.(lidarConfig.chTag{iCh}) = h5read(h5Filename, sprintf('/%s', lidarConfig.chTag{iCh}));
+        lidarData.(lidarConfig.chTag{iCh}) = h5read(h5Filename, sprintf('/sig%s', lidarConfig.chTag{iCh}));
     end
 
     %% pre-process

@@ -8,6 +8,11 @@ fprintf('[%s] Config file: %s\n', configFile);
 config = yaml.ReadYaml(configFile);
 fprintf('[%s] Finish!\n', tNow);
 
+%% backup configuration
+configFileSave = fullfile(config.evaluationReportPath, sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));
+fprintf('[%s] Config file saved as: %s\n', configFileSave);
+copyfile(configFile, configFileSave);
+
 %% log output
 logFile = fullfile(config.evaluationReportPath, 'lidar_data_loading.log');
 diaryon(logFile);
