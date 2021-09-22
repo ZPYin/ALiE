@@ -46,10 +46,12 @@ case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
             end
 
             sigCor = sig ./ (1 - p.Results.deadtime(iCh) .* sig);
+        else
+            sigCor = sig;
         end
 
         % nPretrigger remove
-        sigCor = sigCor((p.Results.nPretrigger + 1):end);
+        sigCor = sigCor((p.Results.nPretrigger + 1):end, :);
 
         if p.Results.bgBins(2) > length(lidarData.height)
             errStruct.message = sprintf('Wrong configuration for bgBins.');
@@ -59,14 +61,14 @@ case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 
         % background correction
         bg = nanmean(sigCor(p.Results.bgBins(1):p.Results.bgBins(2), :), 1);
-        sigCor = sigCor - repmat(bg, 1, length(lidarData.mTime));
+        sigCor = sigCor - repmat(bg, length(lidarData.height), 1);
 
         % range correction
-        rcs = sigCor .* repmat(transpose(lidarData.height.^2), 1, length(lidarData.mTime));
+        rcs = sigCor .* repmat(lidarData.height.^2, 1, length(lidarData.mTime));
 
-        lidarData.(chTag{iCh}) = sigCor;
-        lidarData.(strrep(chTag{iCh}, 'sig', 'bg')) = bg;
-        lidarData.(strrep(chTag{iCh}, 'sig', 'rcs')) = rcs;
+        lidarData.(['sig', chTag{iCh}]) = sigCor;
+        lidarData.(['bg', chTag{iCh}]) = bg;
+        lidarData.(['rcs', chTag{iCh}]) = rcs;
     end
 
 otherwise

@@ -1,16 +1,33 @@
-%% initialization
-configFile = 'D:\Coding\Matlab\lidar_evaluation_1064\config\comparison_config_20210910.yml';
-flagDebug = false;
+function convertLidarData(configFile, varargin)
+% internal_check description
+% USAGE:
+%    [output] = internal_check(params)
+% INPUTS:
+%    params
+% OUTPUTS:
+%    output
+% EXAMPLE:
+% HISTORY:
+%    2021-09-22: first edition by Zhenping
+% .. Authors: - zhenping@tropos.de
+
+p = inputParser;
+p.KeepUnmatched = true;
+
+addRequired(p, 'configFile', @ischar);
+addParameter(p, 'flagDebug', false, @islogical);
+
+parse(p, configFile, varargin{:});
 
 %% read configuration
-fprintf('[%s] Start reading configurations for internal check!\n', tNow);
+fprintf('[%s] Start reading configurations for lidar data conversion!\n', tNow);
 fprintf('[%s] Config file: %s\n', configFile);
-config = yaml.ReadYaml(configFile);
+config = yaml.ReadYaml(configFile, 0, 1);
 fprintf('[%s] Finish!\n', tNow);
 
 %% backup configuration
 configFileSave = fullfile(config.evaluationReportPath, sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));
-fprintf('[%s] Config file saved as: %s\n', configFileSave);
+fprintf('[%s] Config file saved as: %s\n', tNow, configFileSave);
 copyfile(configFile, configFileSave);
 
 %% log output
@@ -41,7 +58,7 @@ for iLidar = 1:length(lidarType)
     lidarData = readLidarData(lidarConfig.dataPath, ...
         'dataFormat', lidarConfig.dataFormat, ...
         'dataFilePattern', lidarConfig.dataFilenamePattern, ...
-        'flagDebug', flagDebug, ...
+        'flagDebug', p.Results.flagDebug, ...
         'nMaxBin', lidarConfig.nMaxBin, ...
         'chTag', lidarConfig.chTag);
     fprintf('[%s] Finish!\n', tNow);
@@ -55,3 +72,5 @@ for iLidar = 1:length(lidarType)
 end
 
 diaryoff;
+
+end

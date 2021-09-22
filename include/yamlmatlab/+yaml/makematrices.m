@@ -26,6 +26,8 @@ if  isvector(data) &&         iscell_all(data) &&         isvector_all(data) && 
         result = tmp;
     elseif isempty(data)
         result = [];
+    elseif all(cellfun(@isnumeric, data))
+        result = cell2mat(data);
     else   
         result = {};
         for i = 1:length(data)

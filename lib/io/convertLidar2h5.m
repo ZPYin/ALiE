@@ -16,21 +16,21 @@ hdf5writedata(oFile, '/time', datenum_2_unix_timestamp(inData.mTime), 'dataAttr'
 hdf5writedata(oFile, '/height', inData.height, 'dataAttr', struct('short_name',' height'), 'flagArray', true);
 
 if ~ isempty(inData.sig355)
-    hdf5writedata(oFile, '/sig355', inData.sig355, 'dataAttr', struct('short_name', 'raw_signal_355'));
-    h5_attach_scale(oFile, '/sig355', '/height', 1);
-    h5_attach_scale(oFile, '/sig355', '/time', 0);
+    hdf5writedata(oFile, '/sig355e', inData.sig355, 'dataAttr', struct('short_name', 'raw_signal_355'));
+    h5_attach_scale(oFile, '/sig355e', '/height', 1);
+    h5_attach_scale(oFile, '/sig355e', '/time', 0);
 end
 
 if ~ isempty(inData.sig355P)
-    hdf5writedata(oFile, '/sig355P', inData.sig355P, 'dataAttr', struct('short_name', 'raw_signal_parallel_355'));
-    h5_attach_scale(oFile, '/sig355P', '/height', 1);
-    h5_attach_scale(oFile, '/sig355P', '/time', 0);
+    hdf5writedata(oFile, '/sig355p', inData.sig355P, 'dataAttr', struct('short_name', 'raw_signal_parallel_355'));
+    h5_attach_scale(oFile, '/sig355p', '/height', 1);
+    h5_attach_scale(oFile, '/sig355p', '/time', 0);
 end
 
 if ~ isempty(inData.sig355S)
-    hdf5writedata(oFile, '/sig355S', inData.sig355S, 'dataAttr', struct('short_name', 'raw_signal_cross_355'));
-    h5_attach_scale(oFile, '/sig355S', '/height', 1);
-    h5_attach_scale(oFile, '/sig355S', '/time', 0);
+    hdf5writedata(oFile, '/sig355s', inData.sig355S, 'dataAttr', struct('short_name', 'raw_signal_cross_355'));
+    h5_attach_scale(oFile, '/sig355s', '/height', 1);
+    h5_attach_scale(oFile, '/sig355s', '/time', 0);
 end
 
 if ~ isempty(inData.sig387)
@@ -46,21 +46,21 @@ if ~ isempty(inData.sig407)
 end
 
 if ~ isempty(inData.sig532)
-    hdf5writedata(oFile, '/sig532', inData.sig532, 'dataAttr', struct('short_name', 'raw_signal_532'));
-    h5_attach_scale(oFile, '/sig532', '/height', 1);
-    h5_attach_scale(oFile, '/sig532', '/time', 0);
+    hdf5writedata(oFile, '/sig532e', inData.sig532, 'dataAttr', struct('short_name', 'raw_signal_532'));
+    h5_attach_scale(oFile, '/sig532e', '/height', 1);
+    h5_attach_scale(oFile, '/sig532e', '/time', 0);
 end
 
 if ~ isempty(inData.sig532P)
-    hdf5writedata(oFile, '/sig532P', inData.sig532P, 'dataAttr', struct('short_name', 'raw_signal_parallel_532'));
-    h5_attach_scale(oFile, '/sig532P', '/height', 1);
-    h5_attach_scale(oFile, '/sig532P', '/time', 0);
+    hdf5writedata(oFile, '/sig532p', inData.sig532P, 'dataAttr', struct('short_name', 'raw_signal_parallel_532'));
+    h5_attach_scale(oFile, '/sig532p', '/height', 1);
+    h5_attach_scale(oFile, '/sig532p', '/time', 0);
 end
 
 if ~ isempty(inData.sig532S)
-    hdf5writedata(oFile, '/sig532S', inData.sig532S, 'dataAttr', struct('short_name', 'raw_signal_cross_532'));
-    h5_attach_scale(oFile, '/sig532S', '/height', 1);
-    h5_attach_scale(oFile, '/sig532S', '/time', 0);
+    hdf5writedata(oFile, '/sig532s', inData.sig532S, 'dataAttr', struct('short_name', 'raw_signal_cross_532'));
+    h5_attach_scale(oFile, '/sig532s', '/height', 1);
+    h5_attach_scale(oFile, '/sig532s', '/time', 0);
 end
 
 if ~ isempty(inData.sig607)
@@ -70,21 +70,21 @@ if ~ isempty(inData.sig607)
 end
 
 if ~ isempty(inData.sig1064)
-    hdf5writedata(oFile, '/sig1064', inData.sig1064, 'dataAttr', struct('short_name', 'raw_signal_1064'));
-    h5_attach_scale(oFile, '/sig1064', '/height', 1);
-    h5_attach_scale(oFile, '/sig1064', '/time', 0);
+    hdf5writedata(oFile, '/sig1064e', inData.sig1064, 'dataAttr', struct('short_name', 'raw_signal_1064'));
+    h5_attach_scale(oFile, '/sig1064e', '/height', 1);
+    h5_attach_scale(oFile, '/sig1064e', '/time', 0);
 end
 
 if ~ isempty(inData.sig1064P)
-    hdf5writedata(oFile, '/sig1064P', inData.sig1064P, 'dataAttr', struct('short_name', 'raw_signal_parallel_1064'));
-    h5_attach_scale(oFile, '/sig1064P', '/height', 1);
-    h5_attach_scale(oFile, '/sig1064P', '/time', 0);
+    hdf5writedata(oFile, '/sig1064p', inData.sig1064P, 'dataAttr', struct('short_name', 'raw_signal_parallel_1064'));
+    h5_attach_scale(oFile, '/sig1064p', '/height', 1);
+    h5_attach_scale(oFile, '/sig1064p', '/time', 0);
 end
 
 if ~ isempty(inData.sig1064S)
-    hdf5writedata(oFile, '/sig1064S', inData.sig1064S, 'dataAttr', struct('short_name', 'raw_signal_cross_1064'));
-    h5_attach_scale(oFile, '/sig1064S', '/height', 1);
-    h5_attach_scale(oFile, '/sig1064S', '/time', 0);
+    hdf5writedata(oFile, '/sig1064s', inData.sig1064S, 'dataAttr', struct('short_name', 'raw_signal_cross_1064'));
+    h5_attach_scale(oFile, '/sig1064s', '/height', 1);
+    h5_attach_scale(oFile, '/sig1064s', '/time', 0);
 end
 
 end
