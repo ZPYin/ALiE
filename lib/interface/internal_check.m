@@ -34,10 +34,9 @@ copyfile(configFile, configFileSave);
 logFile = fullfile(config.evaluationReportPath, 'lidar_internal_check.log');
 diaryon(logFile);
 
-
 lidarType = fieldnames(config.internalChkCfg);
 for iLidar = 1:length(lidarType)
-    
+
     lidarConfig = config.internalChkCfg.(lidarType{iLidar});
     reportFile = fullfile(config.evaluationReportPath, sprintf('%s_internal_check_report.txt', lidarType{iLidar}));
     fid = fopen(reportFile, 'w');
@@ -67,8 +66,8 @@ for iLidar = 1:length(lidarType)
 
     %% read lidar data
     lidarData = struct();
-    lidarData.mTime = unix_timestamp_2_datenum(h5read(h5Filename, '/time')) + lidarConfig.tOffset;
-    lidarData.height = h5read(h5Filename, '/height') + lidarConfig.hOffset;
+    lidarData.mTime = unix_timestamp_2_datenum(h5read(h5Filename, '/time'));
+    lidarData.height = h5read(h5Filename, '/height');
     for iCh = 1:length(lidarConfig.chTag)
         if p.Results.flagDebug
             fprintf('Reading lidar data of %s\n', lidarConfig.chTag{iCh});
@@ -84,7 +83,10 @@ for iLidar = 1:length(lidarType)
         'nPretrigger', lidarConfig.preprocessCfg.nPretrigger, ...
         'bgCorFile', lidarConfig.preprocessCfg.bgCorFile, ...
         'lidarNo', lidarConfig.lidarNo, ...
-        'flagDebug', p.Results.flagDebug);
+        'flagDebug', p.Results.flagDebug, ...
+        'tOffset', datenum(0, 1, 0, 0, lidarConfig.preprocessCfg.tOffset, 0), ...
+        'hOffset', lidarConfig.preprocessCfg.hOffset, ...
+        'overlapFile', lidarConfig.preprocessCfg.overlapFile);
 
     %% backscatter retrieval check
     if lidarConfig.flagRetrievalChk

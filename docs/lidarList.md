@@ -7,4 +7,4 @@
 |532nm激光雷达|浅海科技|ss|https://www.shallow-sea.com/#page1|7|
 |532nm激光雷达|中科光博|gbq|http://www.gbqtech.com/info/16205.html|8|
 |532nm激光雷达+1064nm激光雷达|704所|caaet|http://www.caaet.cn/|9（532），10|
-|532nm激光雷达+1064nm激光雷达|武汉大学|WHU|http://rsgis.whu.edu.cn/|11（532），12|
+|532nm激光雷达+1064nm激光雷达*2|武汉大学|WHU|http://rsgis.whu.edu.cn/|11（532），12, 13|

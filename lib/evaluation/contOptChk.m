@@ -59,6 +59,8 @@ for iCh = 1:length(lidarConfig.chTag)
 
     %% signal visualization
     figure('Position', [0, 10, 600, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
+
+    subplot('Position', [0.14, 0.15, 0.75, 0.75], 'Units', 'Normalized');
     p1 = pcolor(mTimeGrid, heightGrid, sigGrid);
     p1.EdgeColor = 'None';
 
@@ -76,6 +78,7 @@ for iCh = 1:length(lidarConfig.chTag)
     ax.XAxis.MinorTickValues = linspace(mTimeGrid(1), mTimeGrid(end), 25);
 
     datetick(gca, 'x', 'HH:MM', 'KeepTicks', 'KeepLimits');
+    colorbar('Position', [0.91, 0.20, 0.03, 0.65], 'Units', 'Normalized');
 
     text(-0.1, -0.15, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
 

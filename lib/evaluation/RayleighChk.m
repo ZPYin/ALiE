@@ -98,7 +98,7 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
 
     xlabel('RCS (a.u.)');
     ylabel('Height (m)');
-    title(sprintf('Rayleigh test (%s, %4fnm)', lidarType, lidarConfig.RayleighChkCfg.wavelength(iWL)));
+    title(sprintf('Rayleigh test (%s, %4.0fnm)', lidarType, lidarConfig.RayleighChkCfg.wavelength(iWL)));
 
     xlim(lidarConfig.RayleighChkCfg.sigRange(iCh, :));
     ylim(lidarConfig.RayleighChkCfg.hRange(iCh, :));

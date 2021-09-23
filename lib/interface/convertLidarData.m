@@ -21,7 +21,7 @@ parse(p, configFile, varargin{:});
 
 %% read configuration
 fprintf('[%s] Start reading configurations for lidar data conversion!\n', tNow);
-fprintf('[%s] Config file: %s\n', configFile);
+fprintf('[%s] Config file: %s\n', tNow, configFile);
 config = yaml.ReadYaml(configFile, 0, 1);
 fprintf('[%s] Finish!\n', tNow);
 

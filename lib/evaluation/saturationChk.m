@@ -155,11 +155,14 @@ for iCh = 1:length(lidarConfig.chTag)
     sigT4Tmp(sigT4Tmp <= 0) = NaN;
     sigT5Tmp = sigT5Norm;
     sigT5Tmp(sigT5Tmp <= 0) = NaN;
-    p1 = semilogx(sigT1Tmp, lidarData.height, 'Color', 'k', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '100'); hold on;
+    hShaded = patch([(100 - lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * sigT1Tmp(~ isnan(sigT1Tmp)); (100 + lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * flipud(sigT1Tmp(~ isnan(sigT1Tmp)))], [lidarData.height(~ isnan(sigT1Tmp)); flipud(lidarData.height(~ isnan(sigT1Tmp)))], [211, 211, 211]/255); hold on;
+    hShaded.FaceAlpha = 0.6;
+    hShaded.EdgeColor = 'None';
     p2 = semilogx(sigT2Tmp, lidarData.height, 'Color', [106, 142, 34]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '80');
     p3 = semilogx(sigT3Tmp, lidarData.height, 'Color', [0, 191, 254]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '50');
     p4 = semilogx(sigT4Tmp, lidarData.height, 'Color', [230, 216, 189]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '20');
     p5 = semilogx(sigT5Tmp, lidarData.height, 'Color', [165, 118, 30]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '10');
+    p1 = semilogx(sigT1Tmp, lidarData.height, 'Color', 'k', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '100'); hold on;
 
     xlabel('Normalized signal (a.u.)');
     ylabel('Height (m)');
@@ -167,7 +170,7 @@ for iCh = 1:length(lidarConfig.chTag)
 
     xlim(lidarConfig.saturationChkCfg.sigRange(iCh, :));
     ylim(lidarConfig.saturationChkCfg.hRange(iCh, :));
-    set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
+    set(gca, 'XScale', 'log', 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
     legend([p1, p2, p3, p4, p5], 'Location', 'NorthEast');
     text(0.6, 0.62, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
@@ -187,7 +190,7 @@ for iCh = 1:length(lidarConfig.chTag)
     plot([-1, -1] * lidarConfig.saturationChkCfg.maxDev(iCh), [0, 100000], '-.', 'Color', [193, 193, 193]/255);
     plot([1, 1] * lidarConfig.saturationChkCfg.maxDev(iCh), [0, 100000], '-.', 'Color', [193, 193, 193]/255);
 
-    xlabel('Rel. Deviation (%%)');
+    xlabel('Rel. Deviation (%)');
     ylabel('Height (m)');
     title(sprintf('Saturation test for %s, %s', lidarType, lidarConfig.chTag{iCh}));
 

@@ -45,6 +45,7 @@ for iCh = 1:length(lidarConfig.chTag)
     sig = nansum(lidarData.(['sig', lidarConfig.chTag{iCh}])(:, isChosen), 2);
     bg = nansum(lidarData.(['bg', lidarConfig.chTag{iCh}])(isChosen));
     snr0 = lidarSNR(sig, bg, 'bgBins', lidarConfig.preprocessCfg.bgBins);
+    fprintf(fid, 'Time slot: %s\nNumber of profiles: %d\n', lidarConfig.detectRangeChkCfg.tRange, sum(isChosen));
 
     % height with low SNR
     snrTmp = snr0;
@@ -53,9 +54,9 @@ for iCh = 1:length(lidarConfig.chTag)
 
     if isempty(lowSNRInd)
         isPassDetectRangeChk(iCh) = true;
-        fprintf(fid, 'Minimum height with SNR>=%f: overflow\n', lidarConfig.detectRangeChkCfg.minSNR(iCh));
+        fprintf(fid, 'Minimum height with SNR>=%5.2f: overflow\n', lidarConfig.detectRangeChkCfg.minSNR(iCh));
     else
-        fprintf(fid, 'Minimum height with SNR>=%f: %f\n', lidarConfig.detectRangeChkCfg.minSNR(iCh), lidarData.height(lowSNRInd));
+        fprintf(fid, 'Minimum height with SNR>=%5.2f: %9.3f m\n', lidarConfig.detectRangeChkCfg.minSNR(iCh), lidarData.height(lowSNRInd));
         isPassDetectRangeChk(iCh) = (lidarData.height(lowSNRInd) >= lidarConfig.detectRangeChkCfg.minHeight(iCh));
     end
     fprintf(fid, '\nPass detection range check (1: yes; 0: no): %d\n', isPassDetectRangeChk(iCh));
@@ -75,7 +76,7 @@ for iCh = 1:length(lidarConfig.chTag)
 
     xlabel('Backscatter (a.u.)');
     ylabel('Height (m)');
-    text(1.3, 1.05, sprintf('Detection range test (%s, %s)', lidarType, lidarConfig.chTag{iCh}), 'Units', 'Normalized', 'FontSize', 12, 'FontWeight', 'Bold', 'HorizontalAlignment', 'center');
+    text(1.15, 1.05, sprintf('Detection range test (%s, %s)', lidarType, lidarConfig.chTag{iCh}), 'Units', 'Normalized', 'FontSize', 12, 'FontWeight', 'Bold', 'HorizontalAlignment', 'center');
 
     xlim(lidarConfig.detectRangeChkCfg.sigRange(iCh, :));
     ylim(lidarConfig.detectRangeChkCfg.hRange(iCh, :));
@@ -83,14 +84,18 @@ for iCh = 1:length(lidarConfig.chTag)
 
     legend([pSig, pBg], 'Location', 'NorthEast');
     text(-0.1, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+    text(0.3, 0.7, sprintf('From %s\nto %s\nProfiles: %d\n', datestr(tRange(1), 'yyyy-mm-dd HH:MM'), datestr(tRange(2), 'yyyy-mm-dd HH:MM'), sum(isChosen)), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
 
     subplot('Position', figPos(2, :), 'Units', 'Normalized');
     snrTmp = snr0;
     snrTmp(snrTmp <= 0) = NaN;
     semilogx(snrTmp, lidarData.height, 'Color', [231, 41, 139]/255, 'LineStyle', '-', 'LineWidth', 2); hold on;
+
     if ~ isempty(lowSNRInd)
-        plot([1, 1] * lidarConfig.detectRangeChkCfg.minSNR(iCh), [0, lidarData.height(lowSNRInd)], 'Color', [177, 89, 41]/255, 'LineStyle', '--', 'LineWidth', 2);
-        plot([1e-10, lidarConfig.detectRangeChkCfg.minSNR(iCh)], [lidarData.height(lowSNRInd), lidarData.height(lowSNRInd)], 'Color', [177, 89, 41]/255, 'LineStyle', '--', 'LineWidth', 2);
+        p1 = plot([1e-10, 1e10], [lidarData.height(lowSNRInd), lidarData.height(lowSNRInd)], 'Color', [177, 89, 41]/255, 'LineStyle', '--', 'LineWidth', 2, 'DisplayName', sprintf('SNR < %4.1f', lidarConfig.detectRangeChkCfg.minSNR(iCh)));
+        scatter(snrTmp(lowSNRInd), lidarData.height(lowSNRInd), 10, 'Marker', 'o', 'MarkerEdgeColor', [177, 89, 41]/255, 'MarkerFaceColor', [177, 89, 41]/255);
+
+        legend([p1], 'Location', 'NorthEast');
     end
 
     xlabel('SNR');
