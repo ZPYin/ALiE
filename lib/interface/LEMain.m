@@ -1,7 +1,14 @@
 function LEMain(configFile, varargin)
 % LEMAIN main program of lidar evaluation.
 % USAGE:
-%    LEMain(configFile)
+%    % Usecase 1: make quicklook
+%    LEMain('config.yml', 'flagReadData', true, 'flagQL', true);
+%    % Usecase 2: internal check
+%    LEMain('config.yml', 'flagReadData', true, 'flagInternalChk', true);
+%    % Usecase 3: external check
+%    LEMain('config.yml', 'flagReadData', true, 'flagExternalChk', true);
+%    % Usecase 4: debug mode
+%    LEMain('config.yml', 'flagReadData', 'flagInternalChk', true, 'flagDebug', true);
 % INPUTS:
 %    configFile: char
 %        absolute path of config file.
