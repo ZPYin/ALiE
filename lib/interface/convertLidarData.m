@@ -1,4 +1,4 @@
-function convertLidarData(configFile, varargin)
+function convertLidarData(config, varargin)
 % internal_check description
 % USAGE:
 %    [output] = internal_check(params)
@@ -14,21 +14,12 @@ function convertLidarData(configFile, varargin)
 p = inputParser;
 p.KeepUnmatched = true;
 
-addRequired(p, 'configFile', @ischar);
+addRequired(p, 'config', @isstruct);
 addParameter(p, 'flagDebug', false, @islogical);
 
-parse(p, configFile, varargin{:});
+parse(p, config, varargin{:});
 
-%% read configuration
-fprintf('[%s] Start reading configurations for lidar data conversion!\n', tNow);
-fprintf('[%s] Config file: %s\n', tNow, configFile);
-config = yaml.ReadYaml(configFile, 0, 1);
-fprintf('[%s] Finish!\n', tNow);
-
-%% backup configuration
-configFileSave = fullfile(config.evaluationReportPath, sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));
-fprintf('[%s] Config file saved as: %s\n', tNow, configFileSave);
-copyfile(configFile, configFileSave);
+fprintf('[%s] Start data conversion!\n', tNow);
 
 %% log output
 logFile = fullfile(config.evaluationReportPath, 'lidar_data_loading.log');
@@ -66,7 +57,7 @@ for iLidar = 1:length(lidarType)
     %% convert lidar data
     fprintf('[%s] Convert %s data to HDF5 format.\n', tNow, lidarType{iLidar});
     h5Filename = fullfile(config.dataSavePath, sprintf('%s_lidar_data.h5', lidarType{iLidar}));
-    convertLidar2h5(lidarData, h5Filename);
+    convertLidar2h5(lidarData, h5Filename, lidarConfig.chTag);
     fprintf('[%s] Finish!\n', tNow);
 
 end

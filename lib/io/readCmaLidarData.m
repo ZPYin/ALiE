@@ -169,38 +169,6 @@ if length(chTag) ~= nCh
     error(errStruct);
 end
 
-% determine channel type
-for iCh = 1:nCh
-    switch lower(chTag{iCh})
-    case '355e'
-        data.sig355 = rawBackscatter(1:nMaxBin, iCh);
-    case '355p'
-        data.sig355P = rawBackscatter(1:nMaxBin, iCh);
-    case '355s'
-        data.sig355S = rawBackscatter(1:nMaxBin, iCh);
-    case '387'
-        data.sig387 = rawBackscatter(1:nMaxBin, iCh);
-    case '407'
-        data.sig407 = rawBackscatter(1:nMaxBin, iCh);
-    case '532e'
-        data.sig532 = rawBackscatter(1:nMaxBin, iCh);
-    case '532p'
-        data.sig532P = rawBackscatter(1:nMaxBin, iCh);
-    case '532s'
-        data.sig532S = rawBackscatter(1:nMaxBin, iCh);
-    case '607'
-        data.sig607 = rawBackscatter(1:nMaxBin, iCh);
-    case '1064e'
-        data.sig1064 = rawBackscatter(1:nMaxBin, iCh);
-    case '1064p'
-        data.sig1064P = rawBackscatter(1:nMaxBin, iCh);
-    case '1064s'
-        data.sig1064S = rawBackscatter(1:nMaxBin, iCh);
-    otherwise
-        errStruct.message = sprintf('Wrong configuration for chTag: %s', chTag{iCh});
-        errStruct.identifier = 'LEToolbox:Err003';
-        error(errStruct);
-    end
-end
+data.rawSignal = transpose(rawBackscatter(1:nMaxBin, iCh));
 
 end

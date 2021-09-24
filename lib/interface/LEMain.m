@@ -1,26 +1,56 @@
-clc; close all;
+function LEMain(configFile, varargin)
+% LEMain description
+% USAGE:
+%    [output] = LEMain(params)
+% INPUTS:
+%    params
+% OUTPUTS:
+%    output
+% EXAMPLE:
+% HISTORY:
+%    2021-09-23: first edition by Zhenping
+% .. Authors: - zhenping@tropos.de
 
-%% initialization
-configFile = 'D:\Coding\Matlab\lidar_evaluation_1064\config\comparison_config_20210910.yml';
-% configFile = 'D:\Coding\Matlab\lidar_evaluation_1064\config\data_colorplot_config.yml';
-flagDebug = false;
-flagReadData = false;
-flagInternalChk = false;
-flagExternalChk = true;
-flagQL = false;
+p = inputParser;
+p.KeepUnmatched = true;
 
-if flagReadData
-    convertLidarData(configFile, 'flagDebug', flagDebug);
+addRequired(p, 'configFile', @ischar);
+addParameter(p, 'flagDebug', false, @islogical);
+addParameter(p, 'flagReadData', false, @islogical);
+addParameter(p, 'flagInternalChk', false, @islogical);
+addParameter(p, 'flagExternalChk', false, @islogical);
+addParameter(p, 'flagQL', false, @islogical);
+addParameter(p, 'flagBackupConfig', false, @islogical);
+
+parse(p, configFile, varargin{:});
+
+%% read configuration
+fprintf('[%s] Start reading configurations for internal check!\n', tNow);
+fprintf('[%s] Config file: %s\n', tNow, configFile);
+config = yaml.ReadYaml(configFile, 0, 1);
+fprintf('[%s] Finish!\n', tNow);
+
+%% backup configuration
+if p.Results.flagBackupConfig
+    configFileSave = fullfile(config.evaluationReportPath, sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));
+    fprintf('[%s] Config file saved as: %s\n', tNow, configFileSave);
+    copyfile(configFile, configFileSave);
 end
 
-if flagInternalChk
-    internal_check(configFile, 'flagDebug', flagDebug);
+if p.Results.flagReadData
+    convertLidarData(config, 'flagDebug', p.Results.flagDebug);
 end
 
-if flagExternalChk
-    external_check(configFile, 'flagDebug', flagDebug);
+if p.Results.flagInternalChk
+    internal_check(config, 'flagDebug', p.Results.flagDebug);
 end
 
-if flagQL
-    displayQL(configFile, 'flagDebug', flagDebug);
+if p.Results.flagExternalChk
+    external_check(config, 'flagDebug', p.Results.flagDebug);
+end
+
+if p.Results.flagQL
+    displayQL(config, 'flagDebug', p.Results.flagDebug);
+end
+
 end

@@ -88,7 +88,7 @@ end
 % standard lidar
 rcs = [];
 for iCh = 1:length(config.externalChkCfg.(lidarType{1}).chTag)
-    rcs = cat(2, rcs, nansum(allData.(lidarType{1}).(['rcs', config.externalChkCfg.(lidarType{1}).chTag{iCh}])(:, isChosen), 2));
+    rcs = cat(2, rcs, nanmean(allData.(lidarType{1}).(['rcs', config.externalChkCfg.(lidarType{1}).chTag{iCh}])(:, isChosen), 2));
 end
 cmpSig = cat(2, cmpSig, rcs * transpose(config.externalChkCfg.rangeCmpCfg.sigCompose(1, :)));
 fprintf(fid, 'Time slot: %s\n', config.externalChkCfg.rangeCmpCfg.tRange);
@@ -100,7 +100,7 @@ for iLidar = 2:length(lidarType)
     isChosen = (allData.(lidarType{iLidar}).mTime >= tRange(1)) & (allData.(lidarType{iLidar}).mTime <= tRange(2));
 
     for iCh = 1:length(config.externalChkCfg.(lidarType{iLidar}).chTag)
-        rcs = cat(2, rcs, nansum(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.(lidarType{iLidar}).chTag{iCh}])(:, isChosen), 2));
+        rcs = cat(2, rcs, nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.(lidarType{iLidar}).chTag{iCh}])(:, isChosen), 2));
     end
 
     %% signal interpolation
@@ -147,7 +147,7 @@ for iLidar = 2:length(lidarType)
     maxCorr(iLidar) = thisMaxCorr;
 
     %% evaluate range precision
-    fprintf(fid, 'Range shifts for %s: %5.1f m\n', lidarType{iLidar}, hMaxLag(iLidar));
+    fprintf(fid, 'Range shifts for %s: %5.1f m (max %5.1f m)\n', lidarType{iLidar}, hMaxLag(iLidar), config.externalChkCfg.rangeCmpCfg.maxRangeDev);
 end
 
 %% data visualization

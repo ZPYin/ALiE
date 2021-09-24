@@ -1,4 +1,4 @@
-function external_check(configFile, varargin)
+function external_check(config, varargin)
 % external_check description
 % USAGE:
 %    [output] = external_check(params)
@@ -14,21 +14,10 @@ function external_check(configFile, varargin)
 p = inputParser;
 p.KeepUnmatched = true;
 
-addRequired(p, 'configFile', @ischar);
+addRequired(p, 'config', @isstruct);
 addParameter(p, 'flagDebug', false, @islogical);
 
-parse(p, configFile, varargin{:});
-
-%% read configuration
-fprintf('[%s] Start reading configurations for external check!\n', tNow);
-fprintf('[%s] Config file: %s\n', tNow, configFile);
-config = yaml.ReadYaml(configFile, 0, 1);
-fprintf('[%s] Finish!\n', tNow);
-
-%% backup configuration
-configFileSave = fullfile(config.evaluationReportPath, sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));
-fprintf('[%s] Config file saved as: %s\n', configFileSave);
-copyfile(configFile, configFileSave);
+parse(p, config, varargin{:});
 
 %% log output
 logFile = fullfile(config.evaluationReportPath, 'lidar_external_check.log');
@@ -64,6 +53,18 @@ end
 if config.externalChkCfg.flagRCSCmp
     fprintf('[%s] Start RCS comparison!\n', tNow);
     RCSCmp(config, reportFile, varargin{:});
+    fprintf('[%s] Finish!\n', tNow);
+end
+
+if config.externalChkCfg.flagFernaldCmp
+    fprintf('[%s] Start Fernald comparison!\n', tNow);
+    FernaldCmp(config, reportFile, varargin{:});
+    fprintf('[%s] Finish!\n', tNow)
+end
+
+if config.externalChkCfg.flagVDRCmp
+    fprintf('[%s] Start VDR comparison!\n', tNow);
+    VDRCmp(config, reportFile, varargin{:});
     fprintf('[%s] Finish!\n', tNow);
 end
 

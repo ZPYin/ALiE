@@ -54,7 +54,7 @@ for iCh = 1:length(lidarConfig.chTag)
     heightGrid = height;
     sigGrid = NaN(length(heightGrid), length(mTimeGrid));
     for iT = 1:length(mTime)
-        sigGrid(:, floor((mTime(iT) - mTimeGrid(1)) / deltaT) + 1) = sig(:, iT);
+        sigGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = sig(:, iT);
     end
 
     %% signal visualization

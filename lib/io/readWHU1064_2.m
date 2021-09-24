@@ -48,7 +48,7 @@ end
 
 oData = struct;
 oData.height = lidarData{1}(1:p.Results.nMaxBin);   % distance. (m)
-oData.sig1064 = lidarData{2}(1:p.Results.nMaxBin);
+oData.rawSignal = lidarData{2}(1:p.Results.nMaxBin);
 oData.mTime = mTime;
 
 end

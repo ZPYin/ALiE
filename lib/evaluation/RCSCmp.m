@@ -88,7 +88,7 @@ end
 % standard lidar
 rcs = [];
 for iCh = 1:length(config.externalChkCfg.(lidarType{1}).chTag)
-    rcs = cat(2, rcs, nansum(allData.(lidarType{1}).(['rcs', config.externalChkCfg.(lidarType{1}).chTag{iCh}])(:, isChosen), 2));
+    rcs = cat(2, rcs, nanmean(allData.(lidarType{1}).(['rcs', config.externalChkCfg.(lidarType{1}).chTag{iCh}])(:, isChosen), 2));
 end
 cmpSig = cat(2, cmpSig, rcs * transpose(config.externalChkCfg.RCSCmpCfg.sigCompose(1, :)));
 fprintf(fid, 'Time slot: %s\n', config.externalChkCfg.RCSCmpCfg.tRange);
@@ -100,7 +100,7 @@ for iLidar = 2:length(lidarType)
     isChosen = (allData.(lidarType{iLidar}).mTime >= tRange(1)) & (allData.(lidarType{iLidar}).mTime <= tRange(2));
 
     for iCh = 1:length(config.externalChkCfg.(lidarType{iLidar}).chTag)
-        rcs = cat(2, rcs, nansum(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.(lidarType{iLidar}).chTag{iCh}])(:, isChosen), 2));
+        rcs = cat(2, rcs, nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.(lidarType{iLidar}).chTag{iCh}])(:, isChosen), 2));
     end
 
     %% signal interpolation
@@ -125,66 +125,156 @@ for iLidar = 2:length(lidarType)
     cmpSigNorm(:, iLidar) = cmpSig(:, iLidar) * normRatio;
 end
 
-%% signal smoothing
+piecewiseSM = config.externalChkCfg.RCSCmpCfg.smoothwindow;
+for iW = 1:size(piecewiseSM, 1)
+    piecewiseSM(iW, 1) = find(height >= piecewiseSM(iW, 1), 1, 'first');
+    piecewiseSM(iW, 2) = find(height <= piecewiseSM(iW, 2), 1, 'last');
+    piecewiseSM(iW, 3) = round(piecewiseSM(iW, 3) / (height(2) - height(1)));
+end
 
+%% signal smoothing
+cmpSigSm = NaN(size(cmpSigNorm));
+for iLidar = 1:length(lidarType)
+    cmpSigSm(:, iLidar) = smoothWin(cmpSigNorm(:, iLidar), piecewiseSM, 'moving');
+end
+
+%% signal evaluation
+
+% relative deviation
+sigDev = NaN(size(cmpSigSm));
+for iLidar = 2:size(cmpSigSm, 2)
+    sigDev(:, iLidar) = (cmpSigSm(:, iLidar) - cmpSigSm(:, 1)) ./ cmpSigSm(:, 1) * 100;
+end
+
+% mean relative deviation
+nES = size(config.externalChkCfg.RCSCmpCfg.hChkRange, 1);
+meanSigDev = NaN(nES, length(lidarType));
+for iES = 1:nES
+    isInES = (height >= config.externalChkCfg.RCSCmpCfg.hChkRange(iES, 1)) & (height <= config.externalChkCfg.RCSCmpCfg.hChkRange(iES, 2));
+
+    meanSigDev(iES, :) = nanmean(cmpSigSm(isInES, :) - repmat(cmpSigSm(isInES, 1), 1, length(lidarType)), 1) ./ nanmean(repmat(cmpSigSm(isInES, 1), 1, length(lidarType)), 1) * 100;
+
+    for iLidar = 2:length(lidarType)
+        fprintf(fid, 'Mean relative deviations of %s: %6.2f%% (max: %6.2f%%)\n', lidarType{iLidar}, meanSigDev(iES, iLidar), config.externalChkCfg.RCSCmpCfg.maxDev(iES));
+    end
+end
 
 %% data visualization
 
 % signal
-figure('Position', [0, 10, 550, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible', config.externalChkCfg.figVisible);
+figure('Position', [0, 10, 300, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible', config.externalChkCfg.figVisible);
 
+cmpSigSmTmp = cmpSigSm;
+cmpSigSmTmp(cmpSigSmTmp <= 0) = NaN;
 lineInstances = [];
-lineInstances(1) = plot(height, cmpSigNorm(:, 1), 'Color', 'k', 'Marker', 's', 'MarkerFaceColor', 'k', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{1}); hold on;
+lineInstances(1) = semilogx(cmpSigSmTmp(:, 1), height, 'Color', 'k', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{1}); hold on;
 for iLidar = 2:length(lidarType)
-    p1 = plot(height, cmpSigNorm(:, iLidar), 'Marker', 'o', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{iLidar}); hold on;
+    p1 = semilogx(cmpSigSmTmp(:, iLidar), height, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{iLidar}); hold on;
     lineInstances = cat(1, lineInstances, p1);
 end
 
 % fit range
-plot(config.externalChkCfg.RCSCmpCfg.sigRange, [1, 1] * config.externalChkCfg.RCSCmpCfg.fitRange(1), '--', 'Color', [152, 78, 163]/255, 'LineWidth', 2);
-plot(config.externalChkCfg.RCSCmpCfg.sigRange, [1, 1] * config.externalChkCfg.RCSCmpCfg.fitRange(2), '--', 'Color', [152, 78, 163]/255, 'LineWidth', 2);
+plot(config.externalChkCfg.RCSCmpCfg.sigRange, [1, 1] * config.externalChkCfg.RCSCmpCfg.normRange(1), '--', 'Color', [152, 78, 163]/255, 'LineWidth', 2);
+plot(config.externalChkCfg.RCSCmpCfg.sigRange, [1, 1] * config.externalChkCfg.RCSCmpCfg.normRange(2), '--', 'Color', [152, 78, 163]/255, 'LineWidth', 2);
 
-ylabel('Backscatter (a.u.)');
-xlabel('Height (m)');
-title('Range comparison');
+xlabel('Backscatter (a.u.)');
+ylabel('Height (m)');
+title('Lidar signal comparison');
 
-ylim(config.externalChkCfg.RCSCmpCfg.sigRange);
-xlim(config.externalChkCfg.RCSCmpCfg.hRange);
+xlim(config.externalChkCfg.RCSCmpCfg.sigRange);
+ylim(config.externalChkCfg.RCSCmpCfg.hRange);
 set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
 lgHandle = legend(lineInstances, 'Location', 'NorthEast');
 lgHandle.Interpreter = 'None';
-text(-0.1, -0.14, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
 
 if exist(config.evaluationReportPath, 'dir')
-    export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('range_comparison.%s', config.figFormat)), '-r300');
+    export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('signal_comparison.%s', config.figFormat)), '-r300');
 end
 
-% auto-correlation
-figure('Position', [0, 10, 550, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible', config.externalChkCfg.figVisible);
+% relative deviation
+figure('Position', [0, 10, 300, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible', config.externalChkCfg.figVisible);
+
+lineInstances0 = [];
+for iLidar = 2:length(lidarType)
+    p1 = plot(sigDev(:, iLidar), height, 'LineStyle', '-', 'Color', lineInstances(iLidar).Color, 'LineWidth', 2, 'DisplayName', lidarType{iLidar}); hold on;
+    lineInstances0 = cat(1, lineInstances0, p1);
+end
+
+plot([0, 0], [-100000, 100000], '--k');
+
+% error bound
+for iES = 1:nES
+    plot([-1, -1] * config.externalChkCfg.RCSCmpCfg.maxDev(iES), config.externalChkCfg.RCSCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+    plot([1, 1] * config.externalChkCfg.RCSCmpCfg.maxDev(iES), config.externalChkCfg.RCSCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+end
+
+for iPatch = 1:nES
+    hShaded = patch(...
+        [config.externalChkCfg.RCSCmpCfg.maxDev(iPatch), config.externalChkCfg.RCSCmpCfg.maxDev(iPatch), -config.externalChkCfg.RCSCmpCfg.maxDev(iPatch), -config.externalChkCfg.RCSCmpCfg.maxDev(iPatch)], ...
+        [config.externalChkCfg.RCSCmpCfg.hChkRange(iPatch, 1), config.externalChkCfg.RCSCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.RCSCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.RCSCmpCfg.hChkRange(iPatch, 1)], [160, 160, 160]/255);
+    hShaded.FaceAlpha = 0.3;
+    hShaded.EdgeColor = 'None';
+    hold on;
+end
+
+xlabel('Relative Dev. (%)');
+ylabel('Height (m)');
+title('Lidar signal comparison');
+
+xlim([-50, 50]);
+ylim(config.externalChkCfg.RCSCmpCfg.hRange);
+set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
+
+lgHandle = legend(lineInstances0, 'Location', 'NorthEast');
+lgHandle.Interpreter = 'None';
+text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+
+if exist(config.evaluationReportPath, 'dir')
+    export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('signal_deviation.%s', config.figFormat)), '-r300');
+end
+
+% mean relative deviation
+figure('Position', [0, 10, 300, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible', config.externalChkCfg.figVisible);
 
 lineInstances1 = [];
 for iLidar = 2:length(lidarType)
-    p1 = plot(hLag, corrVal(:, iLidar), 'Marker', 'o', 'LineStyle', '-', 'Color', lineInstances(iLidar).Color, 'LineWidth', 2, 'DisplayName', sprintf('%s: %4.1f m', lidarType{iLidar}, hMaxLag(iLidar))); hold on;
+    p1 = scatter(meanSigDev(:, iLidar), mean(config.externalChkCfg.RCSCmpCfg.hChkRange, 2), 25, 'Marker', 's', 'MarkerFaceColor', lineInstances(iLidar).Color, 'MarkerEdgeColor', lineInstances(iLidar).Color, 'DisplayName', lidarType{iLidar}); hold on;
     lineInstances1 = cat(1, lineInstances1, p1);
-
-    plot([hMaxLag(iLidar), hMaxLag(iLidar)], [0, maxCorr(iLidar)], 'LineStyle', '--', 'Color', p1.Color, 'LineWidth', 2);
 end
 
-ylabel('Correlation Coeff. (a.u.)');
-xlabel('Range lag (m)');
-title('Range comparison');
+plot([0, 0], [-100000, 100000], '--k');
 
-% ylim(config.externalChkCfg.RCSCmpCfg.sigRange);
-xlim([min(hLag), max(hLag)]);
+% error bound
+for iES = 1:nES
+    plot([-1, -1] * config.externalChkCfg.RCSCmpCfg.maxDev(iES), config.externalChkCfg.RCSCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+    plot([1, 1] * config.externalChkCfg.RCSCmpCfg.maxDev(iES), config.externalChkCfg.RCSCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+end
+
+for iPatch = 1:nES
+    hShaded = patch(...
+        [config.externalChkCfg.RCSCmpCfg.maxDev(iPatch), config.externalChkCfg.RCSCmpCfg.maxDev(iPatch), -config.externalChkCfg.RCSCmpCfg.maxDev(iPatch), -config.externalChkCfg.RCSCmpCfg.maxDev(iPatch)], ...
+        [config.externalChkCfg.RCSCmpCfg.hChkRange(iPatch, 1), config.externalChkCfg.RCSCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.RCSCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.RCSCmpCfg.hChkRange(iPatch, 1)], [160, 160, 160]/255);
+    hShaded.FaceAlpha = 0.3;
+    hShaded.EdgeColor = 'None';
+    hold on;
+end
+
+xlabel('Mean Rel. Dev. (%)');
+ylabel('Height (m)');
+title('Lidar signal comparison');
+
+xlim([-50, 50]);
+ylim(config.externalChkCfg.RCSCmpCfg.hRange);
 set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
 lgHandle = legend(lineInstances1, 'Location', 'NorthEast');
 lgHandle.Interpreter = 'None';
-text(-0.1, -0.14, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
 
 if exist(config.evaluationReportPath, 'dir')
-    export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('range_comparison_correlation.%s', config.figFormat)), '-r300');
+    export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('signal_mean_deviation.%s', config.figFormat)), '-r300');
 end
 
 if strcmpi(config.externalChkCfg.figVisible, 'off')

@@ -42,8 +42,8 @@ end
 rcs = [];   % height x channel
 bg = [];
 for iCh = 1:length(lidarConfig.chTag)
-    thisRCS = nansum(lidarData.(['rcs', lidarConfig.chTag{iCh}])(:, isChosen), 2);
-    thisBG = nansum(lidarData.(['bg', lidarConfig.chTag{iCh}])(isChosen));
+    thisRCS = nanmean(lidarData.(['rcs', lidarConfig.chTag{iCh}])(:, isChosen), 2);
+    thisBG = nanmean(lidarData.(['bg', lidarConfig.chTag{iCh}])(isChosen));
 
     rcs = cat(2, rcs, thisRCS);
     bg = cat(2, bg, thisBG);
@@ -89,8 +89,8 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
     pMol = semilogx(mRCSTmp, lidarData.height, 'Color', [178, 34, 34]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', 'Molecular');
 
     % norm range
-    plot(lidarConfig.RayleighChkCfg.sigRange(iCh, :), [1, 1] * lidarConfig.RayleighChkCfg.fitRange(iWL, 1), '--', 'Color', [152, 78, 163]/255, 'LineWidth', 2);
-    plot(lidarConfig.RayleighChkCfg.sigRange(iCh, :), [1, 1] * lidarConfig.RayleighChkCfg.fitRange(iWL, 2), '--', 'Color', [152, 78, 163]/255, 'LineWidth', 2);
+    plot(lidarConfig.RayleighChkCfg.sigRange(iWL, :), [1, 1] * lidarConfig.RayleighChkCfg.fitRange(iWL, 1), '--', 'Color', [152, 78, 163]/255, 'LineWidth', 2);
+    plot(lidarConfig.RayleighChkCfg.sigRange(iWL, :), [1, 1] * lidarConfig.RayleighChkCfg.fitRange(iWL, 2), '--', 'Color', [152, 78, 163]/255, 'LineWidth', 2);
 
     % signal bound
     plot((100 - lidarConfig.RayleighChkCfg.maxDev(iWL)) / 100 * [mRCSTmp(baseInd), mRCSTmp(topInd)], lidarConfig.RayleighChkCfg.fitRange(iWL, :), '-.', 'Color', [178, 34, 34]/255, 'LineWidth', 1);
@@ -100,8 +100,8 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
     ylabel('Height (m)');
     title(sprintf('Rayleigh test (%s, %4.0fnm)', lidarType, lidarConfig.RayleighChkCfg.wavelength(iWL)));
 
-    xlim(lidarConfig.RayleighChkCfg.sigRange(iCh, :));
-    ylim(lidarConfig.RayleighChkCfg.hRange(iCh, :));
+    xlim(lidarConfig.RayleighChkCfg.sigRange(iWL, :));
+    ylim(lidarConfig.RayleighChkCfg.hRange(iWL, :));
     set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
     legend([pMie, pMol], 'Location', 'NorthEast');

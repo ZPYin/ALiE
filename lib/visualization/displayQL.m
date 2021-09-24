@@ -1,4 +1,4 @@
-function displayQL(configFile, varargin)
+function displayQL(config, varargin)
 % displayQL description
 % USAGE:
 %    [output] = displayQL(params)
@@ -16,16 +16,10 @@ global LEToolboxInfo
 p = inputParser;
 p.KeepUnmatched = true;
 
-addRequired(p, 'configFile', @ischar);
+addRequired(p, 'config', @isstruct);
 addParameter(p, 'flagDebug', false, @islogical);
 
-parse(p, configFile, varargin{:});
-
-%% read configuration
-fprintf('[%s] Start reading configurations for showing quicklook!\n', tNow);
-fprintf('[%s] Config file: %s\n', tNow, configFile);
-config = yaml.ReadYaml(configFile, 0, 1);
-fprintf('[%s] Finish!\n', tNow);
+parse(p, config, varargin{:});
 
 %% log output
 logFile = fullfile(config.evaluationReportPath, 'lidar_displayQL.log');
@@ -77,16 +71,195 @@ for iLidar = 1:length(lidarType)
         'overlapFile', lidarConfig.preprocessCfg.overlapFile);
 
     switch lidarConfig.lidarNo
-    case 12
+    case 11   % REAL
 
-        % slot for continuous check
+        % time slot
         tRange = [datenum(lidarConfig.tRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(lidarConfig.tRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
-        tRangeMark = [datenum(lidarConfig.markTRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(lidarConfig.markTRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
+        if ~ isempty(lidarConfig.markTRange)
+            tRangeMark = [datenum(lidarConfig.markTRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(lidarConfig.markTRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
+        end
 
-        % continuous operation check
         isChosen = (lidarData.mTime >= tRange(1)) & (lidarData.mTime <= tRange(2));
         fprintf('Profiles for quicklook: %d\n', sum(isChosen));
-        
+
+        rcs532p = lidarData.rcs532p(:, isChosen);
+        rcs532s = lidarData.rcs532s(:, isChosen);
+        vdr532 = (lidarData.(['rcs', lidarConfig.vdrCompose{2}])./ lidarData.(['rcs', lidarConfig.vdrCompose{1}])) * lidarConfig.vdrCompose{3} + lidarConfig.vdrCompose{4};
+        height = lidarData.height;
+        mTime = lidarData.mTime(isChosen);
+        deltaT = datenum(0, 1, 0, 0, lidarConfig.deltaT, 0);
+
+        if ~ isempty(lidarConfig.markTRange)
+            isChosenMark = (lidarData.mTime >= tRangeMark(1)) & (lidarData.mTime <= tRangeMark(2));
+            rcs532pInt = nanmean(lidarData.rcs532p(:, isChosenMark), 2);
+            rcs532sInt = nanmean(lidarData.rcs532s(:, isChosenMark), 2);
+            vdr532Int = nanmean(lidarData.(['rcs', lidarConfig.vdrCompose{2}])(:, isChosenMark), 2) ./ nanmean(lidarData.(['rcs', lidarConfig.vdrCompose{1}])(:, isChosenMark), 2) * lidarConfig.vdrCompose{3} + lidarConfig.vdrCompose{4};
+        end
+
+        % signal regrid
+        mTimeGrid = (mTime(1):deltaT:mTime(end));
+        heightGrid = height;
+        rcs532pGrid = NaN(length(heightGrid), length(mTimeGrid));
+        rcs532sGrid = NaN(length(heightGrid), length(mTimeGrid));
+        vdr532Grid = NaN(length(heightGrid), length(mTimeGrid));
+        for iT = 1:length(mTime)
+            rcs532pGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = rcs532p(:, iT);
+            rcs532sGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = rcs532s(:, iT);
+            vdr532Grid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = vdr532(:, iT);
+        end
+
+        %% signal visualization
+
+        % 532 p
+        figure('Position', [0, 10, 600, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
+
+        subplot('Position', [0.14, 0.15, 0.75, 0.75], 'Units', 'Normalized');
+        p1 = pcolor(mTimeGrid, heightGrid, rcs532pGrid);
+        p1.EdgeColor = 'None';
+        if ~ isempty(lidarConfig.markTRange)
+            rectangle('Position', [tRangeMark(1), lidarConfig.hRange(1, 1), (tRangeMark(2) - tRangeMark(1)), (lidarConfig.hRange(1, 2) - lidarConfig.hRange(1, 1))], 'EdgeColor', 'k', 'LineWidth', 2, 'LineStyle', '--', 'FaceColor', [[193, 193, 193]/255, 0.5]);
+        end
+
+        xlabel('Local Time');
+        ylabel('Height (m)');
+        title(lidarConfig.title{1});
+
+        xlim([mTimeGrid(1), mTimeGrid(end)]);
+        ylim(lidarConfig.hRange(1, :));
+        caxis(lidarConfig.sigRange(1, :));
+        colormap('jet');
+
+        set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'XTick', linspace(mTimeGrid(1), mTimeGrid(end), 5), 'Layer', 'Top', 'Box', 'on', 'TickDir', 'out', 'LineWidth', 2);
+        ax = gca;
+        ax.XAxis.MinorTickValues = linspace(mTimeGrid(1), mTimeGrid(end), 25);
+
+        datetick(gca, 'x', 'HH:MM', 'KeepTicks', 'KeepLimits');
+        colorbar('Position', [0.91, 0.20, 0.03, 0.65], 'Units', 'Normalized');
+
+        text(-0.1, -0.15, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+
+        if exist(config.evaluationReportPath, 'dir')
+            export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('quicklook_%s_%s.%s', lidarType{iLidar}, '532p', config.figFormat)), '-r300');
+        end
+
+        % 532 s
+        figure('Position', [0, 10, 600, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
+
+        subplot('Position', [0.14, 0.15, 0.75, 0.75], 'Units', 'Normalized');
+        p1 = pcolor(mTimeGrid, heightGrid, rcs532sGrid);
+        p1.EdgeColor = 'None';
+        if ~ isempty(lidarConfig.markTRange)
+            rectangle('Position', [tRangeMark(1), lidarConfig.hRange(2, 1), (tRangeMark(2) - tRangeMark(1)), (lidarConfig.hRange(2, 2) - lidarConfig.hRange(2, 1))], 'EdgeColor', 'k', 'LineWidth', 2, 'LineStyle', '--', 'FaceColor', [[193, 193, 193]/255, 0.5]);
+        end
+
+        xlabel('Local Time');
+        ylabel('Height (m)');
+        title(lidarConfig.title{2});
+
+        xlim([mTimeGrid(1), mTimeGrid(end)]);
+        ylim(lidarConfig.hRange(2, :));
+        caxis(lidarConfig.sigRange(2, :));
+        colormap('jet');
+
+        set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'XTick', linspace(mTimeGrid(1), mTimeGrid(end), 5), 'Layer', 'Top', 'Box', 'on', 'TickDir', 'out', 'LineWidth', 2);
+        ax = gca;
+        ax.XAxis.MinorTickValues = linspace(mTimeGrid(1), mTimeGrid(end), 25);
+
+        datetick(gca, 'x', 'HH:MM', 'KeepTicks', 'KeepLimits');
+        colorbar('Position', [0.91, 0.20, 0.03, 0.65], 'Units', 'Normalized');
+
+        text(-0.1, -0.15, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+
+        if exist(config.evaluationReportPath, 'dir')
+            export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('quicklook_%s_%s.%s', lidarType{iLidar}, '532s', config.figFormat)), '-r300');
+        end
+
+        % 532 volume depolarization ratio
+        figure('Position', [0, 10, 600, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
+
+        subplot('Position', [0.14, 0.15, 0.75, 0.75], 'Units', 'Normalized');
+        p1 = pcolor(mTimeGrid, heightGrid, vdr532Grid);
+        p1.EdgeColor = 'None';
+        if ~ isempty(lidarConfig.markTRange)
+            rectangle('Position', [tRangeMark(1), lidarConfig.hRange(3, 1), (tRangeMark(2) - tRangeMark(1)), (lidarConfig.hRange(3, 2) - lidarConfig.hRange(3, 1))], 'EdgeColor', 'k', 'LineWidth', 2, 'LineStyle', '--', 'FaceColor', [[193, 193, 193]/255, 0.5]);
+        end
+
+        xlabel('Local Time');
+        ylabel('Height (m)');
+        title(lidarConfig.title{3});
+
+        xlim([mTimeGrid(1), mTimeGrid(end)]);
+        ylim(lidarConfig.hRange(3, :));
+        caxis(lidarConfig.sigRange(3, :));
+        colormap('jet');
+
+        set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'XTick', linspace(mTimeGrid(1), mTimeGrid(end), 5), 'Layer', 'Top', 'Box', 'on', 'TickDir', 'out', 'LineWidth', 2);
+        ax = gca;
+        ax.XAxis.MinorTickValues = linspace(mTimeGrid(1), mTimeGrid(end), 25);
+
+        datetick(gca, 'x', 'HH:MM', 'KeepTicks', 'KeepLimits');
+        colorbar('Position', [0.91, 0.20, 0.03, 0.65], 'Units', 'Normalized');
+
+        text(-0.1, -0.15, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+
+        if exist(config.evaluationReportPath, 'dir')
+            export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('quicklook_%s_%s.%s', lidarType{iLidar}, '532vdr', config.figFormat)), '-r300');
+        end
+
+        % integral signal
+        if ~ isempty(lidarConfig.markTRange)
+            figure('Position', [0, 10, 550, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
+
+            figPos = subfigPos([0.12, 0.13, 0.87, 0.8], 1, 2, 0.03, 0);
+
+            subplot('Position', figPos(1, :), 'Units', 'Normalized');
+            rcs532pTmp = rcs532pInt;
+            rcs532pTmp(rcs532pTmp <= 0) = NaN;
+            rcs532sTmp = rcs532sInt;
+            rcs532sTmp(rcs532sTmp <= 0) = NaN;
+            pSig = semilogx(rcs532pTmp, lidarData.height, 'Color', [48, 80, 79]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '532 P'); hold on;
+            pBg = semilogx(rcs532sTmp, lidarData.height, 'Color', [177, 89, 41]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '532 S');
+
+            xlabel('RCS (a.u.)');
+            ylabel('Height (m)');
+            text(1.15, 1.05, 'REAL Quicklook', 'Units', 'Normalized', 'FontSize', 12, 'FontWeight', 'Bold', 'HorizontalAlignment', 'center');
+
+            xlim([min(lidarConfig.sigRange(1:2, 1)), max(lidarConfig.sigRange(1:2, 2))]);
+            ylim([min(lidarConfig.hRange(1:2, 1)), max(lidarConfig.hRange(1:2, 2))]);
+            set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
+
+            legend([pSig, pBg], 'Location', 'NorthEast');
+            text(-0.1, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+            text(0.3, 0.7, sprintf('From %s\nto %s\nProfiles: %d\n', datestr(tRange(1), 'yyyy-mm-dd HH:MM'), datestr(tRange(2), 'yyyy-mm-dd HH:MM'), sum(isChosen)), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+
+            subplot('Position', figPos(2, :), 'Units', 'Normalized');
+            vdr532Tmp = vdr532Int;
+            vdr532Tmp(vdr532Tmp <= 0) = NaN;
+            semilogx(vdr532Tmp, lidarData.height, 'Color', [231, 41, 139]/255, 'LineStyle', '-', 'LineWidth', 2); hold on;
+
+            xlabel('vol. depol.');
+            ylabel('');
+
+            xlim(lidarConfig.sigRange(3, :));
+            ylim(lidarConfig.hRange(3, :));
+            set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'YTickLabel', '', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
+
+            if exist(config.evaluationReportPath, 'dir')
+                export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('Profile_%s_%s.%s', lidarType{iLidar}, 'vdr532', config.figFormat)), '-r300');
+            end
+        end
+
+    case 12   % WHU 1064 
+
+        % time slot
+        tRange = [datenum(lidarConfig.tRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(lidarConfig.tRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
+        if ~ isempty(lidarConfig.markTRange)
+            tRangeMark = [datenum(lidarConfig.markTRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(lidarConfig.markTRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
+        end
+
+        isChosen = (lidarData.mTime >= tRange(1)) & (lidarData.mTime <= tRange(2));
+        fprintf('Profiles for quicklook: %d\n', sum(isChosen));
+
         sig = lidarData.rcs1064e(:, isChosen);
         height = lidarData.height;
         mTime = lidarData.mTime(isChosen);
@@ -97,7 +270,7 @@ for iLidar = 1:length(lidarType)
         heightGrid = height;
         sigGrid = NaN(length(heightGrid), length(mTimeGrid));
         for iT = 1:length(mTime)
-            sigGrid(:, floor((mTime(iT) - mTimeGrid(1)) / deltaT) + 1) = sig(:, iT);
+            sigGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = sig(:, iT);
         end
 
         %% signal visualization
@@ -106,7 +279,9 @@ for iLidar = 1:length(lidarType)
         subplot('Position', [0.14, 0.15, 0.75, 0.75], 'Units', 'Normalized');
         p1 = pcolor(mTimeGrid, heightGrid, sigGrid);
         p1.EdgeColor = 'None';
-        rectangle('Position', [tRangeMark(1), lidarConfig.hRange(1), (tRangeMark(2) - tRangeMark(1)), (lidarConfig.hRange(2) - lidarConfig.hRange(1))], 'EdgeColor', 'k', 'LineWidth', 2, 'LineStyle', '--', 'FaceColor', [[193, 193, 193]/255, 0.5]);
+        if ~ isempty(lidarConfig.markTRange)
+            rectangle('Position', [tRangeMark(1), lidarConfig.hRange(1), (tRangeMark(2) - tRangeMark(1)), (lidarConfig.hRange(2) - lidarConfig.hRange(1))], 'EdgeColor', 'k', 'LineWidth', 2, 'LineStyle', '--', 'FaceColor', [[193, 193, 193]/255, 0.5]);
+        end
 
         xlabel('Local Time');
         ylabel('Height (m)');
@@ -114,7 +289,7 @@ for iLidar = 1:length(lidarType)
 
         xlim([mTimeGrid(1), mTimeGrid(end)]);
         ylim(lidarConfig.hRange);
-        caxis([1e7, 1e10]);
+        caxis(lidarConfig.sigRange);
         colormap('jet');
 
         set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'XTick', linspace(mTimeGrid(1), mTimeGrid(end), 5), 'Layer', 'Top', 'Box', 'on', 'TickDir', 'out', 'LineWidth', 2);
@@ -130,16 +305,15 @@ for iLidar = 1:length(lidarType)
             export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('quicklook_%s_%s.%s', lidarType{iLidar}, '1064e', config.figFormat)), '-r300');
         end
 
-        if strcmpi(lidarConfig.figVisible, 'off')
-            close all;
-        end
-
     otherwise
         errStruct.message = sprintf('Wrong configuration for lidarNo (%d).', lidarConfig.lidarNo);
         errStruct.identifier = 'LEToolbox:Err003';
         error(errStruct);
     end
 
+    if strcmpi(lidarConfig.figVisible, 'off')
+        close all;
+    end
 end
 
 diaryoff;

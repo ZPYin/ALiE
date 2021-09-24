@@ -1,4 +1,4 @@
-function internal_check(configFile, varargin)
+function internal_check(config, varargin)
 % internal_check description
 % USAGE:
 %    [output] = internal_check(params)
@@ -14,21 +14,10 @@ function internal_check(configFile, varargin)
 p = inputParser;
 p.KeepUnmatched = true;
 
-addRequired(p, 'configFile', @ischar);
+addRequired(p, 'config', @isstruct);
 addParameter(p, 'flagDebug', false, @islogical);
 
-parse(p, configFile, varargin{:});
-
-%% read configuration
-fprintf('[%s] Start reading configurations for internal check!\n', tNow);
-fprintf('[%s] Config file: %s\n', tNow, configFile);
-config = yaml.ReadYaml(configFile, 0, 1);
-fprintf('[%s] Finish!\n', tNow);
-
-%% backup configuration
-configFileSave = fullfile(config.evaluationReportPath, sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));
-fprintf('[%s] Config file saved as: %s\n', configFileSave);
-copyfile(configFile, configFileSave);
+parse(p, config, varargin{:});
 
 %% log output
 logFile = fullfile(config.evaluationReportPath, 'lidar_internal_check.log');

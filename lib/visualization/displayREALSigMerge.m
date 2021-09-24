@@ -96,13 +96,13 @@ sigLPrf = nanmean(sigL, 2);
 sigHPrf(sigHPrf <= 0) = NaN;
 sigLPrf(sigLPrf <= 0) = NaN;
 
-p1 = semilogx(sigHPrf, height, '-r', 'LineWidth', 1, 'DisplayName', sprintf('High %s', p.Results.channelTag)); hold on;
-p2 = semilogx(sigLPrf, height, '-k', 'LineWidth', 1, 'DisplayName', sprintf('Low %s', p.Results.channelTag));
+p1 = semilogx(sigHPrf.*height.^2, height, '-r', 'LineWidth', 1, 'DisplayName', sprintf('High %s', p.Results.channelTag)); hold on;
+p2 = semilogx(sigLPrf.*height.^2 * 16.9612, height, '-k', 'LineWidth', 1, 'DisplayName', sprintf('Low %s', p.Results.channelTag));
 
 xlabel(sprintf('REAL %s', p.Results.channelTag));
 ylabel('Height (m)');
 
-xlim([1e-1, 1e6]);
+xlim([1e6, 1e13]);
 ylim([0, 10000]);
 
 legend([p1, p2], 'Location', 'NorthEast');
