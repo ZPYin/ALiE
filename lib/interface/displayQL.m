@@ -1,12 +1,13 @@
 function displayQL(config, varargin)
-% displayQL description
+% DISPLAYQL display lidar data quicklooks.
 % USAGE:
-%    [output] = displayQL(params)
+%    displayQL(config)
 % INPUTS:
-%    params
-% OUTPUTS:
-%    output
-% EXAMPLE:
+%    config: struct
+%        see examples in `./config` folder.
+% KEYWORDS:
+%    flagDebug: logical
+%        flag to print debug messages.
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -21,9 +22,10 @@ addParameter(p, 'flagDebug', false, @islogical);
 
 parse(p, config, varargin{:});
 
-%% parameter initialization
-mergeRange = [1230, 1260; 1230, 1260; 1000, 1500];   % height range for signal merge. (m)
-mergeSlope = [16.9612, 1e4 * 1.5, 1];   % normalization ratio for 532S, 532P, 607 (High / Low)
+%% parameter initialization (only for REAL data)
+% mergeRange = [1230, 1260; 1230, 1260; 1000, 1500];   % height range for signal merge. (m)
+mergeRange = [1300, 2500; 1300, 2500; 1000, 1500];   % height range for signal merge. (m)
+mergeSlope = [16.9612, 586.4, 1];   % normalization ratio for 532S, 532P, 607 (High / Low)
 mergeOffset = [0, 0, 0];
 
 %% log output
@@ -78,7 +80,9 @@ for iLidar = 1:length(lidarType)
         'mergeSlope', mergeSlope, ...
         'mergeOffset', mergeOffset);
 
+    %% visualization
     switch lidarConfig.lidarNo
+
     case 11   % REAL
 
         % time slot
@@ -215,17 +219,17 @@ for iLidar = 1:length(lidarType)
         end
 
         % diagnose signal merge
-        if p.Results.flagDebug
-            displayREALSigMerge(lidarData.height, lidarData.mTime, lidarData.sig532sh, lidarData.sig532sl, mergeRange(1, :), 'channelTag', '532S', 'hRange', lidarConfig.hRange(1, :), 'cRange', lidarConfig.sigRange(1, :));
-            displayREALSigMerge(lidarData.height, lidarData.mTime, lidarData.sig532ph, lidarData.sig532pl, mergeRange(2, :), 'channelTag', '532P', 'hRange', lidarConfig.hRange(2, :), 'cRange', lidarConfig.sigRange(2, :));
-            displayREALSigMerge(lidarData.height, lidarData.mTime, lidarData.sig607h, lidarData.sig607l, mergeRange(3, :), 'channelTag', '607', 'hRange', lidarConfig.hRange(3, :), 'cRange', lidarConfig.sigRange(3, :));
+        if p.Results.flagDebug && p.Results.flagDebug
+            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig532sh(:, isChosenMark), lidarData.sig532sl(:, isChosenMark), mergeRange(1, :), 'channelTag', '532S', 'hRange', lidarConfig.hRange(1, :), 'cRange', lidarConfig.sigRange(1, :), 'mergeSlope', mergeSlope(1), 'mergeOffset', mergeOffset(1), 'figFolder', config.evaluationReportPath);
+            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig532ph(:, isChosenMark), lidarData.sig532pl(:, isChosenMark), mergeRange(2, :), 'channelTag', '532P', 'hRange', lidarConfig.hRange(2, :), 'cRange', lidarConfig.sigRange(2, :), 'mergeSlope', mergeSlope(2), 'mergeOffset', mergeOffset(2), 'figFolder', config.evaluationReportPath);
+            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig607h(:, isChosenMark), lidarData.sig607l(:, isChosenMark), mergeRange(3, :), 'channelTag', '607', 'hRange', lidarConfig.hRange(3, :), 'cRange', lidarConfig.sigRange(3, :), 'mergeSlope', mergeSlope(3), 'mergeOffset', mergeOffset(3), 'figFolder', config.evaluationReportPath);
         end
 
         % integral signal
         if ~ isempty(lidarConfig.markTRange)
             figure('Position', [0, 10, 550, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
 
-            figPos = subfigPos([0.12, 0.13, 0.87, 0.8], 1, 2, 0.03, 0);
+            figPos = subfigPos([0.11, 0.13, 0.87, 0.8], 1, 2, 0.03, 0);
 
             subplot('Position', figPos(1, :), 'Units', 'Normalized');
             rcs532pTmp = rcs532pInt;
@@ -237,20 +241,18 @@ for iLidar = 1:length(lidarType)
 
             xlabel('RCS (a.u.)');
             ylabel('Height (m)');
-            text(1.15, 1.05, 'REAL Quicklook', 'Units', 'Normalized', 'FontSize', 12, 'FontWeight', 'Bold', 'HorizontalAlignment', 'center');
+            text(1.13, 1.05, 'REAL Quicklook', 'Units', 'Normalized', 'FontSize', 12, 'FontWeight', 'Bold', 'HorizontalAlignment', 'center');
 
             xlim([min(lidarConfig.sigRange(1:2, 1)), max(lidarConfig.sigRange(1:2, 2))]);
             ylim([min(lidarConfig.hRange(1:2, 1)), max(lidarConfig.hRange(1:2, 2))]);
             set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
             legend([pSig, pBg], 'Location', 'NorthEast');
-            text(-0.1, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
-            text(0.3, 0.7, sprintf('From %s\nto %s\nProfiles: %d\n', datestr(tRange(1), 'yyyy-mm-dd HH:MM'), datestr(tRange(2), 'yyyy-mm-dd HH:MM'), sum(isChosen)), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+            text(-0.1, -0.12, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+            text(0.3, 0.7, sprintf('From %s\nto %s\nProfiles: %d\n', datestr(tRangeMark(1), 'yyyy-mm-dd HH:MM'), datestr(tRangeMark(2), 'yyyy-mm-dd HH:MM'), sum(isChosenMark)), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
 
             subplot('Position', figPos(2, :), 'Units', 'Normalized');
-            vdr532Tmp = vdr532Int;
-            vdr532Tmp(vdr532Tmp <= 0) = NaN;
-            plot(vdr532Tmp, lidarData.height, 'Color', [231, 41, 139]/255, 'LineStyle', '-', 'LineWidth', 2); hold on;
+            plot(vdr532Int, lidarData.height, 'Color', [231, 41, 139]/255, 'LineStyle', '-', 'LineWidth', 2); hold on;
 
             xlabel('vol. depol.');
             ylabel('');

@@ -1,31 +1,30 @@
 function hdf5writedata(filename, location, data, varargin)
-%hdf5writedata Write data and data attributes to HDF5 file.
-%Example:
-%   % Usecase 1: save variable to HDF5 file
-%   hdf5writedata('/path/to/h5', '/data', data)
-%
-%   % Usecase 2: save variable to HDF5 file with attributes
-%   hdf5writedata('/path/to/h5', '/data', data, 'dataAttr', ...
-%                 struct('type', 'float'))
-%Inputs:
-%   filename: char
-%       HDF5 filename. (with absolute path)
-%   location: char
-%       location of the dataset.
-%   data: array
-%       exported data.
-%Keywords:
-%   dataAttr: struct
-%       dataset attributes.
-%   deflate: integer
-%       compression level (default: 6).
-%   FillValue: integer
-%       filling value (default: -999).
-%   flagArray: logical
-%History:
-%   2019-11-11. First Edition by Zhenping
-%Contact:
-%   zp.yin@whu.edu.cn
+% HDF5WRITEDATA Write data and data attributes to HDF5 file.
+% USAGE:
+%    % Usecase 1: save variable to HDF5 file
+%    hdf5writedata('/path/to/h5', '/data', data)
+% 
+%    % Usecase 2: save variable to HDF5 file with attributes
+%    hdf5writedata('/path/to/h5', '/data', data, 'dataAttr', ...
+%                  struct('type', 'float'))
+% INPUTS:
+%    filename: char
+%        HDF5 filename. (with absolute path)
+%    location: char
+%        location of the dataset.
+%    data: array
+%        exported data.
+% KEYWORDS:
+%    dataAttr: struct
+%        dataset attributes.
+%    deflate: integer
+%        compression level (default: 6).
+%    FillValue: integer
+%        filling value (default: -999).
+%    flagArray: logical
+% HISTORY:
+%    2021-09-24: first edition by Zhenping
+% .. Authors: - zhenping@tropos.de
 
 p = inputParser;
 p.KeepUnmatched = true;

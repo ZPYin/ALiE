@@ -3,10 +3,15 @@ function [oData] = readLidarData(dataFolder, varargin)
 % USAGE:
 %    [oData] = readLidarData(dataFolder)
 % INPUTS:
-%    dataFolder, varargin
+%    dataFolder: char
+% KEYWORDS:
+%    dataFilenamePattern: char
+%    dataFormat: char
+%    flagDebug: logical
+%    nMaxBin: numeric
+%    nBin: numeric
 % OUTPUTS:
-%    oData
-% EXAMPLE:
+%    oData: struct
 % HISTORY:
 %    2021-09-10: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -18,7 +23,6 @@ addRequired(p, 'dataFolder', @ischar);
 addParameter(p, 'dataFilePattern', '.*', @ischar);
 addParameter(p, 'dataFormat', 1, @isnumeric);
 addParameter(p, 'flagDebug', false, @islogical);
-addParameter(p, 'chTag', {}, @iscellstr);
 addParameter(p, 'nMaxBin', 8000, @isnumeric);
 addParameter(p, 'nBin', 8000, @isnumeric);
 
@@ -71,7 +75,7 @@ case 3
 
     for iFile = 1:length(dataFiles)
 
-        lidarData = readCmaLidarData(dataFiles{iFile}, p.Results.chTag, varargin{:});
+        lidarData = readCmaLidarData(dataFiles{iFile}, varargin{:});
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
         oData.height = lidarData.height;

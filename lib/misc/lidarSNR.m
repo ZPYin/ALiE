@@ -1,12 +1,14 @@
 function [snr0] = lidarSNR(sig, bg, varargin)
-% lidarSNR description
+% LIDARSNR lidar signal SNR
 % USAGE:
-%    [snr0] = lidarSNR(sig, bg, varargin)
+%    [snr0] = lidarSNR(sig, bg)
 % INPUTS:
-%    sig, bg, varargin
+%    sig: array
+%    bg: array
+% KEYWORDS:
+%    bgBins: 2-element array
 % OUTPUTS:
-%    snr0
-% EXAMPLE:
+%    snr0: array
 % HISTORY:
 %    2021-09-21: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

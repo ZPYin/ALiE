@@ -1,13 +1,10 @@
-function [data] = readCmaLidarData(file, chTag, varargin)
+function [data] = readCmaLidarData(file, varargin)
 % READCMALIDARDATA read CMA standard binary lidar data.
 % USAGE:
-%    [data] = readCmaLidarData(file, chTag)
+%    [data] = readCmaLidarData(file)
 % INPUTS:
 %    file: char
 %        absolute path of the lidar data file.
-%    chTag: cell
-%        channel identifier for each channel.
-%        355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s
 % KEYWORDS:
 %    flagDebug: logical
 %        flag to control debugging message output (default: false).
@@ -28,19 +25,8 @@ function [data] = readCmaLidarData(file, chTag, varargin)
 %        metadata: struct
 %        hBlindZone: double
 %            height of blind zone for each channel. (m)
-%        sig355: double
-%            elastic signal at 355 nm.
-%        sig355P: double
-%        sig355S: double
-%        sig387: double
-%        sig407: double
-%        sig532: double
-%        sig532P: double
-%        sig532S: double
-%        sig607: double
-%        sig1064: double
-%        sig1064P: double
-%        sig1064S: double
+%        rawSignal: double
+%            raw signal.
 % HISTORY:
 %    2021-09-18: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -49,12 +35,11 @@ p = inputParser;
 p.KeepUnmatched = true;
 
 addRequired(p, 'file', @ischar);
-addRequired(p, 'chTag', @iscell);
 addParameter(p, 'flagDebug', false, @islogical);
 addParameter(p, 'nMaxBin', [], @isnumeric);
 addParameter(p, 'nBin', 8000, @isnumeric);
 
-parse(p, file, chTag, varargin{:});
+parse(p, file, varargin{:});
 
 %% parameter initialization
 data = struct();
@@ -163,12 +148,6 @@ data.metadata.siteNo = siteNo;
 data.metadata.file_header = fileHeader;
 data.metadata.version = uint8_2_double(verNo);
 
-if length(chTag) ~= nCh
-    errStruct.message = 'Wrong configuration for chTag';
-    errStruct.identifier = 'LEToolbox:Err003';
-    error(errStruct);
-end
-
-data.rawSignal = transpose(rawBackscatter(1:nMaxBin, iCh));
+data.rawSignal = transpose(rawBackscatter(1:nMaxBin, :));
 
 end

@@ -1,12 +1,17 @@
 function LEMain(configFile, varargin)
-% LEMain description
+% LEMAIN main program of lidar evaluation.
 % USAGE:
-%    [output] = LEMain(params)
+%    LEMain(configFile)
 % INPUTS:
-%    params
-% OUTPUTS:
-%    output
-% EXAMPLE:
+%    configFile: char
+%        absolute path of config file.
+% KEYWORDS:
+%    flagDebug: logical
+%    flagReadData: logical
+%    flagInternalChk: logical
+%    flagExternalChk: logical
+%    flagQL: logical
+%    flagBackupConfig: logical
 % HISTORY:
 %    2021-09-23: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -38,18 +43,22 @@ if p.Results.flagBackupConfig
 end
 
 if p.Results.flagReadData
+    % convert lidar data to HDF5 format
     convertLidarData(config, 'flagDebug', p.Results.flagDebug);
 end
 
 if p.Results.flagInternalChk
+    % lidar internal check
     internal_check(config, 'flagDebug', p.Results.flagDebug);
 end
 
 if p.Results.flagExternalChk
+    % lidar external check
     external_check(config, 'flagDebug', p.Results.flagDebug);
 end
 
 if p.Results.flagQL
+    % lidar data quicklooks
     displayQL(config, 'flagDebug', p.Results.flagDebug);
 end
 

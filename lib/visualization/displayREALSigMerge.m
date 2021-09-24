@@ -1,12 +1,27 @@
-function [fh] = displayREALSigMerge(height, mTime, sigH, sigL, mergeRange, varargin)
-% displayREALSigMerge description
+function displayREALSigMerge(height, mTime, sigH, sigL, mergeRange, varargin)
+% DISPLAYREALSIGMERGE display REAL merged signal.
 % USAGE:
-%    [fh] = displayREALSigMerge(params)
+%    displayREALSigMerge(height, mTime, sigH, sigL, mergeRange)
 % INPUTS:
-%    params
-% OUTPUTS:
-%    fh
-% EXAMPLE:
+%    height: numeric
+%    mTime: numeric
+%    sigH: matrix (height x time)
+%    sigL: matrix (height x time)
+%    mergeRange: 2-element array
+%        signal merge range. (m)
+% KEYWORDS:
+%    channelTag: char
+%        channel tag. (e.g., '532s')
+%    cRange: 2-element array
+%        range corrected signal range.
+%    hRange: 2-element array
+%        height range. (m)
+%    figFolder: char
+%        figure exported folder.
+%    mergeOffset: 2-element array
+%        offset for signal merge.
+%    mergeSlope
+%        slope for signal merge
 % HISTORY:
 %    2021-09-20: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -23,50 +38,13 @@ addParameter(p, 'channelTag', '', @ischar);
 addParameter(p, 'cRange', [0, 1000], @isnumeric);
 addParameter(p, 'hRange', [0, 10000], @isnumeric);
 addParameter(p, 'figFolder', '', @ischar);
+addParameter(p, 'mergeOffset', [], @isnumeric);
+addParameter(p, 'mergeSlope', [], @isnumeric);
 
 parse(p, height, mTime, sigH, sigL, mergeRange, varargin{:});
 
-%% display signal color plot
-figure('Color', 'w');
-
-subplot(211);
-p1 = pcolor(mTime, height, sigH .* repmat(height.^2, 1, length(mTime))); hold on;
-p1.EdgeColor = 'None';
-
-xlabel('Time (LT)');
-ylabel('Height (m)');
-title(sprintf('REAL High %s', p.Results.channelTag));
-
-xlim([mTime(1), mTime(end)]);
-ylim(p.Results.hRange);
-caxis(p.Results.cRange);
-colormap('jet');
-
-set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'layer', 'top', 'box', 'on', 'LineWidth', 2);
-datetick(gca, 'x', 'HH:MM', 'keeplimits', 'keepticks');
-
-colorbar();
-
-subplot(212);
-p1 = pcolor(mTime, height, sigL .* repmat(height.^2, 1, length(mTime))); hold on;
-p1.EdgeColor = 'None';
-
-xlabel('Time (LT)');
-ylabel('Height (m)');
-title(sprintf('REAL Low %s', p.Results.channelTag));
-
-xlim([mTime(1), mTime(end)]);
-ylim(p.Results.hRange);
-caxis(p.Results.cRange);
-colormap('jet');
-
-set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'layer', 'top', 'box', 'on', 'LineWidth', 2);
-datetick(gca, 'x', 'HH:MM', 'keeplimits', 'keepticks');
-
-colorbar();
-
-if ~ isempty(p.Results.figFolder)
-    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('REAL_%s_signal_colorplot.%s', p.Results.figTitle, 'png')), '-r300');
+if ~ isempty(p.Results.mergeOffset)
+    sigMerge = sigMergeREAL(sigH, sigL, height, mergeRange, p.Results.mergeSlope, p.Results.mergeOffset);
 end
 
 %% linear fit plot
@@ -76,9 +54,9 @@ sigLPoint = reshape(sigL(hInd, :), [], 1);
 
 [slope, offset, slope_1sigma, offset_1sigma] = linfit(sigLPoint, sigHPoint);
 
-figure('Color', 'w');
-p1 = scatter(sigLPoint, sigHPoint, 25, 'Marker', '.'); hold on;
-p2 = plot([min(sigLPoint), max(sigLPoint)], [min(sigLPoint), max(sigLPoint)] * slope + offset, '--k');
+figure('Position', [0, 10, 400, 300], 'Units', 'Pixels', 'Color', 'w');
+scatter(sigLPoint, sigHPoint, 25, 'Marker', '.'); hold on;
+plot([min(sigLPoint), max(sigLPoint)], [min(sigLPoint), max(sigLPoint)] * slope + offset, '--k');
 
 xlabel(sprintf('REAL Low %s', p.Results.channelTag));
 ylabel(sprintf('REAL High %s', p.Results.channelTag));
@@ -87,19 +65,26 @@ set(gca, 'layer', 'top', 'box', 'on', 'LineWidth', 2);
 text(0.4, 0.2, sprintf('sigH = %f*sigL + %f\nslope: %f+-%f\noffset: %f+-%f\n', slope, offset, slope, slope_1sigma, offset, offset_1sigma), 'Units', 'Normalized');
 
 if ~ isempty(p.Results.figFolder)
-    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('REAL_%s_linearfit.%s', p.Results.figTitle, 'png')), '-r300');
+    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('REAL_%s_linearfit.%s', p.Results.channelTag, 'png')), '-r300');
 end
 
 %% signal
-figure('Color', 'w');
+figure('Position', [0, 10, 300, 400], 'Units', 'Pixels', 'Color', 'w');
 
 sigHPrf = nanmean(sigH, 2);
 sigLPrf = nanmean(sigL, 2);
 sigHPrf(sigHPrf <= 0) = NaN;
 sigLPrf(sigLPrf <= 0) = NaN;
+if ~ isempty(p.Results.mergeOffset)
+    sigPrf = nanmean(sigMerge, 2);
+    sigPrf(sigPrf <= 0) = NaN;
+else
+    sigPrf = NaN(size(sigHPrf));
+end
 
-p1 = semilogx(sigHPrf.*height.^2, height, '-r', 'LineWidth', 1, 'DisplayName', sprintf('High %s', p.Results.channelTag)); hold on;
-p2 = semilogx(sigLPrf.*height.^2 * 16.9612, height, '-k', 'LineWidth', 1, 'DisplayName', sprintf('Low %s', p.Results.channelTag));
+p1 = semilogx(sigHPrf .* height.^2, height, '-r', 'LineWidth', 1, 'DisplayName', sprintf('High %s', p.Results.channelTag)); hold on;
+p2 = semilogx(sigLPrf .* height.^2, height, '-g', 'LineWidth', 1, 'DisplayName', sprintf('Low %s', p.Results.channelTag));
+p3 = semilogx(sigPrf .* height.^2, height, '-k', 'LineWidth', 1, 'DisplayName', sprintf('Merge %s', p.Results.channelTag));
 
 xlabel(sprintf('REAL %s', p.Results.channelTag));
 ylabel('Height (m)');
@@ -107,12 +92,12 @@ ylabel('Height (m)');
 xlim(p.Results.cRange);
 ylim(p.Results.hRange);
 
-legend([p1, p2], 'Location', 'NorthEast');
+legend([p1, p2, p3], 'Location', 'NorthEast');
 
 set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'layer', 'top', 'box', 'on');
 
 if ~ isempty(p.Results.figFolder)
-    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('REAL_%s_signal_profile.%s', p.Results.figTitle, 'png')), '-r300');
+    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('REAL_%s_signal_profile.%s', p.Results.channelTag, 'png')), '-r300');
 end
 
 end

@@ -1,12 +1,17 @@
 function [isPassRayleighChk] = RayleighChk(lidarData, lidarConfig, reportFile, lidarType, varargin)
-% RayleighChk description
+% RAYLEIGHCHK Rayleigh fit.
 % USAGE:
-%    [isPassRayleighChk] = RayleighChk(lidarData, lidarConfig, reportFile)
+%    [isPassRayleighChk] = RayleighChk(lidarData, lidarConfig, reportFile, lidarType)
 % INPUTS:
-%    lidarData, lidarConfig, reportFile
+%    lidarData: struct
+%    lidarConfig: struct
+%    reportFile: char
+%    lidarType: char
+% KEYWORDS:
+%    figFolder: char
+%    figFormat: char
 % OUTPUTS:
-%    isPassRayleighChk
-% EXAMPLE:
+%    isPassRayleighChk: logical
 % HISTORY:
 %    2021-09-19: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

@@ -1,15 +1,15 @@
 function [alt, temp, pres, relh, gdas1file] = read_gdas1(measTime, gdas1site, folder)
 % READ_GDAS1 read the gdas1 file
-% Example:
+% USAGE:
 %    [alt, temp, pres, relh] = read_gdas1(measTime, gdas1site, folder)
-% Inputs:
+% INPUTS:
 %    measTime: datenum
 %        measurement time. 
 %    gdas1site: char
 %        the location for gdas1. Our server will automatically produce the 
 %        gdas1 products for all our pollynet location. You can find it in 
 %        /lacroshome/cloudnet/data/model/gdas1
-% Outputs:
+% OUTPUTS:
 %    alt: array
 %        altitute for each range bin. [m]
 %    temp: array
@@ -23,10 +23,9 @@ function [alt, temp, pres, relh, gdas1file] = read_gdas1(measTime, gdas1site, fo
 %        filled. [%]
 %    gdas1file: char
 %        filename of gdas1 file. 
-% History:
-%    2018-12-22. First Edition by Zhenping
-% Contact:
-%    zhenping@tropos.de
+% HISTORY:
+%    2021-09-24: first edition by Zhenping
+% .. Authors: - zhenping@tropos.de
 
 [thisyear, thismonth, thisday, thishour, ~, ~] = ...
             datevec(round(measTime / datenum(0, 1, 0, 3, 0, 0)) * ...

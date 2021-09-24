@@ -1,12 +1,17 @@
 function [isPassSaturationChk] = saturationChk(lidarData, lidarConfig, reportFile, lidarType, varargin)
-% saturationChk description
+% SATURATIONCHK saturation check.
 % USAGE:
-%    [isPassSaturationChk] = saturationChk(lidarData, lidarConfig, reportFile)
+%    [isPassSaturationChk] = saturationChk(lidarData, lidarConfig, reportFile, lidarType)
 % INPUTS:
-%    lidarData, lidarConfig, reportFile
+%    lidarData: struct
+%    lidarConfig: struct
+%    reportFile: char
+%    lidarType: char
+% KEYWORDS:
+%    figFolder: char
+%    figFormat: char
 % OUTPUTS:
-%    isPassSaturationChk
-% EXAMPLE:
+%    isPassSaturationChk: logical
 % HISTORY:
 %    2021-09-19: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

@@ -5,6 +5,9 @@ function [oData] = readWHU1064(file, varargin)
 % INPUTS:
 %    file: char
 %        absolute paht of data file.
+% KEYWORDS:
+%    flagDebug: logical
+%    nMaxBin: numeric
 % OUTPUTS:
 %    oData: struct
 %        height: array
@@ -47,7 +50,7 @@ end
 
 oData = struct;
 oData.height = (transpose(1:length(lidarData{1}(1:p.Results.nMaxBin))) - 16) * 15 + 7.5;   % distance. (m)
-oData.rawSignal = lidarData{1}(1:p.Results.nMaxBin);
+oData.rawSignal = transpose(lidarData{1}(1:p.Results.nMaxBin));
 oData.mTime = mTime;
 
 end

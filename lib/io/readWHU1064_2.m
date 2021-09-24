@@ -1,10 +1,13 @@
 function [oData] = readWHU1064_2(file, varargin)
-% readWHU1064_2 read data of Wuhan University ceilometer at 1064 nm.
+% READWHU1064_2 read data of Wuhan University ceilometer at 1064 nm.
 % USAGE:
 %    [oData] = readWHU1064_2(file)
 % INPUTS:
 %    file: char
 %        absolute paht of data file.
+% KEYWORDS:
+%    flagDebug: logical
+%    nMaxBin: numeric
 % OUTPUTS:
 %    oData: struct
 %        height: array
@@ -48,7 +51,7 @@ end
 
 oData = struct;
 oData.height = lidarData{1}(1:p.Results.nMaxBin);   % distance. (m)
-oData.rawSignal = lidarData{2}(1:p.Results.nMaxBin);
+oData.rawSignal = transpose(lidarData{2}(1:p.Results.nMaxBin));
 oData.mTime = mTime;
 
 end

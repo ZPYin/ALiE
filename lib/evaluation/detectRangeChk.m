@@ -1,12 +1,17 @@
 function [isPassDetectRangeChk] = detectRangeChk(lidarData, lidarConfig, reportFile, lidarType, varargin)
-% detectRangeChk description
+% DETECTRANGECHK detection range check.
 % USAGE:
-%    [isPassDetectRangeChk] = detectRangeChk(lidarData, lidarConfig, reportFile)
+%    [isPassDetectRangeChk] = detectRangeChk(lidarData, lidarConfig, reportFile, lidarType)
 % INPUTS:
-%    lidarData, lidarConfig, reportFile
+%    lidarData: struct
+%    lidarConfig: struct
+%    reportFile: char
+%    lidarType: char
+% KEYWORDS:
+%    figFolder: char
+%    figFormat: char
 % OUTPUTS:
-%    isPassDetectRangeChk
-% EXAMPLE:
+%    isPassDetectRangeChk: logical
 % HISTORY:
 %    2021-09-19: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -95,7 +100,7 @@ for iCh = 1:length(lidarConfig.chTag)
         p1 = plot([1e-10, 1e10], [lidarData.height(lowSNRInd), lidarData.height(lowSNRInd)], 'Color', [177, 89, 41]/255, 'LineStyle', '--', 'LineWidth', 2, 'DisplayName', sprintf('SNR < %4.1f', lidarConfig.detectRangeChkCfg.minSNR(iCh)));
         scatter(snrTmp(lowSNRInd), lidarData.height(lowSNRInd), 10, 'Marker', 'o', 'MarkerEdgeColor', [177, 89, 41]/255, 'MarkerFaceColor', [177, 89, 41]/255);
 
-        legend([p1], 'Location', 'NorthEast');
+        legend(p1, 'Location', 'NorthEast');
     end
 
     xlabel('SNR');

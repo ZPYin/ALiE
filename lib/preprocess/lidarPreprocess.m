@@ -1,12 +1,32 @@
-function [ lidarData ] = lidarPreprocess(lidarData, chTag, varargin)
-% lidarPreprocess description
+function lidarData = lidarPreprocess(lidarData, chTag, varargin)
+% LIDARPREPROCESS lidar signal pre-process.
 % USAGE:
-%    [sigCor, rcs, bg] = lidarPreprocess(lidarData, varargin)
+%    lidarData = lidarPreprocess(lidarData, chTag)
 % INPUTS:
-%    params
+%    lidarData: struct
+%    chTag: cell
+% KEYWORDS:
+%    deadtime: numeric (1 x nChs)
+%        deadtime. (ns)
+%    bgBins: numeric (2 x nChs)
+%    nPretrigger: numeric
+%    bgCorFile: char
+%    lidarNo: numeric
+%    flagDebug: logical
+%    tOffset: numeric
+%        time offset. (days)
+%    hOffset: numeric
+%        height offset. (m)
+%    overlapFile: char
+%    mergeRange: numeric (2 x nChs)
+%        signal merge range. (m)
+%    mergeSlope: numeric (1 x nChs)
+%        signal merge slope
+%    mergeOffset: numeric (1 x nChs)
+%        signal merge slope.
 % OUTPUTS:
-%    sigCor, rcs, bg
-% EXAMPLE:
+%    lidarData: struct
+%        rcsxxx, bgxxx, sigxxx
 % HISTORY:
 %    2021-09-19: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

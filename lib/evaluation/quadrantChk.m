@@ -1,12 +1,17 @@
 function [isPassQuadrantChk] = quadrantChk(lidarData, lidarConfig, reportFile, lidarType, varargin)
-% quadrantChk description
+% QUADRANTCHK telecover test. (quadrant check)
 % USAGE:
-%    [isPassQuadrantChk] = quadrantChk(lidarData, lidarConfig, reportFile)
+%    [isPassQuadrantChk] = quadrantChk(lidarData, lidarConfig, reportFile, lidarType)
 % INPUTS:
-%    lidarData, lidarConfig, reportFile
+%    lidarData: struct
+%    lidarConfig: struct
+%    reportFile: char
+%    lidarType: char
+% KEYWORDS:
+%    figFolder: char
+%    figFormat: char
 % OUTPUTS:
-%    isPassQuadrantChk
-% EXAMPLE:
+%    isPassQuadrantChk: logical
 % HISTORY:
 %    2021-09-19: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

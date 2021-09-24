@@ -1,12 +1,11 @@
 function internal_check(config, varargin)
-% internal_check description
+% INTERNAL_CHECK lidar internal check.
 % USAGE:
-%    [output] = internal_check(params)
+%    internal_check(config)
 % INPUTS:
-%    params
-% OUTPUTS:
-%    output
-% EXAMPLE:
+%    config: struct
+% KEYWORDS:
+%    flagDebug: logical
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

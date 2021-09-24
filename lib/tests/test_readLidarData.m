@@ -9,7 +9,7 @@ fprintf('Tested function: readLidarData\n');
 fprintf('Test dataset: \n%s\n%s\n', dataFile1, dataFile2);
 
 %% read data
-oData1 = readCmaLidarData(dataFile1, {'532P', '532S', '355e', '607', '1064e'}, 'nBin', 8000);
-oData2 = readCmaLidarData(dataFile2, {'532P', '532S'}, 'nBin', 4096);
+oData1 = readCmaLidarData(dataFile1, 'nBin', 8000);
+oData2 = readCmaLidarData(dataFile2, 'nBin', 4096);
 
 fprintf('Pass!!!\n');

@@ -1,12 +1,11 @@
 function convertLidarData(config, varargin)
-% internal_check description
+% CONVERTLIDARDATA convert lidar data to HDF5 format.
 % USAGE:
-%    [output] = internal_check(params)
+%    convertLidarData(config)
 % INPUTS:
-%    params
-% OUTPUTS:
-%    output
-% EXAMPLE:
+%    config: struct
+% KEYWORDS:
+%    flagDebug: logical
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -50,8 +49,7 @@ for iLidar = 1:length(lidarType)
         'dataFormat', lidarConfig.dataFormat, ...
         'dataFilePattern', lidarConfig.dataFilenamePattern, ...
         'flagDebug', p.Results.flagDebug, ...
-        'nMaxBin', lidarConfig.nMaxBin, ...
-        'chTag', lidarConfig.chTag);
+        'nMaxBin', lidarConfig.nMaxBin);
     fprintf('[%s] Finish!\n', tNow);
 
     %% convert lidar data

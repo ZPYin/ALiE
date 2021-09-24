@@ -1,12 +1,11 @@
 function external_check(config, varargin)
-% external_check description
+% EXTERNAL_CHECK lidar external check.
 % USAGE:
-%    [output] = external_check(params)
+%    external_check(config)
 % INPUTS:
-%    params
-% OUTPUTS:
-%    output
-% EXAMPLE:
+%    config: struct
+% KEYWORDS:
+%    flagDebug: logical
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -56,15 +55,17 @@ if config.externalChkCfg.flagRCSCmp
     fprintf('[%s] Finish!\n', tNow);
 end
 
+%% Fernald retrieval results comparison
 if config.externalChkCfg.flagFernaldCmp
     fprintf('[%s] Start Fernald comparison!\n', tNow);
     FernaldCmp(config, reportFile, varargin{:});
     fprintf('[%s] Finish!\n', tNow)
 end
 
+%% VDR comparison
 if config.externalChkCfg.flagVDRCmp
     fprintf('[%s] Start VDR comparison!\n', tNow);
-    VDRCmp(config, reportFile, varargin{:});
+    % VDRCmp(config, reportFile, varargin{:});
     fprintf('[%s] Finish!\n', tNow);
 end
 

@@ -20,7 +20,7 @@ dataLoaderCfg:
     # 4: Dasun visibility lidar
     # 5: REAL
     dataFormat: 1
-    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h;
     nMaxBin: 2048   # number of bins
   WHULidar1064_2:   # lidar No.2
     dataPath: D:\Data\1064nm_lidar_comparison\20210918\WHU1064_2
@@ -47,7 +47,7 @@ dataLoaderCfg:
 internalChkCfg:
   WHULidar1064:
     lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
-    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
     figVisible: 'on'   # whether display figures
     preprocessCfg:
       hOffset: 0   # height offset. (m)
@@ -142,7 +142,7 @@ externalChkCfg:
   figVisible: 'on'   # whether display figures
   WHULidar1064:
     lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
-    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
     fullOverlapHeight: 400   # minimum height with complete overlap. (m)
     overlapFile: ''
     hOffset: 0   # height offset. (m)
@@ -153,7 +153,7 @@ externalChkCfg:
     bgCorFile: ''   # data file of dark measurement results
   WHULidar1064_2:
     lidarNo: 13   # lidar number. (see ./docs/lidarList.md)
-    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
     fullOverlapHeight: 200   # minimum height with complete overlap. (m)
     overlapFile: ''
     hOffset: 0   # height offset. (m)

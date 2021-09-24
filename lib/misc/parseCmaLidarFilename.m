@@ -1,24 +1,25 @@
 function [lidarType, siteNo, fileTime, fileExt] = parseCmaLidarFilename(file, varargin)
-%PARSECMALIDARFILENAME parse metadata from the filename.
-%Example:
-%   lidarType = parseCmaLidarFilename('AL01_L0108_54419_Lidar_20200101000023.bin')
-%Inputs:
-%   file: char
-%       absolute path or filename of the lidar data.
-%       i.e., 'AL01_L0108_54419_Lidar_20200101000023.bin'
-%Outputs:
-%   lidarType: char
-%       lidar type. (i.e., 'AL01_L0108')
-%   siteNo: char
-%       label of the observation site. (i.e., '54419')
-%   fileTime: datenum
-%       file created time.
-%   fileExt: char
-%       file extension. (i.e., '.bin')
-%History:
-%   2021-02-07. First Edition by Zhenping
-%Contact:
-%   zp.yin@whu.edu.cn
+% PARSECMALIDARFILENAME parse metadata from the filename.
+% USAGE:
+%    lidarType = parseCmaLidarFilename('AL01_L0108_54419_Lidar_20200101000023.bin')
+% INPUTS:
+%    file: char
+%        absolute path or filename of the lidar data.
+%        i.e., 'AL01_L0108_54419_Lidar_20200101000023.bin'
+% KEYWORDS:
+%    flagDebug: logical
+% OUTPUTS:
+%    lidarType: char
+%        lidar type. (i.e., 'AL01_L0108')
+%    siteNo: char
+%        label of the observation site. (i.e., '54419')
+%    fileTime: datenum
+%        file created time.
+%    fileExt: char
+%        file extension. (i.e., '.bin')
+% HISTORY:
+%    2021-09-24: first edition by Zhenping
+% .. Authors: - zhenping@tropos.de
 
 p = inputParser;
 p.KeepUnmatched = true;
