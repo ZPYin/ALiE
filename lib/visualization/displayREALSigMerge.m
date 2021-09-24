@@ -21,6 +21,7 @@ addRequired(p, 'sigL', @isnumeric);
 addRequired(p, 'mergeRange', @isnumeric);
 addParameter(p, 'channelTag', '', @ischar);
 addParameter(p, 'cRange', [0, 1000], @isnumeric);
+addParameter(p, 'hRange', [0, 10000], @isnumeric);
 addParameter(p, 'figFolder', '', @ischar);
 
 parse(p, height, mTime, sigH, sigL, mergeRange, varargin{:});
@@ -29,7 +30,7 @@ parse(p, height, mTime, sigH, sigL, mergeRange, varargin{:});
 figure('Color', 'w');
 
 subplot(211);
-p1 = pcolor(mTime, height, sigH); hold on;
+p1 = pcolor(mTime, height, sigH .* repmat(height.^2, 1, length(mTime))); hold on;
 p1.EdgeColor = 'None';
 
 xlabel('Time (LT)');
@@ -37,7 +38,8 @@ ylabel('Height (m)');
 title(sprintf('REAL High %s', p.Results.channelTag));
 
 xlim([mTime(1), mTime(end)]);
-ylim([height(1), height(end)]);
+ylim(p.Results.hRange);
+caxis(p.Results.cRange);
 colormap('jet');
 
 set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'layer', 'top', 'box', 'on', 'LineWidth', 2);
@@ -46,7 +48,7 @@ datetick(gca, 'x', 'HH:MM', 'keeplimits', 'keepticks');
 colorbar();
 
 subplot(212);
-p1 = pcolor(mTime, height, sigL); hold on;
+p1 = pcolor(mTime, height, sigL .* repmat(height.^2, 1, length(mTime))); hold on;
 p1.EdgeColor = 'None';
 
 xlabel('Time (LT)');
@@ -54,7 +56,7 @@ ylabel('Height (m)');
 title(sprintf('REAL Low %s', p.Results.channelTag));
 
 xlim([mTime(1), mTime(end)]);
-ylim([height(1), height(end)]);
+ylim(p.Results.hRange);
 caxis(p.Results.cRange);
 colormap('jet');
 
@@ -102,8 +104,8 @@ p2 = semilogx(sigLPrf.*height.^2 * 16.9612, height, '-k', 'LineWidth', 1, 'Displ
 xlabel(sprintf('REAL %s', p.Results.channelTag));
 ylabel('Height (m)');
 
-xlim([1e6, 1e13]);
-ylim([0, 10000]);
+xlim(p.Results.cRange);
+ylim(p.Results.hRange);
 
 legend([p1, p2], 'Location', 'NorthEast');
 

@@ -21,6 +21,11 @@ addParameter(p, 'flagDebug', false, @islogical);
 
 parse(p, config, varargin{:});
 
+%% parameter initialization
+mergeRange = [1230, 1260; 1230, 1260; 1000, 1500];   % height range for signal merge. (m)
+mergeSlope = [16.9612, 1e4 * 1.5, 1];   % normalization ratio for 532S, 532P, 607 (High / Low)
+mergeOffset = [0, 0, 0];
+
 %% log output
 logFile = fullfile(config.evaluationReportPath, 'lidar_displayQL.log');
 diaryon(logFile);
@@ -68,7 +73,10 @@ for iLidar = 1:length(lidarType)
         'flagDebug', p.Results.flagDebug, ...
         'tOffset', datenum(0, 1, 0, 0, lidarConfig.preprocessCfg.tOffset, 0), ...
         'hOffset', lidarConfig.preprocessCfg.hOffset, ...
-        'overlapFile', lidarConfig.preprocessCfg.overlapFile);
+        'overlapFile', lidarConfig.preprocessCfg.overlapFile, ...
+        'mergeRange', mergeRange, ...
+        'mergeSlope', mergeSlope, ...
+        'mergeOffset', mergeOffset);
 
     switch lidarConfig.lidarNo
     case 11   % REAL
@@ -206,6 +214,13 @@ for iLidar = 1:length(lidarType)
             export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('quicklook_%s_%s.%s', lidarType{iLidar}, '532vdr', config.figFormat)), '-r300');
         end
 
+        % diagnose signal merge
+        if p.Results.flagDebug
+            displayREALSigMerge(lidarData.height, lidarData.mTime, lidarData.sig532sh, lidarData.sig532sl, mergeRange(1, :), 'channelTag', '532S', 'hRange', lidarConfig.hRange(1, :), 'cRange', lidarConfig.sigRange(1, :));
+            displayREALSigMerge(lidarData.height, lidarData.mTime, lidarData.sig532ph, lidarData.sig532pl, mergeRange(2, :), 'channelTag', '532P', 'hRange', lidarConfig.hRange(2, :), 'cRange', lidarConfig.sigRange(2, :));
+            displayREALSigMerge(lidarData.height, lidarData.mTime, lidarData.sig607h, lidarData.sig607l, mergeRange(3, :), 'channelTag', '607', 'hRange', lidarConfig.hRange(3, :), 'cRange', lidarConfig.sigRange(3, :));
+        end
+
         % integral signal
         if ~ isempty(lidarConfig.markTRange)
             figure('Position', [0, 10, 550, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
@@ -235,7 +250,7 @@ for iLidar = 1:length(lidarType)
             subplot('Position', figPos(2, :), 'Units', 'Normalized');
             vdr532Tmp = vdr532Int;
             vdr532Tmp(vdr532Tmp <= 0) = NaN;
-            semilogx(vdr532Tmp, lidarData.height, 'Color', [231, 41, 139]/255, 'LineStyle', '-', 'LineWidth', 2); hold on;
+            plot(vdr532Tmp, lidarData.height, 'Color', [231, 41, 139]/255, 'LineStyle', '-', 'LineWidth', 2); hold on;
 
             xlabel('vol. depol.');
             ylabel('');

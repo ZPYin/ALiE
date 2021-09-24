@@ -27,6 +27,9 @@ addParameter(p, 'flagDebug', false, @islogical);
 addParameter(p, 'tOffset', 0, @isnumeric);
 addParameter(p, 'hOffset', 0, @isnumeric);
 addParameter(p, 'overlapFile', '', @ischar);
+addParameter(p, 'mergeRange', [], @isnumeric);
+addParameter(p, 'mergeSlope', [], @isnumeric);
+addParameter(p, 'mergeOffset', [], @isnumeric);
 
 parse(p, lidarData, chTag, varargin{:});
 
@@ -91,22 +94,10 @@ case 11
         lidarData.(['rcs', chTag{iCh}]) = rcs;
     end
 
-    mergeRange = [1230, 1260; 1230, 1260; 1000, 1500];   % height range for signal merge. (m)
-    mergeSlope = [16.9612, 1e4 * 1.5, 1];   % normalization ratio for 532S, 532P, 607 (High / Low)
-    mergeOffset = [0, 0, 0];
-
-    % diagnose signal merge
-    if p.Results.flagDebug
-
-        displayREALSigMerge(lidarData.height, lidarData.mTime, lidarData.sig532sh, lidarData.sig532sl, mergeRange(1, :), 'channelTag', '532S');
-        displayREALSigMerge(lidarData.height, lidarData.mTime, lidarData.sig532ph, lidarData.sig532pl, mergeRange(2, :), 'channelTag', '532P');
-        displayREALSigMerge(lidarData.height, lidarData.mTime, lidarData.sig607h, lidarData.sig607l, mergeRange(3, :), 'channelTag', '607');
-    end
-
     % signal merge
-    lidarData.sig532s = sigMergeREAL(lidarData.sig532sh, lidarData.sig532sl, lidarData.height, mergeRange(1, :), mergeSlope(1), mergeOffset(1));
-    lidarData.sig532p = sigMergeREAL(lidarData.sig532ph, lidarData.sig532pl, lidarData.height, mergeRange(2, :), mergeSlope(2), mergeOffset(2));
-    lidarData.sig607 = sigMergeREAL(lidarData.sig607h, lidarData.sig607l, lidarData.height, mergeRange(3, :), mergeSlope(3), mergeOffset(3));
+    lidarData.sig532s = sigMergeREAL(lidarData.sig532sh, lidarData.sig532sl, lidarData.height, p.Results.mergeRange(1, :), p.Results.mergeSlope(1), p.Results.mergeOffset(1));
+    lidarData.sig532p = sigMergeREAL(lidarData.sig532ph, lidarData.sig532pl, lidarData.height, p.Results.mergeRange(2, :), p.Results.mergeSlope(2), p.Results.mergeOffset(2));
+    lidarData.sig607 = sigMergeREAL(lidarData.sig607h, lidarData.sig607l, lidarData.height, p.Results.mergeRange(3, :), p.Results.mergeSlope(3), p.Results.mergeOffset(3));
     lidarData.bg532s = lidarData.bg532sh;
     lidarData.bg532p = lidarData.bg532ph;
     lidarData.bg607 = lidarData.bg607h;
