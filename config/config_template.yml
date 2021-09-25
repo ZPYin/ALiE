@@ -165,9 +165,8 @@ externalChkCfg:
   flagRangeCmp: false
   flagRCSCmp: false
   flagVDRCmp: false
-  flagFernaldCmp: true
-  flagRamanExtCmp: false
-  flagRamanBscCmp: false
+  flagFernaldCmp: false
+  flagRamanCmp: true
   rangeCmpCfg:
     LidarList: ['WHULidar1064', 'WHULidar1064_2']   # lidar in comparison (1: standard lidar)
     tRange: '2021-09-18 17:00:38 ~ 2021-09-18 18:00:50'
@@ -207,18 +206,18 @@ externalChkCfg:
       - [500, 2000]
       - [2000, 5000]
     maxDev:
-      - 10
-      - 20
+      - [10, 10]   # [mean relative deviation, standard relative deviation]
+      - [20, 20]
     smoothwindow:
       - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
       - [1000, 10000, 300]
     hRange: [0, 5000]
     vdrRange: [0, 0.4]
-  fernaldCmpCfg:
+  FernaldCmpCfg:
     LidarList: ['WHULidar1064', 'WHULidar1064_2']
     wavelength: 1064   # (nm)
     sigCompose:
-      - [1]   # first lidar
+      - [1]   # first lidar   # ratio for each channel; [1, 0]: 1 * sig_ch1 + 0 * sig_ch2
       - [1]   # second lidar
     tRange: '2021-09-18 17:00:38 ~ 2021-09-18 18:00:50'
     refRange: [5000, 5500]
@@ -227,13 +226,40 @@ externalChkCfg:
       - [500, 2000]
       - [2000, 5000]
     maxDev:
-      - 20
-      - 40
+      - [20, 20]   # [mean relative deviation, standard relative deviation]
+      - [40, 40]
     minBsc: 1e-7   # (m^-1*sr^-1)
     smoothwindow:
       - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
       - [1000, 10000, 300]
     hRange: [0, 7000]
     lidarRatio: 50   # (sr)
+    bscRange: [0, 0.5e-5]
+    extRange: [0, 2.5e-4]
+  RamanCmpCfg:
+    LidarList: ['WHULidar1064', 'WHULidar1064_2']
+    wavelengthMie: 532   # (nm)
+    wavelengthRaman: 607   # (nm)
+    RamanChTag: ['607', '607']
+    MieChCompose:
+      - ['532p', '532s', 1]   # Lidar 1: [pChannel, sChannel, gainRatio]
+      - ['532p', '532s', 1]
+    tRange: '2021-09-18 17:00:38 ~ 2021-09-18 18:00:50'
+    refRange: [5000, 5500]
+    refValue: 1e-7   # (m^-1*sr^-1)
+    hChkRange:
+      - [500, 2000]   # height range 1
+      - [2000, 5000]   # height range 2
+    maxBscDev:
+      - [20, 20]   # max bsc dev for height range 1
+      - [30, 40]   # max bsc dev for height range 2
+    maxExtDev:
+      - [25, 25]
+      - [40, 40]
+    minBsc: 1e-7   # (m^-1*sr^-1)
+    smoothwindow:
+      - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
+      - [1000, 10000, 300]
+    hRange: [0, 7000]
     bscRange: [0, 0.5e-5]
     extRange: [0, 2.5e-4]

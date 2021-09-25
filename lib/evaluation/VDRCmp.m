@@ -143,13 +143,16 @@ end
 % mean relative deviation
 nES = size(config.externalChkCfg.VDRCmpCfg.hChkRange, 1);
 meanVDRDev = NaN(nES, length(lidarType));
+stdVDRDev = NaN(nES, length(lidarType));
 for iES = 1:nES
     isInES = (height >= config.externalChkCfg.VDRCmpCfg.hChkRange(iES, 1)) & (height <= config.externalChkCfg.VDRCmpCfg.hChkRange(iES, 2));
 
-    meanVDRDev(iES, :) = nanmean(cmpVDRSm(isInES, :) - repmat(cmpVDRSm(isInES, 1), 1, length(lidarType)), 1) ./ nanmean(repmat(cmpVDRSm(isInES, 1), 1, length(lidarType)), 1) * 100;
+    meanVDRDev(iES, :) = nanmean(abs(cmpVDRSm(isInES, :) - repmat(cmpVDRSm(isInES, 1), 1, length(lidarType))) ./ repmat(cmpVDRSm(isInES, 1), 1, length(lidarType)), 1) * 100;
+    stdVDRDev(iES, :) = nanstd(abs(cmpVDRSm(isInES, :) - repmat(cmpVDRSm(isInES, 1), 1, length(lidarType))) ./ repmat(cmpVDRSm(isInES, 1), 1, length(lidarType)), 0, 1) * 100;
 
     for iLidar = 2:length(lidarType)
-        fprintf(fid, 'Mean relative deviations of %s: %6.2f%% (max: %6.2f%%)\n', lidarType{iLidar}, meanVDRDev(iES, iLidar), config.externalChkCfg.VDRCmpCfg.maxDev(iES));
+        fprintf(fid, 'Mean relative deviations of %s: %6.2f%% (max: %6.2f%%)\n', lidarType{iLidar}, meanVDRDev(iES, iLidar), config.externalChkCfg.VDRCmpCfg.maxDev(iES, 1));
+        fprintf(fid, 'Mean relative deviations of %s: %6.2f%% (max: %6.2f%%)\n', lidarType{iLidar}, stdVDRDev(iES, iLidar), config.externalChkCfg.VDRCmpCfg.maxDev(iES, 1));
     end
 end
 
@@ -192,15 +195,32 @@ end
 
 plot([0, 0], [-100000, 100000], '--k');
 
-% error bound
+% error bound (mean deviation)
 for iES = 1:nES
-    plot([-1, -1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    plot([1, 1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+    p3 = plot([-1, -1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES, 1), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Mean Dev.');
+    plot([1, 1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES, 1), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+    lineInstances0 = cat(1, lineInstances0, p3);
 end
 
 for iPatch = 1:nES
     hShaded = patch(...
-        [config.externalChkCfg.VDRCmpCfg.maxDev(iPatch), config.externalChkCfg.VDRCmpCfg.maxDev(iPatch), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch)], ...
+        [config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 1), config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 1), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 1), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 1)], ...
+        [config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 1), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 1)], [160, 160, 160]/255);
+    hShaded.FaceAlpha = 0.3;
+    hShaded.EdgeColor = 'None';
+    hold on;
+end
+
+% error bound (standard deviation)
+for iES = 1:nES
+    p4 = plot([-1, -1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Standard Dev.');
+    plot([1, 1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+    lineInstances0 = cat(1, lineInstances0, p4);
+end
+
+for iPatch = 1:nES
+    hShaded = patch(...
+        [config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 2), config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 2), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 2), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 2)], ...
         [config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 1), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 1)], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
@@ -234,15 +254,32 @@ end
 
 plot([0, 0], [-100000, 100000], '--k');
 
-% error bound
+% error bound (mean deviation)
 for iES = 1:nES
-    plot([-1, -1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    plot([1, 1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+    p3 = plot([-1, -1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES, 1), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Mean Dev.');
+    plot([1, 1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES, 1), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+    lineInstances1 = cat(1, lineInstances1, p3);
 end
 
 for iPatch = 1:nES
     hShaded = patch(...
-        [config.externalChkCfg.VDRCmpCfg.maxDev(iPatch), config.externalChkCfg.VDRCmpCfg.maxDev(iPatch), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch)], ...
+        [config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 1), config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 1), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 1), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 1)], ...
+        [config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 1), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 1)], [160, 160, 160]/255);
+    hShaded.FaceAlpha = 0.3;
+    hShaded.EdgeColor = 'None';
+    hold on;
+end
+
+% error bound (standard deviation)
+for iES = 1:nES
+    p4 = plot([-1, -1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Standard Dev.');
+    plot([1, 1] * config.externalChkCfg.VDRCmpCfg.maxDev(iES, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
+    lineInstances1 = cat(1, lineInstances1, p4);
+end
+
+for iPatch = 1:nES
+    hShaded = patch(...
+        [config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 2), config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 2), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 2), -config.externalChkCfg.VDRCmpCfg.maxDev(iPatch, 2)], ...
         [config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 1), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 2), config.externalChkCfg.VDRCmpCfg.hChkRange(iPatch, 1)], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';

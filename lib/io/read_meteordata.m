@@ -31,7 +31,7 @@ function [temp, pres, relh, meteor_time] = read_meteordata(measTime, altitude, v
 %        ERA-5 data folder.
 % OUTPUTS:
 %    temp: array
-%        temperature for each range bin. [??C]
+%        temperature for each range bin. [Celsius degree]
 %    pres: array
 %        pressure for each range bin. [hPa]
 %    relh: array

@@ -71,8 +71,8 @@ end
 
 %% Raman comparison
 if config.externalChkCfg.flagVDRCmp
-    fprintf('[%s] Start VDR comparison!\n', tNow);
-    % VDRCmp(config, reportFile, varargin{:});
+    fprintf('[%s] Start Raman comparison!\n', tNow);
+    RamanCmp(config, reportFile, varargin{:});
     fprintf('[%s] Finish!\n', tNow);
 end
 

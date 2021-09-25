@@ -152,7 +152,7 @@ meanSigDev = NaN(nES, length(lidarType));
 for iES = 1:nES
     isInES = (height >= config.externalChkCfg.RCSCmpCfg.hChkRange(iES, 1)) & (height <= config.externalChkCfg.RCSCmpCfg.hChkRange(iES, 2));
 
-    meanSigDev(iES, :) = nanmean(cmpSigSm(isInES, :) - repmat(cmpSigSm(isInES, 1), 1, length(lidarType)), 1) ./ nanmean(repmat(cmpSigSm(isInES, 1), 1, length(lidarType)), 1) * 100;
+    meanSigDev(iES, :) = nanmean(abs(sigDev(isInES)));
 
     for iLidar = 2:length(lidarType)
         fprintf(fid, 'Mean relative deviations of %s: %6.2f%% (max: %6.2f%%)\n', lidarType{iLidar}, meanSigDev(iES, iLidar), config.externalChkCfg.RCSCmpCfg.maxDev(iES));
