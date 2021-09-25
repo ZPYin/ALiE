@@ -22,12 +22,6 @@ addParameter(p, 'flagDebug', false, @islogical);
 
 parse(p, config, varargin{:});
 
-%% parameter initialization (only for REAL data)
-% mergeRange = [1230, 1260; 1230, 1260; 1000, 1500];   % height range for signal merge. (m)
-mergeRange = [1300, 2500; 1300, 2500; 1000, 1500];   % height range for signal merge. (m)
-mergeSlope = [16.9612, 586.4, 1];   % normalization ratio for 532S, 532P, 607 (High / Low)
-mergeOffset = [0, 0, 0];
-
 %% log output
 logFile = fullfile(config.evaluationReportPath, 'lidar_displayQL.log');
 diaryon(logFile);
@@ -75,10 +69,7 @@ for iLidar = 1:length(lidarType)
         'flagDebug', p.Results.flagDebug, ...
         'tOffset', datenum(0, 1, 0, 0, lidarConfig.preprocessCfg.tOffset, 0), ...
         'hOffset', lidarConfig.preprocessCfg.hOffset, ...
-        'overlapFile', lidarConfig.preprocessCfg.overlapFile, ...
-        'mergeRange', mergeRange, ...
-        'mergeSlope', mergeSlope, ...
-        'mergeOffset', mergeOffset);
+        'overlapFile', lidarConfig.preprocessCfg.overlapFile);
 
     %% visualization
     switch lidarConfig.lidarNo
@@ -220,9 +211,9 @@ for iLidar = 1:length(lidarType)
 
         % diagnose signal merge
         if p.Results.flagDebug && p.Results.flagDebug
-            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig532sh(:, isChosenMark), lidarData.sig532sl(:, isChosenMark), mergeRange(1, :), 'channelTag', '532S', 'hRange', lidarConfig.hRange(1, :), 'cRange', lidarConfig.sigRange(1, :), 'mergeSlope', mergeSlope(1), 'mergeOffset', mergeOffset(1), 'figFolder', config.evaluationReportPath);
-            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig532ph(:, isChosenMark), lidarData.sig532pl(:, isChosenMark), mergeRange(2, :), 'channelTag', '532P', 'hRange', lidarConfig.hRange(2, :), 'cRange', lidarConfig.sigRange(2, :), 'mergeSlope', mergeSlope(2), 'mergeOffset', mergeOffset(2), 'figFolder', config.evaluationReportPath);
-            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig607h(:, isChosenMark), lidarData.sig607l(:, isChosenMark), mergeRange(3, :), 'channelTag', '607', 'hRange', lidarConfig.hRange(3, :), 'cRange', lidarConfig.sigRange(3, :), 'mergeSlope', mergeSlope(3), 'mergeOffset', mergeOffset(3), 'figFolder', config.evaluationReportPath);
+            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig532sh(:, isChosenMark), lidarData.sig532sl(:, isChosenMark), lidarData.mergeRange(1, :), 'channelTag', '532S', 'hRange', lidarConfig.hRange(1, :), 'cRange', lidarConfig.sigRange(1, :), 'mergeSlope', lidarData.mergeSlope(1), 'mergeOffset', lidarData.mergeOffset(1), 'figFolder', config.evaluationReportPath);
+            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig532ph(:, isChosenMark), lidarData.sig532pl(:, isChosenMark), lidarData.mergeRange(2, :), 'channelTag', '532P', 'hRange', lidarConfig.hRange(2, :), 'cRange', lidarConfig.sigRange(2, :), 'mergeSlope', lidarData.mergeSlope(2), 'mergeOffset', lidarData.mergeOffset(2), 'figFolder', config.evaluationReportPath);
+            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig607h(:, isChosenMark), lidarData.sig607l(:, isChosenMark), lidarData.mergeRange(3, :), 'channelTag', '607', 'hRange', lidarConfig.hRange(3, :), 'cRange', lidarConfig.sigRange(3, :), 'mergeSlope', lidarData.mergeSlope(3), 'mergeOffset', lidarData.mergeOffset(3), 'figFolder', config.evaluationReportPath);
         end
 
         % integral signal

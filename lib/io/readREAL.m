@@ -27,7 +27,9 @@ addParameter(p, 'nMaxBin', 2500, @isnumeric);
 parse(p, file, varargin{:});
 
 if exist(file, 'file') ~= 2
-    error('Data file does not exist.\n%s', file);
+    errStruct.message = sprintf('REAL data file does not exist!\n%s', file);
+    errStruct.identifier = 'LEToolbox:Err004';
+    error(errStruct);
 end
 
 mTime = datenum(file((end-16):(end-4)), 'yymmdd-HHMMSS') + datenum(0, 1, 0, 8, 0, 0);

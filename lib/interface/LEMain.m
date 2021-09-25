@@ -37,10 +37,16 @@ addParameter(p, 'flagBackupConfig', false, @islogical);
 parse(p, configFile, varargin{:});
 
 %% read configuration
-fprintf('[%s] Start reading configurations for internal check!\n', tNow);
-fprintf('[%s] Config file: %s\n', tNow, configFile);
-config = yaml.ReadYaml(configFile, 0, 1);
-fprintf('[%s] Finish!\n', tNow);
+if exist(configFile, 'file') == 2
+    fprintf('[%s] Start reading configurations!\n', tNow);
+    fprintf('[%s] Config file: %s\n', tNow, configFile);
+    config = yaml.ReadYaml(configFile, 0, 1);
+    fprintf('[%s] Finish!\n', tNow);
+else
+    errStruct.message = sprintf('Config file does not exist!\n%s', configFile);
+    errStruct.identifier = 'LEToolbox:Err004';
+    error(errStruct);
+end
 
 %% backup configuration
 if p.Results.flagBackupConfig

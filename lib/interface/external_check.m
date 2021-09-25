@@ -65,7 +65,7 @@ end
 %% VDR comparison
 if config.externalChkCfg.flagVDRCmp
     fprintf('[%s] Start VDR comparison!\n', tNow);
-    % VDRCmp(config, reportFile, varargin{:});
+    VDRCmp(config, reportFile, varargin{:});
     fprintf('[%s] Finish!\n', tNow);
 end
 

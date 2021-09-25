@@ -200,8 +200,8 @@ externalChkCfg:
   VDRCmpCfg:
     LidarList: ['WHULidar1064', 'WHULidar1064_2']
     vdrCompose:
-      - ['532p', '532s', 1, 0.01]   # first lidar    [pChannel, sChannel, gainRatio, offset]
-      - ['532p', '532s', 1, 0.01]   # second lidar
+      - ['532p', '532s', 1, 0]   # first lidar    [pChannel, sChannel, gainRatio, offset]
+      - ['532p', '532s', 1, 0]   # second lidar
     tRange: '2021-09-18 17:00:38 ~ 2021-09-18 18:00:50'
     hChkRange:
       - [500, 2000]
