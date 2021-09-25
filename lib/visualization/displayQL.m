@@ -31,13 +31,6 @@ for iLidar = 1:length(lidarType)
 
     lidarConfig = config.dataVisualCfg.(lidarType{iLidar});
 
-    % prepare output folder
-    if ~ exist(config.dataSavePath, 'dir')
-        fprintf('[%s] Create path for saving data!\n', tNow);
-        mkdir(config.dataSavePath);
-        fprintf('[%s] Data folder: %s\n', tNow, config.dataSavePath);
-    end
-
     fprintf('[%s] Quicklook for %s\n', tNow, lidarType{iLidar});
 
     % check lidar data file
@@ -257,7 +250,7 @@ for iLidar = 1:length(lidarType)
             end
         end
 
-    case 12   % WHU 1064 
+    case {12, 13}   % WHU 1064 
 
         % time slot
         tRange = [datenum(lidarConfig.tRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(lidarConfig.tRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
@@ -293,7 +286,7 @@ for iLidar = 1:length(lidarType)
 
         xlabel('Local Time');
         ylabel('Height (m)');
-        title(lidarConfig.title);
+        title(lidarConfig.title, 'interpreter', 'none');
 
         xlim([mTimeGrid(1), mTimeGrid(end)]);
         ylim(lidarConfig.hRange);

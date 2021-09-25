@@ -27,18 +27,6 @@ fid = fopen(reportFile, 'w');
 fprintf(fid, '# Evaluation Report\n');
 fclose(fid);
 
-% prepare output folder
-if ~ exist(config.evaluationReportPath, 'dir')
-    fprintf('[%s] Create path for saving evaluation report!\n', tNow);
-    mkdir(config.evaluationReportPath);
-    fprintf('[%s] Output folder: %s\n', tNow, config.evaluationReportPath);
-end
-if ~ exist(config.dataSavePath, 'dir')
-    fprintf('[%s] Create path for saving data!\n', tNow);
-    mkdir(config.dataSavePath);
-    fprintf('[%s] Data folder: %s\n', tNow, config.dataSavePath);
-end
-
 fprintf('[%s] Start external check\n', tNow);
 
 %% range comparison

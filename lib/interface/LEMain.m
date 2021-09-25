@@ -48,6 +48,18 @@ else
     error(errStruct);
 end
 
+% prepare output folder
+if ~ exist(config.evaluationReportPath, 'dir')
+    fprintf('[%s] Create path for saving evaluation report!\n', tNow);
+    mkdir(config.evaluationReportPath);
+    fprintf('[%s] Output folder: %s\n', tNow, config.evaluationReportPath);
+end
+if ~ exist(config.dataSavePath, 'dir')
+    fprintf('[%s] Create path for saving data!\n', tNow);
+    mkdir(config.dataSavePath);
+    fprintf('[%s] Data folder: %s\n', tNow, config.dataSavePath);
+end
+
 %% backup configuration
 if p.Results.flagBackupConfig
     configFileSave = fullfile(config.evaluationReportPath, sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));

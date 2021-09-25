@@ -29,18 +29,6 @@ for iLidar = 1:length(lidarType)
 
     lidarConfig = config.dataLoaderCfg.(lidarType{iLidar});
 
-    % prepare output folder
-    if ~ exist(config.evaluationReportPath, 'dir')
-        fprintf('[%s] Create path for saving evaluation report!\n', tNow);
-        mkdir(config.evaluationReportPath);
-        fprintf('[%s] Output folder: %s\n', tNow, config.evaluationReportPath);
-    end
-    if ~ exist(config.dataSavePath, 'dir')
-        fprintf('[%s] Create path for saving data!\n', tNow);
-        mkdir(config.dataSavePath);
-        fprintf('[%s] Data folder: %s\n', tNow, config.dataSavePath);
-    end
-
     fprintf('[%s] Convert lidar data for %s\n', tNow, lidarType{iLidar});
 
     %% read lidar data
