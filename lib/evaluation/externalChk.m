@@ -1,7 +1,7 @@
-function external_check(config, varargin)
-% EXTERNAL_CHECK lidar external check.
+function externalChk(config, varargin)
+% EXTERNALCHK lidar external check.
 % USAGE:
-%    external_check(config)
+%    externalChk(config)
 % INPUTS:
 %    config: struct
 % KEYWORDS:
@@ -66,6 +66,13 @@ end
 if config.externalChkCfg.flagVDRCmp
     fprintf('[%s] Start VDR comparison!\n', tNow);
     VDRCmp(config, reportFile, varargin{:});
+    fprintf('[%s] Finish!\n', tNow);
+end
+
+%% Raman comparison
+if config.externalChkCfg.flagVDRCmp
+    fprintf('[%s] Start VDR comparison!\n', tNow);
+    % VDRCmp(config, reportFile, varargin{:});
     fprintf('[%s] Finish!\n', tNow);
 end
 

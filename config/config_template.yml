@@ -213,7 +213,7 @@ externalChkCfg:
       - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
       - [1000, 10000, 300]
     hRange: [0, 5000]
-    sigRange: [0, 0.4]
+    vdrRange: [0, 0.4]
   fernaldCmpCfg:
     LidarList: ['WHULidar1064', 'WHULidar1064_2']
     wavelength: 1064   # (nm)

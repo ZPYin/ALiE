@@ -1,7 +1,7 @@
-function internal_check(config, varargin)
-% INTERNAL_CHECK lidar internal check.
+function internalChk(config, varargin)
+% INTERNALCHK lidar internal check.
 % USAGE:
-%    internal_check(config)
+%    internalChk(config)
 % INPUTS:
 %    config: struct
 % KEYWORDS:

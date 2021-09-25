@@ -62,12 +62,12 @@ end
 
 if p.Results.flagInternalChk
     % lidar internal check
-    internal_check(config, 'flagDebug', p.Results.flagDebug);
+    internalChk(config, 'flagDebug', p.Results.flagDebug);
 end
 
 if p.Results.flagExternalChk
     % lidar external check
-    external_check(config, 'flagDebug', p.Results.flagDebug);
+    externalChk(config, 'flagDebug', p.Results.flagDebug);
 end
 
 if p.Results.flagQL
