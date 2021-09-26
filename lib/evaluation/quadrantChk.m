@@ -69,7 +69,7 @@ for iCh = 1:length(lidarConfig.chTag)
     end
 
     % load signal
-    swBins = ceil(lidarConfig.quadrantChkCfg.smoothwindow ./ (lidarData.height(2) - lidarData.height(1)));
+    swBins = ceil(lidarConfig.quadrantChkCfg.smoothwindow(iCh) ./ (lidarData.height(2) - lidarData.height(1)));
     sigEast1 = smooth(nanmean(lidarData.(['rcs', lidarConfig.chTag{iCh}])(:, isEast1), 2), swBins);
     sigSouth = smooth(nanmean(lidarData.(['rcs', lidarConfig.chTag{iCh}])(:, isSouth), 2), swBins);
     sigWest = smooth(nanmean(lidarData.(['rcs', lidarConfig.chTag{iCh}])(:, isWest), 2), swBins);
@@ -77,13 +77,13 @@ for iCh = 1:length(lidarConfig.chTag)
     sigEast2 = smooth(nanmean(lidarData.(['rcs', lidarConfig.chTag{iCh}])(:, isEast2), 2), swBins);
     
     % normalize signal
-    fprintf(fid, 'Normalization height range: %f - %f m\n', lidarConfig.quadrantChkCfg.normRange(1), lidarConfig.quadrantChkCfg.normRange(2));
-    normInd = (lidarData.height >= lidarConfig.quadrantChkCfg.normRange(1)) & (lidarData.height <= lidarConfig.quadrantChkCfg.normRange(2));
-    normRatioEast1 = nansum(sigEast1(normInd)) ./ nansum(sigEast1(normInd));
-    normRatioSouth = nansum(sigEast1(normInd)) ./ nansum(sigSouth(normInd));
-    normRatioWest = nansum(sigEast1(normInd)) ./ nansum(sigWest(normInd));
-    normRatioNorth = nansum(sigEast1(normInd)) ./ nansum(sigNorth(normInd));
-    normRatioEast2 = nansum(sigEast1(normInd)) ./ nansum(sigEast2(normInd));
+    fprintf(fid, 'Normalization height range: %f - %f m\n', lidarConfig.quadrantChkCfg.normRange(iCh, 1), lidarConfig.quadrantChkCfg.normRange(iCh, 2));
+    normInd = (lidarData.height >= lidarConfig.quadrantChkCfg.normRange(iCh, 1)) & (lidarData.height <= lidarConfig.quadrantChkCfg.normRange(iCh, 2));
+    normRatioEast1 = nanmean(sigEast1(normInd)) ./ nanmean(sigEast1(normInd));
+    normRatioSouth = nanmean(sigEast1(normInd)) ./ nanmean(sigSouth(normInd));
+    normRatioWest = nanmean(sigEast1(normInd)) ./ nanmean(sigWest(normInd));
+    normRatioNorth = nanmean(sigEast1(normInd)) ./ nanmean(sigNorth(normInd));
+    normRatioEast2 = nanmean(sigEast1(normInd)) ./ nanmean(sigEast2(normInd));
     sigEast1Norm = sigEast1 .* normRatioEast1;
     sigSouthNorm = sigSouth .* normRatioSouth;
     sigWestNorm = sigWest .* normRatioWest;
@@ -137,8 +137,8 @@ for iCh = 1:length(lidarConfig.chTag)
     ylabel('Height (m)');
     title(sprintf('Telecover test for %s, %s', lidarType, lidarConfig.chTag{iCh}));
 
-    xlim(lidarConfig.quadrantChkCfg.rcsDisplayRangeAll);
-    ylim(lidarConfig.quadrantChkCfg.hRangeAll);
+    xlim(lidarConfig.quadrantChkCfg.rcsDisplayRangeAll(iCh, :));
+    ylim(lidarConfig.quadrantChkCfg.hRangeAll(iCh, :));
     set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
     legend([pEast1, pSouth, pWest, pNorth, pEast2], 'Location', 'NorthEast');
@@ -161,8 +161,8 @@ for iCh = 1:length(lidarConfig.chTag)
     ylabel('Height (m)');
     title(sprintf('Telecover test for %s, %s', lidarType, lidarConfig.chTag{iCh}));
 
-    xlim(lidarConfig.quadrantChkCfg.normSigDisplayRangeNear);
-    ylim(lidarConfig.quadrantChkCfg.hRangeNear);
+    xlim(lidarConfig.quadrantChkCfg.normSigDisplayRangeNear(iCh, :));
+    ylim(lidarConfig.quadrantChkCfg.hRangeNear(iCh, :));
     set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
     legend([pTotal, pEast1, pSouth, pWest, pNorth, pEast2], 'Location', 'NorthEast');
@@ -185,8 +185,8 @@ for iCh = 1:length(lidarConfig.chTag)
     ylabel('Height (m)');
     title(sprintf('Telecover test (%s, %s)', lidarType, lidarConfig.chTag{iCh}));
 
-    xlim(lidarConfig.quadrantChkCfg.normSigDisplayRangeAll);
-    ylim(lidarConfig.quadrantChkCfg.hRangeAll);
+    xlim(lidarConfig.quadrantChkCfg.normSigDisplayRangeAll(iCh, :));
+    ylim(lidarConfig.quadrantChkCfg.hRangeAll(iCh, :));
     set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
     legend([pTotal, pEast1, pSouth, pWest, pNorth, pEast2], 'Location', 'NorthEast');
@@ -212,7 +212,7 @@ for iCh = 1:length(lidarConfig.chTag)
     title(sprintf('Telecover test for %s, %s', lidarType, lidarConfig.chTag{iCh}));
 
     xlim([-50, 50]);
-    ylim(lidarConfig.quadrantChkCfg.hRangeNear);
+    ylim(lidarConfig.quadrantChkCfg.hRangeNear(iCh, :));
     set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
     legend([pEast1, pSouth, pWest, pNorth], 'Location', 'NorthEast');

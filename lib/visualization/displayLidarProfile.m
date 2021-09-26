@@ -96,7 +96,7 @@ end
 
 plot([0, 0], p.Results.hRange, '--k', 'LineWidth', 2);
 
-xlabel('bg (a.u.)');
+xlabel('Sig no bg (a.u.)');
 ylabel('')
 
 xlim(p.Results.bgRange);

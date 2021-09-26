@@ -87,45 +87,80 @@ for iLidar = 1:length(lidarType)
     %% quadrant check
     if lidarConfig.flagQuadrantChk
         fprintf('[%s] Start telecover test!\n', tNow);
-        quadrantChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-            'figFolder', config.evaluationReportPath, ...
-            'figFormat', config.figFormat);
+
+        if ~ isfield(lidarConfig, 'quadrantChkCfg')
+            warning('quadrantChkCfg must be set for telecover test!');
+            continue;
+        else
+            quadrantChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
+                'figFolder', config.evaluationReportPath, ...
+                'figFormat', config.figFormat);
+        end
+
         fprintf('[%s] Finish!\n', tNow);
     end
 
     %% continuous operation check
     if lidarConfig.flagContOptChk
         fprintf('[%s] Start continuous operation test!\n', tNow);
-        contOptChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-            'figFolder', config.evaluationReportPath, ...
-            'figFormat', config.figFormat);
+
+        if ~ isfield(lidarConfig, 'contOptChkCfg')
+            warning('contOptChkCfg must be set for continuous operation test!');
+            continue;
+        else
+            contOptChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
+                'figFolder', config.evaluationReportPath, ...
+                'figFormat', config.figFormat);
+        end
+
         fprintf('[%s] Finish!\n', tNow);
     end
 
     %% background noise check
     if lidarConfig.flagBgNoiseChk
         fprintf('[%s] Start background noise test!\n', tNow);
-        bgNoiseChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-            'figFolder', config.evaluationReportPath, ...
-            'figFormat', config.figFormat);
+
+        if ~ isfield(lidarConfig, 'bgNoiseChkCfg')
+            warning('bgNoiseChkCfg must be set for background noise test!');
+            continue;
+        else
+            bgNoiseChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
+                'figFolder', config.evaluationReportPath, ...
+                'figFormat', config.figFormat);
+        end
+
         fprintf('[%s] Finish!\n', tNow);
     end
 
     %% Rayleigh fit check
     if lidarConfig.flagRayleighChk
-        fprintf('[%s] Start Rayleigh fit!\n', tNow);
-        RayleighChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-            'figFolder', config.evaluationReportPath, ...
-            'figFormat', config.figFormat);
+        fprintf('[%s] Start Rayleigh test!\n', tNow);
+
+        if ~ isfield(lidarConfig, 'RayleighChkCfg')
+            warning('RayleighChkCfg must be set for Rayleigh test!');
+            continue;
+        else
+            RayleighChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
+                'figFolder', config.evaluationReportPath, ...
+                'figFormat', config.figFormat);
+        end
+
         fprintf('[%s] Finish!\n', tNow);
     end
 
     %% Saturation check
     if lidarConfig.flagSaturationChk
-        fprintf('[%s] Start Rayleigh fit!\n', tNow);
-        saturationChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-            'figFolder', config.evaluationReportPath, ...
-            'figFormat', config.figFormat);
+        fprintf('[%s] Start Saturation test!\n', tNow);
+
+        if ~ isfield(lidarConfig, 'saturationChkCfg')
+            warning('saturationChkCfg must be set for saturation test!');
+            continue;
+        else
+            saturationChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
+                'figFolder', config.evaluationReportPath, ...
+                'figFormat', config.figFormat);
+        end
+
         fprintf('[%s] Finish!\n', tNow);
     end
 end

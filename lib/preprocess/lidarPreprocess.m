@@ -89,7 +89,7 @@ case 11
         % overlap correction
         if ~ isempty(p.Results.overlapFile)
             fid = fopen(fullfile(LEToolboxInfo.projectDir, 'lib', 'overlap', p.Results.overlapFile), 'r');
-            dataTmp = textscan(fid, '%f%f', 'headerlines', 0, 'delimiter', '\t', 'MultipleDelimsAsOne', true);
+            dataTmp = textscan(fid, '%f%f', 'headerlines', 0, 'delimiter', ' ', 'MultipleDelimsAsOne', true);
             ovHeight = dataTmp{1};
             ovFunc = dataTmp{2};
             fclose(fid);
@@ -161,7 +161,7 @@ case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13}
         % overlap correction
         if ~ isempty(p.Results.overlapFile)
             fid = fopen(fullfile(LEToolboxInfo.projectDir, 'lib', 'overlap', p.Results.overlapFile), 'r');
-            dataTmp = textscan(fid, '%f%f', 'headerlines', 0, 'delimiter', '\t', 'MultipleDelimsAsOne', true);
+            dataTmp = textscan(fid, '%f%f', 'headerlines', 0, 'delimiter', ' ', 'MultipleDelimsAsOne', true);
             ovHeight = dataTmp{1};
             ovFunc = dataTmp{2};
             fclose(fid);

@@ -30,7 +30,7 @@ dataVisualCfg:
     figVisible: 'on'   # whether display figures
     preprocessCfg:
       hOffset: 0   # height offset. (m)
-      tOffset: 0   # time offset. (days)
+      tOffset: 0   # time offset. (min)
       deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
       bgBins: [1500, 2000]   # [start index, stop index] for background correction
       nPretrigger: 15   # if nPretrigger < 0, move signal up

@@ -11,7 +11,7 @@ figFormat: png   # figure format to be exported
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
   L0110:   # lidar No.1
-    dataPath: D:\Data\CMA_Lidar_Comparison\L0110\RayleighFit_09_21\20210921
+    dataPath: D:\Data\CMA_Lidar_Comparison\L0110\Saturation_Telecovertest_09_16\20210916
     dataFilenamePattern: .*   # all files
     # data type
     # 1: WHU standard 1064 nm lidar
@@ -33,33 +33,40 @@ internalChkCfg:
     figVisible: 'on'   # whether display figures
     preprocessCfg:
       hOffset: -885   # height offset. (m)
-      tOffset: 0   # time offset. (min)
+      tOffset: -1   # time offset. (min)
       deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-      bgBins: [1700, 1900]   # [start index, stop index] for background correction
+      bgBins: [1700, 1800]   # [start index, stop index] for background correction
       nPretrigger: 59   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
       overlapFile: 'L0110_overlap.txt'
     fullOverlapHeight: 400   # minimum height with complete overlap. (m)
     flagRetrievalChk: false   # backscatter retrieval check
-    flagSaturationChk: false   # signal saturation check
+    flagSaturationChk: true   # signal saturation check
     flagQuadrantChk: false   # quadrant check
     flagOverlapChk: false   # overlap evaluation
-    flagRayleighChk: true   # Rayleigh fit check
+    flagRayleighChk: false   # Rayleigh fit check
     flagBgNoiseChk: false   # background noise check
     flagDetectRangeChk: false   # detection ability check
     flagContOptChk: false   # continuous operation check
-    RayleighChkCfg:
-      tRange: '2021-09-21 01:30:00 ~ 2021-09-21 02:00:00'
-      wavelength:
-        - [532]   # wavelength. (nm)
-      fitRange:
-        - [10000, 14000]   # Rayleigh fit range. (m)
-      smoothwindow:
-        - [15]
-      MieGlue:
-        - [1, 0]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
-      hRange:
-        - [0, 30000]   # display range. (m)
+    saturationChkCfg:
+      tRange:
+        - '2021-09-16 17:43:00 ~ 2021-09-16 17:44:00'   # 100% transmission
+        - '2021-09-16 18:34:00 ~ 2021-09-16 18:35:00'   # 80% transmission
+        - '2021-09-16 17:20:00 ~ 2021-09-16 17:21:00'   # 50% transmission
+        - '2021-09-16 18:09:00 ~ 2021-09-16 18:10:00'   # 20% transmission
+        - '2021-09-16 16:03:00 ~ 2021-09-16 16:04:00'   # 10% transmission
       sigRange:
-        - [1e8, 0.5e11]   # signal display range. (a.u.)
-      maxDev: [15]   # maximum relative deviation. (%)
+        - [1e9, 1e11]
+        - [1e8, 1e10]
+      hRange:
+        - [0, 4000]
+        - [0, 4000]
+      normRange:
+        - [500, 800]
+        - [500, 800]
+      maxDev:
+        - 10   # [%]
+        - 10   # [%]
+      smoothwindow:
+        - 30   # (m)
+        - 300   # (m)

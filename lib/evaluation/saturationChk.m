@@ -111,7 +111,7 @@ for iCh = 1:length(lidarConfig.chTag)
     swBins = ceil(lidarConfig.saturationChkCfg.smoothwindow(iCh) ./ (lidarData.height(2) - lidarData.height(1)));
     % normalize signal
     fprintf(fid, 'Normalization height range: %f - %f m\n', lidarConfig.saturationChkCfg.normRange(iCh, 1), lidarConfig.saturationChkCfg.normRange(iCh, 2));
-    normInd = (lidarData.height >= lidarConfig.saturationChkCfg.normRange(1)) & (lidarData.height <= lidarConfig.saturationChkCfg.normRange(2));
+    normInd = (lidarData.height >= lidarConfig.saturationChkCfg.normRange(iCh, 1)) & (lidarData.height <= lidarConfig.saturationChkCfg.normRange(iCh, 2));
     normRatio2 = nansum(sigT1(normInd)) ./ nansum(sigT2(normInd));
     normRatio3 = nansum(sigT1(normInd)) ./ nansum(sigT3(normInd));
     normRatio4 = nansum(sigT1(normInd)) ./ nansum(sigT4(normInd));
@@ -125,13 +125,13 @@ for iCh = 1:length(lidarConfig.chTag)
     %% determine deviations
     cmpInd = (lidarData.height >= lidarConfig.saturationChkCfg.normRange(iCh, 1)) & (lidarData.height <= lidarConfig.saturationChkCfg.normRange(iCh, 2));
     dev2 = (sigT2Norm - sigT1) ./ sigT1 * 100;
-    totDev2 = nanmean(sigT2Norm(cmpInd) - sigT1(cmpInd)) ./ nanmean(sigT1(cmpInd)) * 100;
+    totDev2 = nanmean(abs(sigT2Norm(cmpInd) - sigT1(cmpInd)) ./ sigT1(cmpInd)) * 100;
     dev3 = (sigT3Norm - sigT1) ./ sigT1 * 100;
-    totDev3 = nanmean(sigT3Norm(cmpInd) - sigT1(cmpInd)) ./ nanmean(sigT1(cmpInd)) * 100;
+    totDev3 = nanmean(abs(sigT3Norm(cmpInd) - sigT1(cmpInd)) ./ sigT1(cmpInd)) * 100;
     dev4 = (sigT4Norm - sigT1) ./ sigT1 * 100;
-    totDev4 = nanmean(sigT4Norm(cmpInd) - sigT1(cmpInd)) ./ nanmean(sigT1(cmpInd)) * 100;
+    totDev4 = nanmean(abs(sigT4Norm(cmpInd) - sigT1(cmpInd)) ./ sigT1(cmpInd)) * 100;
     dev5 = (sigT5Norm - sigT1) ./ sigT1 * 100;
-    totDev5 = nanmean(sigT5Norm(cmpInd) - sigT1(cmpInd)) ./ nanmean(sigT1(cmpInd)) * 100;
+    totDev5 = nanmean(abs(sigT5Norm(cmpInd) - sigT1(cmpInd)) ./ sigT1(cmpInd)) * 100;
 
     % deviation check
     isPassChk2 = (abs(totDev2) < lidarConfig.saturationChkCfg.maxDev(iCh));
@@ -148,7 +148,7 @@ for iCh = 1:length(lidarConfig.chTag)
 
     %% signal visualization
 
-    % normalized signal (near)
+    % normalized signal
     figure('Position', [0, 10, 300, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
     sigT1Tmp = sigT1;
     sigT1Tmp(sigT1Tmp <= 0) = NaN;

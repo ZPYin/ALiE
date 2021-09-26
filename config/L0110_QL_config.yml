@@ -11,7 +11,7 @@ figFormat: png   # figure format to be exported
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
   L0110:   # lidar No.1
-    dataPath: D:\Data\CMA_Lidar_Comparison\L0110\RayleighFit_09_21\20210921
+    dataPath: D:\Data\CMA_Lidar_Comparison\L0110\Saturation_Telecovertest_09_16\20210916
     dataFilenamePattern: .*   # all files
     # data type
     # 1: WHU standard 1064 nm lidar
@@ -21,7 +21,7 @@ dataLoaderCfg:
     # 5: REAL
     dataFormat: 3
     chTag: ['532p', '532s']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
-    nMaxBin: 2048   # number of bins
+    nMaxBin: 5000   # number of bins
 
 dataVisualCfg:
   L0110:
@@ -29,22 +29,22 @@ dataVisualCfg:
     chTag: ['532p', '532s']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
     figVisible: 'on'   # whether display figures
     preprocessCfg:
-      hOffset: 0   # height offset. (m)
-      tOffset: 0   # time offset. (days)
+      hOffset: -885   # height offset. (m)
+      tOffset: 0   # time offset. (min)
       deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-      bgBins: [1800, 2000]   # [start index, stop index] for background correction
-      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgBins: [2500, 3000]   # [start index, stop index] for background correction
+      nPretrigger: 59   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
-      overlapFile: ''
-    tRange: '2021-09-21 00:00:00 ~ 2021-09-21 23:59:00'
+      overlapFile: 'L0110_overlap.txt'
+    tRange: '2021-09-16 00:00:00 ~ 2021-09-16 23:59:00'
     hRange:
       - [0, 15000]
       - [0, 15000]
     sigRange: 
-      - [0, 2.5e11]
-      - [0, 0.25e11]
+      - [0, 5e10]
+      - [0, 1e10]
     title:
-      - '2021-09-21 L0110 532p'
-      - '2021-09-21 L0110 532s'
+      - '2021-09-16 L0110 532p'
+      - '2021-09-16 L0110 532s'
     deltaT: 1   # temporal resolution (min)
     markTRange: ''
