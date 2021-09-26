@@ -1,0 +1,50 @@
+################################################################################
+# lidar configuration file
+# DON'T use Chinese characters!!!
+################################################################################
+
+evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\L0110
+dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\L0110
+figFormat: png   # figure format to be exported
+
+# data loader configuration
+# Load lidar data to a specified directory (defined by `dataSavePath`)
+dataLoaderCfg:
+  L0110:   # lidar No.1
+    dataPath: D:\Data\CMA_Lidar_Comparison\L0110\RayleighFit_09_21\20210921
+    dataFilenamePattern: .*   # all files
+    # data type
+    # 1: WHU standard 1064 nm lidar
+    # 2: WHU non-standard 1064 nm lidar
+    # 3: CMA standard data format in binary
+    # 4: Dasun visibility lidar
+    # 5: REAL
+    dataFormat: 3
+    chTag: ['532p', '532s']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    nMaxBin: 2048   # number of bins
+
+dataVisualCfg:
+  L0110:
+    lidarNo: 3   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (days)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1800, 2000]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    tRange: '2021-09-21 00:00:00 ~ 2021-09-21 23:59:00'
+    hRange:
+      - [0, 15000]
+      - [0, 15000]
+    sigRange: 
+      - [0, 2.5e11]
+      - [0, 0.25e11]
+    title:
+      - '2021-09-21 L0110 532p'
+      - '2021-09-21 L0110 532s'
+    deltaT: 1   # temporal resolution (min)
+    markTRange: ''
