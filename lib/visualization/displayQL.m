@@ -8,6 +8,7 @@ function displayQL(config, varargin)
 % KEYWORDS:
 %    flagDebug: logical
 %        flag to print debug messages.
+%    flagCorTime: logical
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -19,6 +20,7 @@ p.KeepUnmatched = true;
 
 addRequired(p, 'config', @isstruct);
 addParameter(p, 'flagDebug', false, @islogical);
+addParameter(p, 'flagCorTime', true, @islogical);
 
 parse(p, config, varargin{:});
 
@@ -98,10 +100,25 @@ for iLidar = 1:length(lidarType)
         rcs532pGrid = NaN(length(heightGrid), length(mTimeGrid));
         rcs532sGrid = NaN(length(heightGrid), length(mTimeGrid));
         vdr532Grid = NaN(length(heightGrid), length(mTimeGrid));
-        for iT = 1:length(mTime)
-            rcs532pGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = rcs532p(:, iT);
-            rcs532sGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = rcs532s(:, iT);
-            vdr532Grid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = vdr532(:, iT);
+        tIndGrid = ones(size(mTime));
+        if p.Results.flagCorTime
+            % correct time drift
+            mTimeGrid(1) = mTime(1);
+            sigGrid(:, 1) = sig(:, 1);
+            tIndGrid(1) = 1;
+            for iT = 2:length(mTime)
+                tInd = floor((mTime(iT) - mTime(iT - 1) + 1e-9 + 0.1 * deltaT) / deltaT) + tIndGrid(iT - 1);
+                tIndGrid(iT) = tInd;
+                rcs532pGrid(:, tInd) = rcs532p(:, iT);
+                rcs532sGrid(:, tInd) = rcs532s(:, iT);
+                vdr532Grid(:, tInd) = vdr532(:, iT);
+            end
+        else
+            for iT = 1:length(mTime)
+                rcs532pGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = rcs532p(:, iT);
+                rcs532sGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = rcs532s(:, iT);
+                vdr532Grid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = vdr532(:, iT);
+            end
         end
 
         %% signal visualization
@@ -270,8 +287,21 @@ for iLidar = 1:length(lidarType)
         mTimeGrid = (mTime(1):deltaT:mTime(end));
         heightGrid = height;
         sigGrid = NaN(length(heightGrid), length(mTimeGrid));
-        for iT = 1:length(mTime)
-            sigGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = sig(:, iT);
+        tIndGrid = ones(size(mTime));
+        if p.Results.flagCorTime
+            % correct time drift
+            mTimeGrid(1) = mTime(1);
+            sigGrid(:, 1) = sig(:, 1);
+            tIndGrid(1) = 1;
+            for iT = 2:length(mTime)
+                tInd = floor((mTime(iT) - mTime(iT - 1) + 1e-9 + 0.1 * deltaT) / deltaT) + tIndGrid(iT - 1);
+                tIndGrid(iT) = tInd;
+                sigGrid(:, tInd) = sig(:, iT); 
+            end
+        else
+            for iT = 1:length(mTime)
+                sigGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = sig(:, iT);
+            end
         end
 
         %% signal visualization

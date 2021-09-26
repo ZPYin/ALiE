@@ -10,6 +10,7 @@ function [isPassContOptChk] = contOptChk(lidarData, lidarConfig, reportFile, lid
 % KEYWORDS:
 %    figFolder: char
 %    figFormat: char
+%    flagCorTime: logical
 % OUTPUTS:
 %    isPasscontOptChk: logical
 % HISTORY:
@@ -27,6 +28,7 @@ addRequired(p, 'reportFile', @ischar);
 addRequired(p, 'lidarType', @ischar);
 addParameter(p, 'figFolder', '', @ischar);
 addParameter(p, 'figFormat', 'png', @ischar);
+addParameter(p, 'flagCorTime', true, @islogical);
 
 parse(p, lidarData, lidarConfig, reportFile, lidarType, varargin{:});
 
@@ -58,8 +60,21 @@ for iCh = 1:length(lidarConfig.chTag)
     mTimeGrid = (mTime(1):deltaT:mTime(end));
     heightGrid = height;
     sigGrid = NaN(length(heightGrid), length(mTimeGrid));
-    for iT = 1:length(mTime)
-        sigGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = sig(:, iT);
+    tIndGrid = ones(size(mTime));
+    if p.Results.flagCorTime
+        % correct time drift
+        mTimeGrid(1) = mTime(1);
+        sigGrid(:, 1) = sig(:, 1);
+        tIndGrid(1) = 1;
+        for iT = 2:length(mTime)
+            tInd = floor((mTime(iT) - mTime(iT - 1) + 1e-9 + 0.1 * deltaT) / deltaT) + tIndGrid(iT - 1);
+            tIndGrid(iT) = tInd;
+            sigGrid(:, tInd) = sig(:, iT); 
+        end
+    else
+        for iT = 1:length(mTime)
+            sigGrid(:, floor((mTime(iT) - mTimeGrid(1) + 1e-9) / deltaT) + 1) = sig(:, iT);
+        end
     end
 
     %% signal visualization
