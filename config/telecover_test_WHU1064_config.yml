@@ -3,15 +3,15 @@
 # DON'T use Chinese characters!!!
 ################################################################################
 
-evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation
-dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation
+evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\WHU1064
+dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\WHU1064
 figFormat: png   # figure format to be exported
 
 # data loader configuration
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
   WHULidar1064:   # lidar No.1
-    dataPath: D:\Data\CMA_Lidar_Comparison\WHU1064\telecover_test2
+    dataPath: D:\Data\CMA_Lidar_Comparison\WHU1064\E1064-Duar-Test1
     dataFilenamePattern: .*   # all files
     # data type
     # 1: WHU standard 1064 nm lidar
@@ -47,17 +47,17 @@ internalChkCfg:
     flagContOptChk: false   # continuous operation check
     quadrantChkCfg:
       quadrantTime:   # quadrant time (local time) [E-S-W-N-E]
-        - '2021-09-25 23:12:00 ~ 2021-09-25 23:13:00'   # east1
-        - '2021-09-25 23:13:20 ~ 2021-09-25 23:14:20'   # south
-        - '2021-09-25 23:15:00 ~ 2021-09-25 23:16:00'   # west
-        - '2021-09-25 23:16:00 ~ 2021-09-25 23:17:00'   # north
-        - '2021-09-25 23:18:00 ~ 2021-09-25 23:19:00'   # east2
-      hRangeNear: [0, 1000]   # vertical range for near-range behavior to display. (m)
+        - '2021-09-27 11:19:00 ~ 2021-09-27 11:20:00'   # east1
+        - '2021-09-27 11:21:20 ~ 2021-09-27 11:22:20'   # south
+        - '2021-09-27 11:23:00 ~ 2021-09-27 11:24:00'   # west
+        - '2021-09-27 11:25:00 ~ 2021-09-27 11:26:00'   # north
+        - '2021-09-27 11:26:00 ~ 2021-09-27 11:27:00'   # east2
+      hRangeNear: [0, 2500]   # vertical range for near-range behavior to display. (m)
       hRangeAll: [0, 5000]   # vertical range for overall behavior to display. (m)
-      normRange: [500, 700]   # normalization range. (m)
-      normSigDisplayRangeAll: [0, 5e8]   # normalized signal display range. (photon count)
-      rcsDisplayRangeAll: [0, 1e10]   # normalized signal display range. (photon count)
-      normSigDisplayRangeNear: [0, 5e8]   # normalized signal display range. (photon count)
-      smoothwindow: 300   # smoothing window length. (m)
+      normRange: [1000, 1500]   # normalization range. (m)
+      normSigDisplayRangeAll: [0, 1.5e9]   # normalized signal display range. (photon count)
+      rcsDisplayRangeAll: [0, 0.2e10]   # normalized signal display range. (photon count)
+      normSigDisplayRangeNear: [0, 1.5e9]   # normalized signal display range. (photon count)
+      smoothwindow: 500   # smoothing window length. (m)
       stableThresh: 10   # [%]
       maxDev: 20   # [%]

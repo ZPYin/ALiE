@@ -68,19 +68,20 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
     [mBsc, mExt] = rayleigh_scattering(lidarConfig.RayleighChkCfg.wavelength(iWL), pressure, temperature + 273.14, 360, 80);
     mRCS = mBsc .* exp(-2 .* nancumsum([lidarData.height(1); diff(lidarData.height)] .* mExt));
 
+    smWinLen = round(lidarConfig.RayleighChkCfg.smoothwindow(iWL) / (lidarData.height(2) - lidarData.height(1)));
+
     % normalized
     normInd = (lidarData.height >= lidarConfig.RayleighChkCfg.fitRange(iWL, 1)) & (lidarData.height <= lidarConfig.RayleighChkCfg.fitRange(iWL, 2));
     baseInd = find(normInd, 1, 'first');
     topInd = find(normInd, 1, 'last');
     normRatio = nansum(MieRCS(normInd)) ./ nansum(mRCS(normInd));
-    normMRCS = mRCS .* normRatio;
+    normMRCS = smooth(mRCS .* normRatio, smWinLen);
 
     % determine Rayleigh fit
-    smWinLen = round(lidarConfig.RayleighChkCfg.smoothwindow(iWL) / (lidarData.height(2) - lidarData.height(1)));
-    devRayleigh = smooth(normMRCS - MieRCS, smWinLen) ./ smooth(normMRCS, smWinLen) * 100;
+    devRayleigh = (normMRCS - MieRCS) ./ normMRCS * 100;
     isPassRayleighChk(iWL) = ~ any(abs(devRayleigh(normInd)) > lidarConfig.RayleighChkCfg.maxDev(iWL));
     fprintf(fid, 'Normalization range: %f - %f m\n', lidarConfig.RayleighChkCfg.fitRange(iWL, 1), lidarConfig.RayleighChkCfg.fitRange(iWL, 2));
-    fprintf(fid, 'Max relative deviation: %f%% (max: %f%%)\n', max(abs(devRayleigh(normInd))), lidarConfig.RayleighChkCfg.maxDev(iWL));
+    fprintf(fid, 'Mean relative deviation: %f%% (max: %f%%)\n', nanmean(abs(devRayleigh(normInd))), lidarConfig.RayleighChkCfg.maxDev(iWL));
     fprintf(fid, 'Does pass Rayleigh check? (1: yes; 0: no): %d\n', isPassRayleighChk(iWL));
 
     %% signal visualization

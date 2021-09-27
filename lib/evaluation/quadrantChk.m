@@ -94,7 +94,9 @@ for iCh = 1:length(lidarConfig.chTag)
     %% determine deviations
 
     % stability check
-    cmpInd = (lidarData.height >= 2000) & (lidarData.height <= 4000);
+    cmpHeight = [2000, 2500];
+    cmpInd = (lidarData.height >= cmpHeight(1)) & (lidarData.height <= cmpHeight(2));
+    fprintf(fid, 'Comparison height: %f - %f m\n', cmpHeight(1), cmpHeight(2));
     % devEast1v2 = smooth(sigEast2Norm - sigEast1Norm, swBins) ./ smooth(sigEast1, swBins) * 100;   % (%)
     totalDevEast1v2 = nanmean(abs(sigEast2Norm(cmpInd) - sigEast1Norm(cmpInd)) ./ sigEast1Norm(cmpInd)) * 100;
 

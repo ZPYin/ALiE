@@ -47,20 +47,22 @@ for iCh = 1:length(lidarConfig.chTag)
     end
 
     % backgroud
-    bg = nanmean(lidarData.(['sig', lidarConfig.chTag{iCh}])(:, isChosen), 2) + nanmean(lidarData.(['bg', lidarConfig.chTag{iCh}])(isChosen));
+    hChosen = (lidarData.height >= lidarConfig.bgNoiseChkCfg.hRange(iCh, 1)) & (lidarData.height <= lidarConfig.bgNoiseChkCfg.hRange(iCh, 2));
+    height = lidarData.height(hChosen);
+    bg = nanmean(lidarData.(['sig', lidarConfig.chTag{iCh}])(hChosen, isChosen), 2) + nanmean(lidarData.(['bg', lidarConfig.chTag{iCh}])(isChosen));
     bgMean = nanmean(bg);
     bgMeanBound = [0.9 * bgMean, 1.1 * bgMean];
 
     % random noise
     winLen = round(lidarConfig.bgNoiseChkCfg.randErrCalcWindowLength ./ (lidarData.height(2) - lidarData.height(1)));
     randNoise = 0;
-    for iW = 1:floor(length(lidarData.height) / winLen)
+    for iW = 1:floor(length(height) / winLen)
         randNoise = randNoise + nanvar(bg(((iW - 1) * winLen + 1):(iW*winLen)));
     end
-    randNoise = sqrt(randNoise) / sqrt(floor(length(lidarData.height) / winLen));
+    randNoise = sqrt(randNoise) / sqrt(floor(length(height) / winLen));
 
     % systematic error
-    sysNoise = nanstd(bg);
+    sysNoise = nanstd(abs(bg - bgMean));
 
     fprintf(fid, 'Random noise: %f\n', randNoise);
     fprintf(fid, 'Systematic noise: %f\n', sysNoise);
@@ -70,7 +72,10 @@ for iCh = 1:length(lidarConfig.chTag)
     %% signal visualization
     figure('Position', [0, 10, 550, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
 
-    plot(lidarData.height, bg, 'Color', [0, 128, 1]/255, 'LineStyle', '-', 'LineWidth', 2); hold on;
+    p1 = plot(height, bg - bgMean, 'Color', [0, 128, 1]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', 'background'); hold on;
+    p2 = plot([height(1), height(end)], [randNoise, randNoise], 'Color', [218, 95, 2]/255, 'LineStyle', '--', 'LineWidth', 2, 'DisplayName', 'random noise'); hold on;
+    p3 = plot([height(1), height(end)], [sysNoise, sysNoise], 'Color', [23, 190, 208]/255, 'LineStyle', '--', 'LineWidth', 2, 'DisplayName', 'system noise'); hold on;
+    p4 = plot([height(1), height(end)], [0, 0], 'Color', 'k', 'LineStyle', '--', 'LineWidth', 2); hold on;
     plot([0, 100000], [bgMean, bgMean], '-.', 'Color', [122, 122, 122]/255);
     plot([0, 100000], [bgMeanBound(1), bgMeanBound(1)], '--', 'Color', [211, 211, 211]/255);
     plot([0, 100000], [bgMeanBound(2), bgMeanBound(2)], '--', 'Color', [211, 211, 211]/255);
@@ -84,6 +89,8 @@ for iCh = 1:length(lidarConfig.chTag)
     set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'LineWidth', 2);
 
     text(-0.1, -0.15, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+    l = legend([p1, p2, p3], 'Location', 'northeast');
+    l.Orientation = 'horizontal';
 
     if exist(p.Results.figFolder, 'dir')
         export_fig(gcf, fullfile(p.Results.figFolder, sprintf('background_noise_test_%s_%s.%s', lidarType, lidarConfig.chTag{iCh}, p.Results.figFormat)), '-r300');

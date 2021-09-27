@@ -3,15 +3,15 @@
 # DON'T use Chinese characters!!!
 ################################################################################
 
-evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\20210925
-dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\20210925
+evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\WHU1064
+dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\WHU1064
 figFormat: png   # figure format to be exported
 
 # data loader configuration
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
   WHULidar1064:   # lidar No.1
-    dataPath: D:\Data\CMA_Lidar_Comparison\WHU1064\2021-09-25
+    dataPath: D:\Data\CMA_Lidar_Comparison\WHU1064\2021-09-27
     dataFilenamePattern: .*   # all files
     # data type
     # 1: WHU standard 1064 nm lidar
@@ -36,9 +36,9 @@ dataVisualCfg:
       nPretrigger: 15   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
       overlapFile: ''
-    tRange: '2021-09-23 12:00:00 ~ 2021-09-25 12:40:00'
+    tRange: '2021-09-27 00:00:00 ~ 2021-09-27 23:40:00'
     hRange: [0, 4000]
     sigRange: [1e6, 1e10]
-    title: 'WHU1064 2021-09-24 ~ 2021-09-25'
+    title: 'WHU1064 2021-09-27'
     deltaT: 1   # temporal resolution (min)
     markTRange: ''
