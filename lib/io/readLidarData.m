@@ -10,6 +10,7 @@ function [oData] = readLidarData(dataFolder, varargin)
 %    flagDebug: logical
 %    nMaxBin: numeric
 %    nBin: numeric
+%    flagFilenameTime: logical
 % OUTPUTS:
 %    oData: struct
 % HISTORY:
@@ -25,6 +26,7 @@ addParameter(p, 'dataFormat', 1, @isnumeric);
 addParameter(p, 'flagDebug', false, @islogical);
 addParameter(p, 'nMaxBin', 8000, @isnumeric);
 addParameter(p, 'nBin', 8000, @isnumeric);
+addParameter(p, 'flagFilenameTime', false, @islogical);
 
 parse(p, dataFolder, varargin{:});
 
@@ -74,7 +76,6 @@ case 3
     fprintf('[%s] %d data files were found!\n', tNow, length(dataFiles));
 
     for iFile = 1:length(dataFiles)
-
         lidarData = readCmaLidarData(dataFiles{iFile}, varargin{:});
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);

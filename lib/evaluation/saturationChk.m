@@ -173,7 +173,7 @@ for iCh = 1:length(lidarConfig.chTag)
     p5 = semilogx(sigT5Tmp, lidarData.height, 'Color', [165, 118, 30]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '10');
     p1 = semilogx(sigT1Tmp, lidarData.height, 'Color', 'k', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '100'); hold on;
 
-    xlabel('Normalized signal (a.u.)');
+    xlabel('RCS (a.u.)');
     ylabel('Height (m)');
     title(sprintf('Saturation test for %s, %s', lidarType, lidarConfig.chTag{iCh}));
 

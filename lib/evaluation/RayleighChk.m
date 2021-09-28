@@ -79,7 +79,7 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
 
     % determine Rayleigh fit
     devRayleigh = (normMRCS - MieRCS) ./ normMRCS * 100;
-    isPassRayleighChk(iWL) = ~ any(abs(devRayleigh(normInd)) > lidarConfig.RayleighChkCfg.maxDev(iWL));
+    isPassRayleighChk(iWL) = nanmean(abs(devRayleigh(normInd))) <= lidarConfig.RayleighChkCfg.maxDev(iWL);
     fprintf(fid, 'Normalization range: %f - %f m\n', lidarConfig.RayleighChkCfg.fitRange(iWL, 1), lidarConfig.RayleighChkCfg.fitRange(iWL, 2));
     fprintf(fid, 'Mean relative deviation: %f%% (max: %f%%)\n', nanmean(abs(devRayleigh(normInd))), lidarConfig.RayleighChkCfg.maxDev(iWL));
     fprintf(fid, 'Does pass Rayleigh check? (1: yes; 0: no): %d\n', isPassRayleighChk(iWL));
@@ -114,7 +114,7 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
     text(0.6, 0.76, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
 
     if exist(p.Results.figFolder, 'dir')
-        export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Rayleigh_test_%s_%s.%s', lidarType, lidarConfig.chTag{iCh}, p.Results.figFormat)), '-r300');
+        export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Rayleigh_test_%s_%d.%s', lidarType, lidarConfig.RayleighChkCfg.wavelength(iWL), p.Results.figFormat)), '-r300');
     end
 
     if strcmpi(lidarConfig.figVisible, 'off')

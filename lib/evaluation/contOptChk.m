@@ -36,12 +36,12 @@ fid = fopen(reportFile, 'a');
 fprintf(fid, '\n## Continuous Operation Check\n');
 
 % slot for continuous check
-tRange = [datenum(lidarConfig.contOptChk.tRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(lidarConfig.contOptChk.tRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
+tRange = [datenum(lidarConfig.contOptChkCfg.tRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(lidarConfig.contOptChkCfg.tRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
 
 % continuous operation check
 isChosen = (lidarData.mTime >= tRange(1)) & (lidarData.mTime <= tRange(2));
-fprintf(fid, 'Profiles for continuous operation check: %d (min: %d)\n', sum(isChosen), lidarConfig.contOptChk.nMinProfile);
-isPassContOptChk = (sum(isChosen) >= lidarConfig.contOptChk.nMinProfile);
+fprintf(fid, 'Profiles for continuous operation check: %d (min: %d)\n', sum(isChosen), lidarConfig.contOptChkCfg.nMinProfile);
+isPassContOptChk = (sum(isChosen) >= lidarConfig.contOptChkCfg.nMinProfile);
 fprintf(fid, '\nPass continuous operation check (1: yes; 0: no): %d\n', isPassContOptChk);
 
 for iCh = 1:length(lidarConfig.chTag)
@@ -54,7 +54,8 @@ for iCh = 1:length(lidarConfig.chTag)
     sig = lidarData.(['rcs', lidarConfig.chTag{iCh}])(:, isChosen);
     height = lidarData.height;
     mTime = lidarData.mTime(isChosen);
-    deltaT = datenum(0, 1, 0, 0, lidarConfig.contOptChk.deltaT, 0);
+    mTime = sort(mTime);
+    deltaT = datenum(0, 1, 0, 0, lidarConfig.contOptChkCfg.deltaT, 0);
 
     % signal regrid
     mTimeGrid = (mTime(1):deltaT:mTime(end));
@@ -68,6 +69,7 @@ for iCh = 1:length(lidarConfig.chTag)
         tIndGrid(1) = 1;
         for iT = 2:length(mTime)
             tInd = floor((mTime(iT) - mTime(iT - 1) + 1e-9 + 0.1 * deltaT) / deltaT) + tIndGrid(iT - 1);
+            % fprintf('%d, %d, %s\n', iT, tInd, datestr(mTime(iT), 'yyyy-mm-dd HH:MM:SS'));
             tIndGrid(iT) = tInd;
             sigGrid(:, tInd) = sig(:, iT); 
         end
@@ -89,8 +91,8 @@ for iCh = 1:length(lidarConfig.chTag)
     title(sprintf('Continuous operation (%s, %s)', lidarType, lidarConfig.chTag{iCh}));
 
     xlim([mTimeGrid(1), mTimeGrid(end)]);
-    ylim(lidarConfig.contOptChk.hRange);
-    caxis(lidarConfig.contOptChk.cRange(iCh, :));
+    ylim(lidarConfig.contOptChkCfg.hRange);
+    caxis(lidarConfig.contOptChkCfg.cRange(iCh, :));
     colormap('jet');
 
     set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'XTick', linspace(mTimeGrid(1), mTimeGrid(end), 5), 'Layer', 'Top', 'Box', 'on', 'TickDir', 'out', 'LineWidth', 2);

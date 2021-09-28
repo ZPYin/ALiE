@@ -6,15 +6,16 @@
 |无锡中科|532nm激光雷达|caspe|http://www.cas-pe.com/|2|L0601||
 |艾沃思|532nm激光雷达|avors|http://www.avorstech.com/|3|L0110||
 |大舜|532nm激光雷达|dasun|http://www.darsunlaser.com/index.html|4|||
-|大舜|1064nm激光雷达|dasun|http://www.darsunlaser.com/index.html|5|||
+|大舜|1064nm激光雷达(polarized)|dasun|http://www.darsunlaser.com/index.html|5|L0104|1064p, 1064s|
 |大舜|1064nm激光雷达|dasun|http://www.darsunlaser.com/index.html|6|||
-|浅海科技|532nm激光雷达|ss|https://www.shallow-sea.com/#page1|7|||
-|中科光博|532nm激光雷达|gbq|http://www.gbqtech.com/info/16205.html|8|||
-|704所|532nm激光雷达|caaet|http://www.caaet.cn/|9|||
+|浅海科技|532nm激光雷达|ss|https://www.shallow-sea.com/#page1|7|L0109|532p, 532s|
+|中科光博|532nm激光雷达|gbq|http://www.gbqtech.com/info/16205.html|8|L0102||
+|704所|532nm激光雷达|caaet|http://www.caaet.cn/|9||'355p', '355s', '532p', '532s', '387', '407', '607', '1064e'|
 |1064nm激光雷达|704所|caaet|http://www.caaet.cn/|10|||
 |武汉大学|532nm激光雷达|WHU|http://rsgis.whu.edu.cn/|11||532sh, 532ph, 532sl, 532pl, 607l, 607h|
 |武汉大学|1064nm标准激光雷达|WHU|http://rsgis.whu.edu.cn/|12||1064e|
 |武汉大学|1064nm激光雷达（待测试）|WHU|http://rsgis.whu.edu.cn/|13||1064e|
+|山仪所|多波长激光雷达|SYS||14|L0103||
 
 ## 雷达通道
 

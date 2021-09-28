@@ -97,7 +97,7 @@ for iCh = 1:length(lidarConfig.chTag)
     semilogx(snrTmp, lidarData.height, 'Color', [231, 41, 139]/255, 'LineStyle', '-', 'LineWidth', 2); hold on;
 
     if ~ isempty(lowSNRInd)
-        p1 = plot([1e-10, 1e10], [lidarData.height(lowSNRInd), lidarData.height(lowSNRInd)], 'Color', [177, 89, 41]/255, 'LineStyle', '--', 'LineWidth', 2, 'DisplayName', sprintf('SNR < %4.1f', lidarConfig.detectRangeChkCfg.minSNR(iCh)));
+        p1 = plot([1e-10, 1e10], [lidarData.height(lowSNRInd), lidarData.height(lowSNRInd)], 'Color', [177, 89, 41]/255, 'LineStyle', '--', 'LineWidth', 2, 'DisplayName', sprintf('SNR = %4.1f', lidarConfig.detectRangeChkCfg.minSNR(iCh)));
         scatter(snrTmp(lowSNRInd), lidarData.height(lowSNRInd), 10, 'Marker', 'o', 'MarkerEdgeColor', [177, 89, 41]/255, 'MarkerFaceColor', [177, 89, 41]/255);
 
         legend(p1, 'Location', 'NorthEast');

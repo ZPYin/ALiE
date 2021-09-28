@@ -1,4 +1,4 @@
-function [chNo, detectMode, chType, hRes, hFOV, pFirstBin, nBins] = parseCmaLidarInfo(chInfoBits)
+function [chNo, detectMode, recWL, chType, hRes, hFOV, pFirstBin, nBins] = parseCmaLidarInfo(chInfoBits)
 % PARSECMALIDARINFO parse the channel information from the channel information bits.
 % USAGE:
 %    [chNo, detectMode, chType, hRes, hFOV, pFirstBin, nBins] = parseCmaLidarInfo(chInfoBits)
@@ -12,6 +12,8 @@ function [chNo, detectMode, chType, hRes, hFOV, pFirstBin, nBins] = parseCmaLida
 %        0: AD
 %        1: PC
 %        2: Merged
+%    recWL: double
+%        receiving wavelength.
 %    chType: double
 %        channel type.
 %        0: non-polarized
@@ -26,14 +28,13 @@ function [chNo, detectMode, chType, hRes, hFOV, pFirstBin, nBins] = parseCmaLida
 %        location of the first bin in the bindary file.
 %    nBins: double
 %        number of range bins.
-% REFERENCE:
-%    拉曼-米散射气溶胶激光雷达功能规格需求书.docx
 % HISTORY:
 %    2021-09-24: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
 
 chNo = uint8_2_double(chInfoBits(1:2));
-detectMode = uint8_2_double(chInfoBits(3:4));
+detectMode = floor(uint8_2_double(chInfoBits(3:4)) / 8192);
+recWL = mod(uint8_2_double(chInfoBits(3:4)), 8192);
 chType = uint8_2_double(chInfoBits(5:6));
 hRes = uint8_2_double(chInfoBits(7:8)) / 100;
 hFOV = uint8_2_double(chInfoBits(9:10)) / 10;

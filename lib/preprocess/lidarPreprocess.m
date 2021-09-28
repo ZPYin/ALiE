@@ -126,7 +126,7 @@ case 11
     lidarData.mergeOffset = mergeOffset;
     lidarData.mergeSlope = mergeSlope;
 
-case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13}
+case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14}
 
     % pretrigger removes for height
     lidarData.height = lidarData.height((p.Results.nPretrigger + 1):end) + p.Results.hOffset;

@@ -113,7 +113,7 @@ internalChkCfg:
         - [1e-1, 1e3]
       hRange:
         - [0, 12000]
-    contOptChk:
+    contOptChkCfg:
       deltaT: 1   # temporal resolution (min)
       nMinProfile: 1440   # minimum profiles required
       tRange: '2021-09-18 16:36:00 ~ 2021-09-18 20:35:00'

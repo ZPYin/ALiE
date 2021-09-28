@@ -90,7 +90,12 @@ rcs = [];
 for iCh = 1:length(config.externalChkCfg.(lidarType{1}).chTag)
     rcs = cat(2, rcs, nanmean(allData.(lidarType{1}).(['rcs', config.externalChkCfg.(lidarType{1}).chTag{iCh}])(:, isChosen), 2));
 end
-cmpSig = cat(2, cmpSig, rcs * transpose(config.externalChkCfg.rangeCmpCfg.sigCompose(1, :)));
+if iscell(config.externalChkCfg.rangeCmpCfg.sigCompose)
+    sigCompose = transpose(config.externalChkCfg.rangeCmpCfg.sigCompose{1});
+else
+    sigCompose = transpose(config.externalChkCfg.rangeCmpCfg.sigCompose(1, :));
+end
+cmpSig = cat(2, cmpSig, rcs * sigCompose);
 fprintf(fid, 'Time slot: %s\n', config.externalChkCfg.rangeCmpCfg.tRange);
 fprintf(fid, 'Number of profiles for %s (standard): %d\n', lidarType{1}, sum(isChosen));
 
@@ -105,7 +110,12 @@ for iLidar = 2:length(lidarType)
 
     %% signal interpolation
     thisHeight = allData.(lidarType{iLidar}).height;
-    thisCmpSig = rcs * transpose(config.externalChkCfg.rangeCmpCfg.sigCompose(iLidar, :));
+    if iscell(config.externalChkCfg.rangeCmpCfg.sigCompose)
+        sigCompose = transpose(config.externalChkCfg.rangeCmpCfg.sigCompose{iLidar});
+    else
+        sigCompose = transpose(config.externalChkCfg.rangeCmpCfg.sigCompose(iLidar, :));
+    end
+    thisCmpSig = rcs * sigCompose;
     thisCmpSigInterp = interp1(thisHeight, thisCmpSig, height);
     cmpSig = cat(2, cmpSig, thisCmpSigInterp);
 
@@ -143,7 +153,7 @@ for iLidar = 2:length(lidarType)
     [thisMaxCorr, lagMaxCorr] = max(thisCorrVal);
     corrVal(:, iLidar) = thisCorrVal;
     hLag = thisLag .* (height(2) - height(1));
-    hMaxLag(iLidar) = - (height(2) - height(1)) * thisLag(lagMaxCorr);
+    hMaxLag(iLidar) = (height(2) - height(1)) * thisLag(lagMaxCorr);
     maxCorr(iLidar) = thisMaxCorr;
 
     %% evaluate range precision
@@ -158,7 +168,7 @@ figure('Position', [0, 10, 550, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible'
 lineInstances = [];
 lineInstances(1) = plot(height, cmpSigNorm(:, 1), 'Color', 'k', 'Marker', 's', 'MarkerFaceColor', 'k', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{1}); hold on;
 for iLidar = 2:length(lidarType)
-    p1 = plot(height, cmpSigNorm(:, iLidar), 'Marker', 'o', 'MarkerSize', 5, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{iLidar}); hold on;
+    p1 = plot(height, cmpSigNorm(:, iLidar), 'Marker', 's', 'MarkerSize', 5, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{iLidar}); hold on;
     lineInstances = cat(1, lineInstances, p1);
 end
 
@@ -187,7 +197,7 @@ figure('Position', [0, 10, 550, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible'
 
 lineInstances1 = [];
 for iLidar = 2:length(lidarType)
-    p1 = plot(hLag, corrVal(:, iLidar), 'Marker', 'o', 'MarkerSize', 5, 'LineStyle', '-', 'Color', lineInstances(iLidar).Color, 'LineWidth', 2, 'DisplayName', sprintf('%s: %4.1f m', lidarType{iLidar}, hMaxLag(iLidar))); hold on;
+    p1 = plot(hLag, corrVal(:, iLidar), 'Marker', 's', 'MarkerSize', 5, 'LineStyle', '-', 'Color', lineInstances(iLidar).Color, 'LineWidth', 2, 'DisplayName', sprintf('%s: %4.1f m', lidarType{iLidar}, hMaxLag(iLidar))); hold on;
     lineInstances1 = cat(1, lineInstances1, p1);
 
     plot([hMaxLag(iLidar), hMaxLag(iLidar)], [0, maxCorr(iLidar)], 'LineStyle', '--', 'Color', p1.Color, 'LineWidth', 2);

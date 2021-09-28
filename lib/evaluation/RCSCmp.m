@@ -90,7 +90,12 @@ rcs = [];
 for iCh = 1:length(config.externalChkCfg.(lidarType{1}).chTag)
     rcs = cat(2, rcs, nanmean(allData.(lidarType{1}).(['rcs', config.externalChkCfg.(lidarType{1}).chTag{iCh}])(:, isChosen), 2));
 end
-cmpSig = cat(2, cmpSig, rcs * transpose(config.externalChkCfg.RCSCmpCfg.sigCompose(1, :)));
+if iscell(config.externalChkCfg.RCSCmpCfg.sigCompose)
+    sigCompose = transpose(config.externalChkCfg.RCSCmpCfg.sigCompose{1});
+else
+    sigCompose = transpose(config.externalChkCfg.RCSCmpCfg.sigCompose(1, :));
+end
+cmpSig = cat(2, cmpSig, rcs * sigCompose);
 fprintf(fid, 'Time slot: %s\n', config.externalChkCfg.RCSCmpCfg.tRange);
 fprintf(fid, 'Number of profiles for %s (standard): %d\n', lidarType{1}, sum(isChosen));
 
@@ -105,7 +110,12 @@ for iLidar = 2:length(lidarType)
 
     %% signal interpolation
     thisHeight = allData.(lidarType{iLidar}).height;
-    thisCmpSig = rcs * transpose(config.externalChkCfg.RCSCmpCfg.sigCompose(iLidar, :));
+    if iscell(config.externalChkCfg.RCSCmpCfg.sigCompose)
+        sigCompose = transpose(config.externalChkCfg.RCSCmpCfg.sigCompose{iLidar});
+    else
+        sigCompose = transpose(config.externalChkCfg.RCSCmpCfg.sigCompose(iLidar, :));
+    end
+    thisCmpSig = rcs * sigCompose;
     thisCmpSigInterp = interp1(thisHeight, thisCmpSig, height);
     cmpSig = cat(2, cmpSig, thisCmpSigInterp);
 

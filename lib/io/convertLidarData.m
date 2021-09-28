@@ -28,6 +28,12 @@ lidarType = fieldnames(config.dataLoaderCfg);
 for iLidar = 1:length(lidarType)
 
     lidarConfig = config.dataLoaderCfg.(lidarType{iLidar});
+    if ~ isfield(lidarConfig, 'flagFilenameTime')
+        lidarConfig.flagFilenameTime = false;
+    end
+    if ~ isfield(lidarConfig, 'nBin')
+        lidarConfig.nBin = [];
+    end
 
     fprintf('[%s] Convert lidar data for %s\n', tNow, lidarType{iLidar});
 
@@ -37,7 +43,9 @@ for iLidar = 1:length(lidarType)
         'dataFormat', lidarConfig.dataFormat, ...
         'dataFilePattern', lidarConfig.dataFilenamePattern, ...
         'flagDebug', p.Results.flagDebug, ...
-        'nMaxBin', lidarConfig.nMaxBin);
+        'nMaxBin', lidarConfig.nMaxBin, ...
+        'flagFilenameTime', lidarConfig.flagFilenameTime, ...
+        'nBin', lidarConfig.nBin);
     fprintf('[%s] Finish!\n', tNow);
 
     %% convert lidar data

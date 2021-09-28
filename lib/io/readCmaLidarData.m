@@ -12,6 +12,7 @@ function [data] = readCmaLidarData(file, varargin)
 %        maximum bins to be exported.
 %    nBin: numeric
 %        number of bins in the lidar data file (default: 8000).
+%    flagFilenameTime: logical
 % OUTPUTS:
 %    data: struct
 %        mTime: datenum
@@ -36,8 +37,9 @@ p.KeepUnmatched = true;
 
 addRequired(p, 'file', @ischar);
 addParameter(p, 'flagDebug', false, @islogical);
+addParameter(p, 'flagFilenameTime', false, @islogical);
 addParameter(p, 'nMaxBin', [], @isnumeric);
-addParameter(p, 'nBin', 8000, @isnumeric);
+addParameter(p, 'nBin', [], @isnumeric);
 
 parse(p, file, varargin{:});
 
@@ -61,7 +63,7 @@ end
 
 %% read data
 % parse file metadata
-[lidarType, siteNo, ~, fileExt] = parseCmaLidarFilename(file);
+[lidarType, siteNo, filenameTime, fileExt] = parseCmaLidarFilename(file);
 
 if ~ strcmpi(fileExt, '.bin')
     warning('Invalid lidar data type: %s', file);
@@ -95,27 +97,49 @@ fread(fileID, 2, 'uint8');   % wavelength 2
 fread(fileID, 2, 'uint8');   % wavelength 3
 rawChs = fread(fileID, 2, 'uint8');   % number of detection channels.
 nCh = uint8_2_double(rawChs);
-rawChInfo = fread(fileID, [16, nCh], 'uint8');   % metadata of each channel
-rawBackscatter = fread(fileID, [p.Results.nBin, nCh], 'float32');   % backscatter signal
+rawChInfo = fread(fileID, [16, 16], 'uint8');   % metadata of each channel
 
 % decode channel metadata
 ChNo = [];   % channel index
 detectMode = [];   % detection mode: AD; PC; Merge
+recWL = [];
 ChType = [];   % channel type: elastic, Raman or polarization
 hRes = [];   % range resolution. (m)
 hFOV = [];   % height of blind zone. (m)
 firstBin = [];   % pointer of first bin in binary file
 nBin = [];   % number of bins
 for iCh = 1:nCh
-    [thisChNo, thisDetectMode, thisChType, thisHRes, thisHFOV, thisFirstBin, thisNBin] = parseCmaLidarInfo(rawChInfo(:, iCh));
+    [thisChNo, thisDetectMode, thisRecWL, thisChType, thisHRes, thisHFOV, thisFirstBin, thisNBin] = parseCmaLidarInfo(rawChInfo(:, iCh));
 
     ChNo = cat(2, ChNo, thisChNo);
     detectMode = cat(2, detectMode, thisDetectMode);
+    recWL = cat(2, recWL, thisRecWL);
     ChType = cat(2, ChType, thisChType);
     hRes = cat(2, hRes, thisHRes);
     hFOV = cat(2, hFOV, thisHFOV);
     firstBin = cat(2, firstBin, thisFirstBin);
     nBin = cat(2, nBin, thisNBin);
+end
+
+if isempty(p.Results.nBin)
+    nBin = max(nBin);
+else
+    nBin = p.Results.nBin;
+end
+
+rawBackscatter = fread(fileID, Inf, 'float32');   % backscatter signal
+if length(rawBackscatter) >= 8000*16
+    % filled with 8000 bins
+    rawSignal = NaN(nCh, length(rawBackscatter) / 16);
+    for iCh = 1:nCh
+        rawSignal(iCh, :) = rawBackscatter(((iCh - 1) * length(rawBackscatter) / 16 + 1):(iCh * length(rawBackscatter) / 16));
+    end
+else
+    % non-filled
+    rawSignal = NaN(nCh, length(rawBackscatter) / nCh);
+    for iCh = 1:nCh
+        rawSignal(iCh, :) = rawBackscatter(((iCh - 1) * length(rawBackscatter) / nCh + 1):(iCh * length(rawBackscatter) / nCh));
+    end
 end
 
 fclose(fileID);
@@ -136,8 +160,13 @@ else
     nMaxBin = p.Results.nMaxBin;
 end
 data.elevation_angle = uint8_2_double(rawElevAng) / 8 * 180 / 4096;
-data.mTime = datenum(1970, 1, 1) + uint8_2_double(rawDate) + datenum(0, 1, 0, 0, 0, uint8_2_double(rawStopTime));
-data.height = transpose(1:nMaxBin) * unique(hRes) * sin(data.elevation_angle ./ 180 * pi);   % (m)
+if ~ p.Results.flagFilenameTime
+    data.mTime = datenum(1970, 1, 1) + uint8_2_double(rawDate) + datenum(0, 1, 0, 0, 0, uint8_2_double(rawStopTime));
+else
+    data.mTime = filenameTime;
+end
+% data.height = transpose(1:nMaxBin) * unique(hRes) * sin(data.elevation_angle ./ 180 * pi);   % (m)
+data.height = transpose(1:nMaxBin) * unique(hRes) * sin(90 ./ 180 * pi);   % (m)
 data.longitude = uint8_2_double(rawLon) / 8 * 180 / 4096;
 data.latitude = uint8_2_double(rawLat) / 8 * 180 / 4096;
 data.asl = uint8_2_double(rawASL);
@@ -148,6 +177,6 @@ data.metadata.siteNo = siteNo;
 data.metadata.file_header = fileHeader;
 data.metadata.version = uint8_2_double(verNo);
 
-data.rawSignal = transpose(rawBackscatter(1:nMaxBin, :));
+data.rawSignal = rawSignal(:, 1:nMaxBin);
 
 end
