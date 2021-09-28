@@ -89,9 +89,17 @@ for iLidar = 1:length(lidarType)
 
         if ~ isempty(lidarConfig.markTRange)
             isChosenMark = (lidarData.mTime >= tRangeMark(1)) & (lidarData.mTime <= tRangeMark(2));
-            rcs532pInt = nanmean(lidarData.rcs532p(:, isChosenMark), 2);
-            rcs532sInt = nanmean(lidarData.rcs532s(:, isChosenMark), 2);
-            vdr532Int = nanmean(lidarData.(['rcs', lidarConfig.vdrCompose{2}])(:, isChosenMark), 2) ./ nanmean(lidarData.(['rcs', lidarConfig.vdrCompose{1}])(:, isChosenMark), 2) * lidarConfig.vdrCompose{3} + lidarConfig.vdrCompose{4};
+
+            if ~ any(isChosenMark)
+                warning('No profiles were chosen for tRangeMark!');
+                rcs532pInt = NaN(size(lidarData.height));
+                rcs532sInt = NaN(size(lidarData.height));
+                vdr532Int = NaN(size(lidarData.height));
+            else
+                rcs532pInt = nanmean(lidarData.rcs532p(:, isChosenMark), 2);
+                rcs532sInt = nanmean(lidarData.rcs532s(:, isChosenMark), 2);
+                vdr532Int = nanmean(lidarData.(['rcs', lidarConfig.vdrCompose{2}])(:, isChosenMark), 2) ./ nanmean(lidarData.(['rcs', lidarConfig.vdrCompose{1}])(:, isChosenMark), 2) * lidarConfig.vdrCompose{3} + lidarConfig.vdrCompose{4};
+            end
         end
 
         % signal regrid
@@ -104,7 +112,9 @@ for iLidar = 1:length(lidarType)
         if p.Results.flagCorTime
             % correct time drift
             mTimeGrid(1) = mTime(1);
-            sigGrid(:, 1) = sig(:, 1);
+            rcs532pGrid(:, 1) = rcs532p(:, 1);
+            rcs532sGrid(:, 1) = rcs532s(:, 1);
+            vdr532Grid(:, 1) = vdr532(:, 1);
             tIndGrid(1) = 1;
             for iT = 2:length(mTime)
                 tInd = floor((mTime(iT) - mTime(iT - 1) + 1e-9 + 0.1 * deltaT) / deltaT) + tIndGrid(iT - 1);
@@ -223,7 +233,7 @@ for iLidar = 1:length(lidarType)
         if p.Results.flagDebug && p.Results.flagDebug
             displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig532sh(:, isChosenMark), lidarData.sig532sl(:, isChosenMark), lidarData.mergeRange(1, :), 'channelTag', '532S', 'hRange', lidarConfig.hRange(1, :), 'cRange', lidarConfig.sigRange(1, :), 'mergeSlope', lidarData.mergeSlope(1), 'mergeOffset', lidarData.mergeOffset(1), 'figFolder', config.evaluationReportPath);
             displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig532ph(:, isChosenMark), lidarData.sig532pl(:, isChosenMark), lidarData.mergeRange(2, :), 'channelTag', '532P', 'hRange', lidarConfig.hRange(2, :), 'cRange', lidarConfig.sigRange(2, :), 'mergeSlope', lidarData.mergeSlope(2), 'mergeOffset', lidarData.mergeOffset(2), 'figFolder', config.evaluationReportPath);
-            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig607h(:, isChosenMark), lidarData.sig607l(:, isChosenMark), lidarData.mergeRange(3, :), 'channelTag', '607', 'hRange', lidarConfig.hRange(3, :), 'cRange', lidarConfig.sigRange(3, :), 'mergeSlope', lidarData.mergeSlope(3), 'mergeOffset', lidarData.mergeOffset(3), 'figFolder', config.evaluationReportPath);
+            displayREALSigMerge(lidarData.height, lidarData.mTime(isChosenMark), lidarData.sig607h(:, isChosenMark), lidarData.sig607l(:, isChosenMark), lidarData.mergeRange(3, :), 'channelTag', '607', 'hRange', lidarConfig.hRange(3, :), 'cRange', [1e10, 1e13], 'mergeSlope', lidarData.mergeSlope(3), 'mergeOffset', lidarData.mergeOffset(3), 'figFolder', config.evaluationReportPath);
         end
 
         % integral signal

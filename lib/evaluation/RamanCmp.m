@@ -253,7 +253,10 @@ plot([0, 0], [-100000, 100000], '--k');
 for iES = 1:nES
     p3 = plot([-1, -1] * config.externalChkCfg.RamanCmpCfg.maxDevBsc(iES, 1), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Mean Dev.');
     plot([1, 1] * config.externalChkCfg.RamanCmpCfg.maxDevBsc(iES, 1), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances0 = cat(1, lineInstances0, p3);
+
+    if iES <= 1
+        lineInstances0 = cat(1, lineInstances0, p3);
+    end
 end
 
 for iPatch = 1:nES
@@ -269,7 +272,10 @@ end
 for iES = 1:nES
     p4 = plot([-1, -1] * config.externalChkCfg.RamanCmpCfg.maxDevBsc(iES, 2), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Standard Dev.');
     plot([1, 1] * config.externalChkCfg.RamanCmpCfg.maxDevBsc(iES, 2), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances0 = cat(1, lineInstances0, p4);
+
+    if iES <= 1
+        lineInstances0 = cat(1, lineInstances0, p4);
+    end
 end
 
 for iPatch = 1:nES
@@ -312,7 +318,10 @@ plot([0, 0], [-100000, 100000], '--k');
 for iES = 1:nES
     p3 = plot([-1, -1] * config.externalChkCfg.RamanCmpCfg.maxDevBsc(iES, 1), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Mean Dev.');
     plot([1, 1] * config.externalChkCfg.RamanCmpCfg.maxDevBsc(iES, 1), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances1 = cat(1, lineInstances1, p3);
+
+    if iES <= 1
+        lineInstances1 = cat(1, lineInstances1, p3);
+    end
 end
 
 for iPatch = 1:nES
@@ -328,7 +337,10 @@ end
 for iES = 1:nES
     p4 = plot([-1, -1] * config.externalChkCfg.RamanCmpCfg.maxDevBsc(iES, 2), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Standard Dev.');
     plot([1, 1] * config.externalChkCfg.RamanCmpCfg.maxDevBsc(iES, 2), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances1 = cat(1, lineInstances1, p4);
+
+    if iES <= 1
+        lineInstances1 = cat(1, lineInstances1, p4);
+    end
 end
 
 for iPatch = 1:nES
@@ -371,7 +383,10 @@ plot([0, 0], [-100000, 100000], '--k');
 for iES = 1:nES
     p3 = plot([-1, -1] * config.externalChkCfg.RamanCmpCfg.maxDevExt(iES, 1), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Mean Dev.');
     plot([1, 1] * config.externalChkCfg.RamanCmpCfg.maxDevExt(iES, 1), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances0 = cat(1, lineInstances0, p3);
+
+    if iES <= 1
+        lineInstances0 = cat(1, lineInstances0, p3);
+    end
 end
 
 for iPatch = 1:nES
@@ -387,7 +402,10 @@ end
 for iES = 1:nES
     p4 = plot([-1, -1] * config.externalChkCfg.RamanCmpCfg.maxDevExt(iES, 2), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Standard Dev.');
     plot([1, 1] * config.externalChkCfg.RamanCmpCfg.maxDevExt(iES, 2), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances0 = cat(1, lineInstances0, p4);
+
+    if iES <= 1
+        lineInstances0 = cat(1, lineInstances0, p4);
+    end
 end
 
 for iPatch = 1:nES
@@ -430,7 +448,10 @@ plot([0, 0], [-100000, 100000], '--k');
 for iES = 1:nES
     p3 = plot([-1, -1] * config.externalChkCfg.RamanCmpCfg.maxDevExt(iES, 1), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Mean Dev.');
     plot([1, 1] * config.externalChkCfg.RamanCmpCfg.maxDevExt(iES, 1), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances1 = cat(1, lineInstances1, p3);
+
+    if iES <= 1
+        lineInstances1 = cat(1, lineInstances1, p3);
+    end
 end
 
 for iPatch = 1:nES
@@ -446,7 +467,10 @@ end
 for iES = 1:nES
     p4 = plot([-1, -1] * config.externalChkCfg.RamanCmpCfg.maxDevExt(iES, 2), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Standard Dev.');
     plot([1, 1] * config.externalChkCfg.RamanCmpCfg.maxDevExt(iES, 2), config.externalChkCfg.RamanCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances1 = cat(1, lineInstances1, p4);
+
+    if iES <= 1
+        lineInstances1 = cat(1, lineInstances1, p4);
+    end
 end
 
 for iPatch = 1:nES

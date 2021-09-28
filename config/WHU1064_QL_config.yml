@@ -12,7 +12,7 @@ figFormat: png   # figure format to be exported
 dataLoaderCfg:
   WHULidar1064:   # lidar No.1
     dataPath: D:\Data\CMA_Lidar_Comparison\WHU1064\2021-09-27
-    dataFilenamePattern: .*   # all files
+    dataFilenamePattern: .*Standard.*.dat   # all files
     # data type
     # 1: WHU standard 1064 nm lidar
     # 2: WHU non-standard 1064 nm lidar
@@ -36,9 +36,9 @@ dataVisualCfg:
       nPretrigger: 15   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
       overlapFile: ''
-    tRange: '2021-09-27 00:00:00 ~ 2021-09-27 23:40:00'
-    hRange: [0, 4000]
-    sigRange: [1e6, 1e10]
+    tRange: '2021-09-27 15:00:00 ~ 2021-09-27 23:40:00'
+    hRange: [0, 14000]
+    sigRange: [1e6, 1e9]
     title: 'WHU1064 2021-09-27'
     deltaT: 1   # temporal resolution (min)
-    markTRange: ''
+    markTRange: '2021-09-27 19:30:00 ~ 2021-09-27 20:00:00'

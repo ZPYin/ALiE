@@ -152,10 +152,10 @@ meanSigDev = NaN(nES, length(lidarType));
 for iES = 1:nES
     isInES = (height >= config.externalChkCfg.RCSCmpCfg.hChkRange(iES, 1)) & (height <= config.externalChkCfg.RCSCmpCfg.hChkRange(iES, 2));
 
-    meanSigDev(iES, :) = nanmean(abs(sigDev(isInES)));
+    meanSigDev(iES, :) = nanmean(abs(sigDev(isInES, :)), 1);
 
     for iLidar = 2:length(lidarType)
-        fprintf(fid, 'Mean relative deviations of %s: %6.2f%% (max: %6.2f%%)\n', lidarType{iLidar}, meanSigDev(iES, iLidar), config.externalChkCfg.RCSCmpCfg.maxDev(iES));
+        fprintf(fid, 'Mean relative deviations of %s between %f - %f: %6.2f%% (max: %6.2f%%)\n', lidarType{iLidar}, config.externalChkCfg.RCSCmpCfg.hChkRange(iES, 1), config.externalChkCfg.RCSCmpCfg.hChkRange(iES, 2), meanSigDev(iES, iLidar), config.externalChkCfg.RCSCmpCfg.maxDev(iES));
     end
 end
 
@@ -271,7 +271,7 @@ set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'Layer', 'Top', 'Box', 'on', 'L
 
 lgHandle = legend(lineInstances1, 'Location', 'NorthEast');
 lgHandle.Interpreter = 'None';
-text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
+text(-0.2, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), 'Units', 'Normalized', 'FontSize', 10, 'HorizontalAlignment', 'left', 'FontWeight', 'Bold');
 
 if exist(config.evaluationReportPath, 'dir')
     export_fig(gcf, fullfile(config.evaluationReportPath, sprintf('signal_mean_deviation.%s', config.figFormat)), '-r300');

@@ -19,6 +19,10 @@ addRequired(p, 'chTag', @iscell);
 
 parse(p, inData, oFile, chTag, varargin{:});
 
+if isempty(inData.rawSignal)
+    return;
+end
+
 if size(inData.rawSignal, 1) ~= length(chTag)
     errStruct.message = 'Wrong configuration for chTag';
     errStruct.identifier = 'LEToolbox:Err003';

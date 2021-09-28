@@ -18,8 +18,8 @@ function [sigGlue] = sigMergeREAL(sigH, sigL, height, mergeRange, slope, offset)
 %    2021-09-20: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
 
-weightL = (height <= mergeRange(1)) + ((height >= mergeRange(1)) & (height <= mergeRange(2))) .* ((height - mergeRange(1)) ./ (mergeRange(2) - mergeRange(1)));
-weightH = 1 - weightL;
+weightH = (height >= mergeRange(1)) + ((height <= mergeRange(1)) & (height <= mergeRange(2))) .* ((height - mergeRange(1)) ./ (mergeRange(2) - mergeRange(1)));
+weightL = 1 - weightH;
 
 sigGlue = repmat(weightL, 1, size(sigH, 2)) .* (sigL * slope + offset) + repmat(weightH, 1, size(sigH, 2)) .* sigH;
 

@@ -158,7 +158,7 @@ figure('Position', [0, 10, 550, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible'
 lineInstances = [];
 lineInstances(1) = plot(height, cmpSigNorm(:, 1), 'Color', 'k', 'Marker', 's', 'MarkerFaceColor', 'k', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{1}); hold on;
 for iLidar = 2:length(lidarType)
-    p1 = plot(height, cmpSigNorm(:, iLidar), 'Marker', 'o', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{iLidar}); hold on;
+    p1 = plot(height, cmpSigNorm(:, iLidar), 'Marker', 'o', 'MarkerSize', 5, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{iLidar}); hold on;
     lineInstances = cat(1, lineInstances, p1);
 end
 
@@ -187,7 +187,7 @@ figure('Position', [0, 10, 550, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible'
 
 lineInstances1 = [];
 for iLidar = 2:length(lidarType)
-    p1 = plot(hLag, corrVal(:, iLidar), 'Marker', 'o', 'LineStyle', '-', 'Color', lineInstances(iLidar).Color, 'LineWidth', 2, 'DisplayName', sprintf('%s: %4.1f m', lidarType{iLidar}, hMaxLag(iLidar))); hold on;
+    p1 = plot(hLag, corrVal(:, iLidar), 'Marker', 'o', 'MarkerSize', 5, 'LineStyle', '-', 'Color', lineInstances(iLidar).Color, 'LineWidth', 2, 'DisplayName', sprintf('%s: %4.1f m', lidarType{iLidar}, hMaxLag(iLidar))); hold on;
     lineInstances1 = cat(1, lineInstances1, p1);
 
     plot([hMaxLag(iLidar), hMaxLag(iLidar)], [0, maxCorr(iLidar)], 'LineStyle', '--', 'Color', p1.Color, 'LineWidth', 2);

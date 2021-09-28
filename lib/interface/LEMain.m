@@ -72,6 +72,11 @@ if p.Results.flagReadData
     convertLidarData(config, 'flagDebug', p.Results.flagDebug);
 end
 
+if p.Results.flagQL
+    % lidar data quicklooks
+    displayQL(config, 'flagDebug', p.Results.flagDebug);
+end
+
 if p.Results.flagInternalChk
     % lidar internal check
     internalChk(config, 'flagDebug', p.Results.flagDebug);
@@ -80,11 +85,6 @@ end
 if p.Results.flagExternalChk
     % lidar external check
     externalChk(config, 'flagDebug', p.Results.flagDebug);
-end
-
-if p.Results.flagQL
-    % lidar data quicklooks
-    displayQL(config, 'flagDebug', p.Results.flagDebug);
 end
 
 end

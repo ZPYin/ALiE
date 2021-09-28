@@ -51,8 +51,8 @@ case 11
 
     %% parameter initialization (only for REAL data)
     % mergeRange = [1230, 1260; 1230, 1260; 1000, 1500];   % height range for signal merge. (m)
-    mergeRange = [1300, 2500; 1300, 2500; 1000, 1500];   % height range for signal merge. (m)
-    mergeSlope = [16.9612, 586.4, 1];   % normalization ratio for 532S, 532P, 607 (High / Low)
+    mergeRange = [800, 1200; 1000, 1500; 500, 1000];   % height range for signal merge. (m)
+    mergeSlope = [17.5, 0, 48];   % normalization ratio for 532S, 532P, 607 (High / Low)
     mergeOffset = [0, 0, 0];
 
     % pretrigger removes for height
@@ -113,7 +113,8 @@ case 11
 
     % signal merge
     lidarData.sig532s = sigMergeREAL(lidarData.sig532sh, lidarData.sig532sl, lidarData.height, mergeRange(1, :), mergeSlope(1), mergeOffset(1));
-    lidarData.sig532p = sigMergeREAL(lidarData.sig532ph, lidarData.sig532pl, lidarData.height, mergeRange(2, :), mergeSlope(2), mergeOffset(2));
+    % lidarData.sig532p = sigMergeREAL(lidarData.sig532ph, lidarData.sig532pl, lidarData.height, mergeRange(2, :), mergeSlope(2), mergeOffset(2));
+    lidarData.sig532p = lidarData.sig532ph;
     lidarData.sig607 = sigMergeREAL(lidarData.sig607h, lidarData.sig607l, lidarData.height, mergeRange(3, :), mergeSlope(3), mergeOffset(3));
     lidarData.bg532s = lidarData.bg532sh;
     lidarData.bg532p = lidarData.bg532ph;

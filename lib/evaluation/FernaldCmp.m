@@ -163,7 +163,7 @@ for iES = 1:nES
     isInES = (height >= config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, 1)) & (height <= config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, 2));
 
     meanABscDev(iES, :) = nanmean(abs(aBscTmp(isInES, :) - repmat(aBscTmp(isInES, 1), 1, length(lidarType))) ./ repmat(aBscTmp(isInES, 1), 1, length(lidarType)), 1) * 100;
-    stdABscDev(iES, :) = nanstd(abs(aBscTmp(isInES, :) - repmat(aBscTmp(isInES, 1), 1, length(lidarType))) ./ repmat(aBscTmp(isInES, 1), 1, length(lidarType)), 0, 1) * 100;
+    stdABscDev(iES, :) = nanstd(abs(aBscTmp(isInES, :) - repmat(aBscTmp(isInES, 1), 1, length(lidarType))) ./ repmat(aBscTmp(isInES, 1), 1, length(lidarType)), 1) * 100;
 
     for iLidar = 2:length(lidarType)
         fprintf(fid, 'Mean relative deviations of %s: %6.2f%% (max: %6.2f%%)\n', lidarType{iLidar}, meanABscDev(iES, iLidar), config.externalChkCfg.FernaldCmpCfg.maxDev(iES, 1));
@@ -241,6 +241,7 @@ figure('Position', [0, 10, 300, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible'
 lineInstances0 = [];
 for iLidar = 2:length(lidarType)
     p1 = plot(aBscDev(:, iLidar), height, 'LineStyle', '-', 'Color', lineInstances(iLidar).Color, 'LineWidth', 2, 'DisplayName', lidarType{iLidar}); hold on;
+
     lineInstances0 = cat(1, lineInstances0, p1);
 end
 
@@ -250,7 +251,10 @@ plot([0, 0], [-100000, 100000], '--k');
 for iES = 1:nES
     p3 = plot([-1, -1] * config.externalChkCfg.FernaldCmpCfg.maxDev(iES, 1), config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Mean Dev.');
     plot([1, 1] * config.externalChkCfg.FernaldCmpCfg.maxDev(iES, 1), config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances0 = cat(1, lineInstances0, p3);
+
+    if iES <= 1
+        lineInstances0 = cat(1, lineInstances0, p3);
+    end
 end
 
 for iPatch = 1:nES
@@ -266,7 +270,10 @@ end
 for iES = 1:nES
     p4 = plot([-1, -1] * config.externalChkCfg.FernaldCmpCfg.maxDev(iES, 2), config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Standard Dev.');
     plot([1, 1] * config.externalChkCfg.FernaldCmpCfg.maxDev(iES, 2), config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances0 = cat(1, lineInstances0, p4);
+
+    if iES <= 1
+        lineInstances0 = cat(1, lineInstances0, p4);
+    end
 end
 
 for iPatch = 1:nES
@@ -300,6 +307,7 @@ figure('Position', [0, 10, 300, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible'
 lineInstances1 = [];
 for iLidar = 2:length(lidarType)
     p1 = scatter(meanABscDev(:, iLidar), mean(config.externalChkCfg.FernaldCmpCfg.hChkRange, 2), 25, 'Marker', 's', 'MarkerFaceColor', lineInstances(iLidar).Color, 'MarkerEdgeColor', lineInstances(iLidar).Color, 'DisplayName', lidarType{iLidar}); hold on;
+
     lineInstances1 = cat(1, lineInstances1, p1);
 end
 
@@ -309,7 +317,10 @@ plot([0, 0], [-100000, 100000], '--k');
 for iES = 1:nES
     p3 = plot([-1, -1] * config.externalChkCfg.FernaldCmpCfg.maxDev(iES, 1), config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Mean Dev.');
     plot([1, 1] * config.externalChkCfg.FernaldCmpCfg.maxDev(iES, 1), config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, :), '--', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances1 = cat(1, lineInstances1, p3);
+
+    if iES <= 1
+        lineInstances1 = cat(1, lineInstances1, p3);
+    end
 end
 
 for iPatch = 1:nES
@@ -325,7 +336,10 @@ end
 for iES = 1:nES
     p4 = plot([-1, -1] * config.externalChkCfg.FernaldCmpCfg.maxDev(iES, 2), config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2, 'DisplayName', 'Standard Dev.');
     plot([1, 1] * config.externalChkCfg.FernaldCmpCfg.maxDev(iES, 2), config.externalChkCfg.FernaldCmpCfg.hChkRange(iES, :), '-.', 'Color', [160, 160, 160]/255, 'LineWidth', 2);
-    lineInstances1 = cat(1, lineInstances1, p4);
+
+    if iES <= 1
+        lineInstances1 = cat(1, lineInstances1, p4);
+    end
 end
 
 for iPatch = 1:nES
