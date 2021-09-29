@@ -1,0 +1,217 @@
+################################################################################
+# lidar configuration file
+# DON'T use Chinese characters!!!
+################################################################################
+
+evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation
+dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation
+figFormat: png   # figure format to be exported
+
+# data loader configuration
+# Load lidar data to a specified directory (defined by `dataSavePath`)
+dataLoaderCfg:
+  WHULidar1064:   # lidar No.1
+    dataPath: D:\Data\CMA_Lidar_Comparison\WHU1064\2021-09-27
+    dataFilenamePattern: .*   # all files
+    # data type
+    # 1: WHU standard 1064 nm lidar
+    # 2: WHU non-standard 1064 nm lidar
+    # 3: CMA standard data format in binary
+    # 4: Dasun visibility lidar
+    # 5: REAL
+    dataFormat: 1
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h;
+    nMaxBin: 2048   # number of bins
+  WHULidar1064_2:   # lidar No.2
+    dataPath: D:\Data\CMA_Lidar_Comparison\WHU1064_2\27
+    dataFilenamePattern: .*   # all files
+    dataFormat: 2
+    chTag: ['1064e']
+    nMaxBin: 1300   # number of bins
+  REAL:   # lidar No.1
+    dataPath: D:\Data\CMA_Lidar_Comparison\REAL\Raman
+    dataFilenamePattern: .*   # all files
+    # data type
+    # 1: WHU standard 1064 nm lidar
+    # 2: WHU non-standard 1064 nm lidar
+    # 3: CMA standard data format in binary
+    # 4: Dasun visibility lidar
+    # 5: REAL
+    dataFormat: 5
+    chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    nMaxBin: 2300   # number of bins
+
+# external-check
+# Below is the struct of `externalChkCfg`, which was used to inter-compare lidars.
+externalChkCfg:
+  figVisible: 'on'   # whether display figures
+  WHULidar1064:
+    lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    overlapFile: ''
+    hOffset: 0   # height offset. (m)
+    tOffset: 0   # time offset. (min)
+    deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+    bgBins: [1500, 2000]   # [start index, stop index] for background correction
+    nPretrigger: 15   # if nPretrigger < 0, move signal up
+    bgCorFile: ''   # data file of dark measurement results
+  WHULidar1064_2:
+    lidarNo: 13   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    fullOverlapHeight: 200   # minimum height with complete overlap. (m)
+    overlapFile: ''
+    hOffset: 0   # height offset. (m)
+    tOffset: 0   # time offset. (min)
+    deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+    bgBins: [1200, 1250]   # [start index, stop index] for background correction
+    nPretrigger: 0   # if nPretrigger < 0, move signal up
+    bgCorFile: ''   # data file of dark measurement results
+  REAL:
+    lidarNo: 11   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    hOffset: 0   # height offset. (m)
+    tOffset: 0   # time offset. (min)
+    deadTime: [3.5, 3.5, 3.5, 3.5, 3.5, 30.4]   # deadtime (ns). If it's empty, deadtime correction is disabled.
+    bgBins: [1700, 2000]   # [start index, stop index] for background correction
+    nPretrigger: 55   # if nPretrigger < 0, move signal up
+    bgCorFile: ''   # data file of dark measurement results
+    overlapFile: ''
+  flagRangeCmp: true
+  flagRCSCmp: true
+  flagVDRCmp: true
+  flagFernaldCmp: true
+  flagRamanCmp: true
+  rangeCmpCfg:
+    LidarList: ['WHULidar1064', 'WHULidar1064_2']   # lidar in comparison (1: standard lidar)
+    tRange: '2021-09-27 19:00:00 ~ 2021-19-27 19:30:00'
+    hRange: [6000, 15000]
+    fitRange: [8000, 12000]
+    normRange: [2500, 3000]
+    sigRange: [1e8, 3e10]
+    sigCompose:
+      - [1]   # first lidar
+      - [1]   # second lidar
+    maxRangeDev: 15   # (m)
+  RCSCmpCfg:
+    LidarList: ['WHULidar1064', 'WHULidar1064_2']
+    sigCompose:
+      - [1]   # first lidar
+      - [1]   # second lidar
+    tRange: '2021-09-27 19:00:00 ~ 2021-19-27 19:30:00'
+    normRange: [2000, 3000]
+    hChkRange:
+      - [500, 2000]
+      - [2000, 5000]
+    maxDev:
+      - 10
+      - 20
+    smoothwindow:
+      - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
+      - [1000, 10000, 300]
+    hRange: [0, 5000]
+    sigRange: [1e8, 1e11]
+  VDRCmpCfg:
+    LidarList: ['REAL']
+    vdrCompose:
+      - ['532p', '532s', 0.85, 0]   # first lidar    [pChannel, sChannel, gainRatio, offset]
+    tRange: '2021-09-27 18:00:00 ~ 2021-09-27 19:00:00'
+    hChkRange:
+      - [500, 2000]
+      - [2000, 5000]
+    maxDev:
+      - [10, 10]   # [mean relative deviation, standard relative deviation]
+      - [20, 20]
+    smoothwindow:
+      - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
+      - [1000, 10000, 300]
+    hRange: [0, 5000]
+    vdrRange: [0, 0.4]
+  FernaldCmpCfg:
+    LidarList: ['WHULidar1064', 'WHULidar1064_2']
+    wavelength: 1064   # (nm)
+    sigCompose:
+      - [1]   # first lidar   # ratio for each channel; [1, 0]: 1 * sig_ch1 + 0 * sig_ch2
+      - [1]   # second lidar
+    tRange: '2021-09-27 18:00:00 ~ 2021-09-27 19:00:00'
+    refRange: [5000, 5500]
+    refValue: 1e-7   # (m^-1*sr^-1)
+    hChkRange:
+      - [500, 2000]
+      - [2000, 5000]
+    maxDev:
+      - [20, 20]   # [mean relative deviation, standard relative deviation]
+      - [40, 40]
+    minBsc: 1e-7   # (m^-1*sr^-1)
+    smoothwindow:
+      - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
+      - [1000, 10000, 300]
+    hRange: [0, 7000]
+    lidarRatio: 50   # (sr)
+    bscRange: [0, 0.5e-5]
+    extRange: [0, 2.5e-4]
+  RamanCmpCfg:
+    LidarList: ['REAL']
+    wavelengthMie: 532   # (nm)
+    wavelengthRaman: 607   # (nm)
+    RamanChTag: ['607', '607']
+    MieChCompose:
+      - ['532p', '532s', 0.85]   # Lidar 1: [pChannel, sChannel, gainRatio]
+    tRange: '2021-09-27 18:00:00 ~ 2021-09-27 19:00:00'
+    refRange: [5000, 5500]
+    refValue: 1e-7   # (m^-1*sr^-1)
+    hChkRange:
+      - [500, 2000]   # height range 1
+      - [2000, 5000]   # height range 2
+    maxBscDev:
+      - [20, 20]   # max bsc dev for height range 1
+      - [30, 40]   # max bsc dev for height range 2
+    maxExtDev:
+      - [25, 25]
+      - [40, 40]
+    minBsc: 1e-7   # (m^-1*sr^-1)
+    smoothwindow:
+      - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
+      - [1000, 10000, 300]
+    hRange: [0, 7000]
+    bscRange: [0, 0.5e-5]
+    extRange: [0, 2.5e-4]
+
+dataVisualCfg:
+  WHULidar1064:
+    lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1500, 2000]   # [start index, stop index] for background correction
+      nPretrigger: 15   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    tRange: '2021-09-27 15:00:00 ~ 2021-09-27 23:59:00'
+    hRange: [0, 14000]
+    sigRange: [1e6, 2.5e9]
+    title: 'WHU1064 2021-09-27'
+    deltaT: 1   # temporal resolution (min)
+    markTRange: '2021-09-27 19:00:00 ~ 2021-19-27 19:30:00'
+  WHULidar1064_2:
+    lidarNo: 13   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1100, 1200]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    tRange: '2021-09-27 15:00:00 ~ 2021-09-27 23:59:00'
+    hRange: [0, 14000]
+    sigRange: [0, 0.7e9]
+    title: 'WHU1064_2 2021-09-27'
+    deltaT: 0.5   # temporal resolution (min)
+    markTRange: '2021-09-27 19:00:00 ~ 2021-19-27 19:30:00'

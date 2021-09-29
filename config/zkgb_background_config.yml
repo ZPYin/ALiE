@@ -1,0 +1,43 @@
+evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\ZKGB
+dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\ZKGB
+figFormat: png   # figure format to be exported
+
+dataLoaderCfg:
+  GB:   # Zhongke Guang bo
+    dataPath: D:\Data\CMA_Lidar_Comparison\zkgb\background-noise
+    dataFilenamePattern: .*Lidar.*
+    chTag: ['532p', '532s']
+    dataFormat: 3
+    nMaxBin: 2000
+
+internalChkCfg:
+  GB:
+    lidarNo: 8   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1200, 1300]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: true   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    bgNoiseChkCfg:
+      closeTRange: '2021-09-16 10:46:00 ~ 2021-09-16 10:48:00'   # cover closed
+      randErrCalcWindowLength: 150   # window length for calculating random error. (m)
+      bgRange:
+        - [-2e-3, 2e-3]
+        - [-5e-3, 5e-3]
+      hRange:   # background display range. (m)
+        - [2000, 14000]
+        - [2000, 14000]

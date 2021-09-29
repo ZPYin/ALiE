@@ -1,0 +1,43 @@
+################################################################################
+# lidar configuration file
+# DON'T use Chinese characters!!!
+################################################################################
+
+evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\report
+dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\data
+figFormat: png   # figure format to be exported
+
+# data loader configuration
+# Load lidar data to a specified directory (defined by `dataSavePath`)
+dataLoaderCfg:
+  WHULidar1064:   # lidar No.1
+    dataPath: D:\Data\1064nm_lidar_comparison\20210918_telecover_test\2021-09-18
+    dataFilenamePattern: .*   # all files
+    # data type
+    # 1: WHU standard 1064 nm lidar
+    # 2: WHU non-standard 1064 nm lidar
+    # 3: CMA standard data format in binary
+    # 4: Dasun visibility lidar
+    # 5: REAL
+    dataFormat: 1
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    nMaxBin: 2048   # number of bins
+
+dataVisualCfg:
+  WHULidar1064:
+    lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1500, 2000]   # [start index, stop index] for background correction
+      nPretrigger: 15   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    tRange: '2021-09-18 16:36:00 ~ 2021-09-18 20:35:00'
+    markTRange: '2021-09-18 18:36:00 ~ 2021-09-18 19:35:00'
+    title: ''
+    hRange: [0, 10000]
+    deltaT: 1   # temporal resolution (min)

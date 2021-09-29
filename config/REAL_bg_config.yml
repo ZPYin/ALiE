@@ -1,0 +1,94 @@
+################################################################################
+# lidar configuration file
+# DON'T use Chinese characters!!!
+################################################################################
+
+evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\REAL_internalChk
+dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\REAL_internalChk
+figFormat: png   # figure format to be exported
+
+# data loader configuration
+# Load lidar data to a specified directory (defined by `dataSavePath`)
+dataLoaderCfg:
+  REAL:   # lidar No.1
+    dataPath: D:\Data\CMA_Lidar_Comparison\REAL\20210927-background-noise-2
+    dataFilenamePattern: .*   # all files
+    # data type
+    # 1: WHU standard 1064 nm lidar
+    # 2: WHU non-standard 1064 nm lidar
+    # 3: CMA standard data format in binary
+    # 4: Dasun visibility lidar
+    # 5: REAL
+    dataFormat: 5
+    chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    nMaxBin: 2300   # number of bins
+
+internalChkCfg:
+  REAL:
+    lidarNo: 11   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: [3.5, 3.5, 3.5, 3.5, 3.5, 30.4]   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1700, 2000]   # [start index, stop index] for background correction
+      nPretrigger: 55   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: true   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    bgNoiseChkCfg:
+      closeTRange: '2021-09-27 12:22:00 ~ 2021-09-27 12:55:00'   # cover closed
+      randErrCalcWindowLength: 150   # window length for calculating random error. (m)
+      bgRange:
+        - [-1000, 1000]
+        - [-1000, 1000]
+        - [-400, 400]
+        - [0, 1e3]
+        - [0, 1e3]
+        - [0, 1e3]
+      hRange:   # background display range. (m)
+        - [1000, 20000]
+        - [1000, 20000]
+        - [1000, 20000]
+        - [1000, 20000]
+        - [1000, 20000]
+        - [1000, 20000]
+
+# dataVisualCfg:
+#   REAL:
+#     lidarNo: 11   # lidar number. (see ./docs/lidarList.md)
+#     chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+#     figVisible: 'on'   # whether display figures
+#     preprocessCfg:
+#       hOffset: 0   # height offset. (m)
+#       tOffset: 0   # time offset. (min)
+#       deadTime: [3.5, 3.5, 3.5, 3.5, 3.5, 30.4]   # deadtime (ns). If it's empty, deadtime correction is disabled.
+#       bgBins: [1700, 2000]   # [start index, stop index] for background correction
+#       nPretrigger: 55   # if nPretrigger < 0, move signal up
+#       bgCorFile: ''   # data file of dark measurement results
+#       overlapFile: ''
+#     vdrCompose: ['532p', '532s', 0.85, 0]   # VDR: [pChannel, sChannel, gainRatio, offset]
+#     tRange: '2021-09-27 00:00:00 ~ 2021-09-27 12:00:00'
+#     hRange: 
+#       - [0, 3000]
+#       - [0, 5000]
+#       - [0, 5000]
+#     sigRange:
+#       - [1e10, 1e13]   # 532s
+#       - [1e10, 1e14]   # 532p
+#       - [0, 0.4]   # 607
+#     title: 
+#       - 'REAL 532 s'
+#       - 'REAL 532 p'
+#       - 'REAL volume depolarization ratio'
+#     deltaT: 1.13   # temporal resolution (min)
+#     markTRange: '2021-09-27 00:00:00 ~ 2021-09-27 15:30:00'

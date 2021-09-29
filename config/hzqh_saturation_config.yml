@@ -1,0 +1,56 @@
+evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\hzqh
+dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\hzqh
+figFormat: png   # figure format to be exported
+
+dataLoaderCfg:
+  SS:   # Qianhai
+    dataPath: D:\Data\CMA_Lidar_Comparison\hzqh\saturation_test
+    dataFilenamePattern: .*Lidar.*
+    dataFormat: 3
+    chTag: ['532p', '532s']
+    nMaxBin: 1000
+    nBin: 8000
+internalChkCfg:
+  SS:
+    lidarNo: 7   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [900, 950]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: true   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    saturationChkCfg:
+      tRange:
+        - '2021-09-27 21:44:00 ~ 2021-09-27 21:45:00'   # 100% transmission
+        - '2021-09-27 21:42:00 ~ 2021-09-27 21:43:00'   # 60% transmission
+        - '2021-09-27 21:34:00 ~ 2021-09-27 21:35:00'   # 30% transmission
+        - '2021-09-27 21:32:00 ~ 2021-09-27 21:33:00'   # 20% transmission
+        - '2021-09-27 21:30:00 ~ 2021-09-27 21:31:00'   # 10% transmission
+      sigRange:
+        - [1e3, 1e6]
+        - [1e5, 1e7]
+      hRange:
+        - [0, 4000]
+        - [0, 4000]
+      normRange:
+        - [500, 2000]
+        - [500, 2000]
+      maxDev:
+        - 10   # [%]
+        - 10   # [%]
+      smoothwindow:
+        - 90   # (m)
+        - 90   # (m)

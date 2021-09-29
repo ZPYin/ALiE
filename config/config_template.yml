@@ -128,6 +128,8 @@ internalChkCfg:
         - '2021-09-18 20:21:30 ~ 2021-09-18 20:21:38'   # north
         - '2021-09-18 20:23:00 ~ 2021-09-18 20:23:10'   # east2
       hRangeNear: [0, 1500]   # vertical range for near-range behavior to display. (m)
+      rcsDisplayRangeAll:
+        - [0, 1e11]   # range of rcs
       hRangeAll: [0, 5000]   # vertical range for overall behavior to display. (m)
       normRange: [800, 1500]   # normalization range. (m)
       normSigDisplayRangeAll: [0, 1.4e10]   # normalized signal display range. (photon count)
