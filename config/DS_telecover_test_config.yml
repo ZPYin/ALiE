@@ -4,7 +4,7 @@ figFormat: png   # figure format to be exported
 
 dataLoaderCfg:
   DS:   # Dasun
-    dataPath: D:\Data\CMA_Lidar_Comparison\ds\telecover-test
+    dataPath: D:\Data\CMA_Lidar_Comparison\internalChk\DS\telecover-test
     dataFilenamePattern: .*Lidar.*
     dataFormat: 3
     chTag: ['1064p', '1064s']

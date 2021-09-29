@@ -11,7 +11,7 @@ figFormat: png   # figure format to be exported
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
   REAL:   # lidar No.1
-    dataPath: D:\Data\CMA_Lidar_Comparison\REAL\Raman
+    dataPath: D:\Data\CMA_Lidar_Comparison\internalChk\REAL
     dataFilenamePattern: .*   # all files
     # data type
     # 1: WHU standard 1064 nm lidar

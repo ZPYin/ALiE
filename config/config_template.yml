@@ -10,7 +10,7 @@ figFormat: png   # figure format to be exported
 # data loader configuration
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
-  WHULidar1064:   # lidar No.1
+  WH1:   # lidar No.1
     dataPath: D:\Data\1064nm_lidar_comparison\20210918\WHU1064_1
     dataFilenamePattern: .*   # all files
     # data type
@@ -22,30 +22,30 @@ dataLoaderCfg:
     dataFormat: 1
     chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h;
     nMaxBin: 2048   # number of bins
-  WHULidar1064_2:   # lidar No.2
+  WH2:   # lidar No.2
     dataPath: D:\Data\1064nm_lidar_comparison\20210918\WHU1064_2
     dataFilenamePattern: .*   # all files
     dataFormat: 2
     chTag: ['1064e']
     nMaxBin: 1300   # number of bins
-  # Dasun1064:   # lidar No.3
-  #   dataPath: D:\Data\1064nm_lidar_comparison\20210909\Dasun-Pol
-  #   dataFilenamePattern: .*   # all files
-  #   dataFormat: 4
-  #   chTag: ['1064p', '1064s']
-  #   nMaxBin: 1300   # number of bins
-  # REAL:   # lidar No.4
-  #   dataPath: D:\Coding\Matlab\lidar_evaluation_1064\data\REAL
-  #   dataFilenamePattern: .*   # all files
-  #   dataFormat: 5
-  #   chTag: ['532p', '532s', '607']
-  #   nMaxBin: 2400   # number of bins
+  DS:   # lidar No.3
+    dataPath: D:\Data\1064nm_lidar_comparison\20210909\Dasun-Pol
+    dataFilenamePattern: .*   # all files
+    dataFormat: 4
+    chTag: ['1064p', '1064s']
+    nMaxBin: 1300   # number of bins
+  REAL:   # lidar No.4
+    dataPath: D:\Coding\Matlab\lidar_evaluation_1064\data\REAL
+    dataFilenamePattern: .*   # all files
+    dataFormat: 5
+    chTag: ['532p', '532s', '607']
+    nMaxBin: 2400   # number of bins
 
 # internal-check
 # Below is the struct of `internalChkCfg`, which holds the specific configurations for each lidar.
 # Lidar type is configured in the second level (with 1 indention), while the detailed configuration for each lidar is configured in the third level (with 2 indentions).
 internalChkCfg:
-  WHULidar1064:
+  WH1:
     lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
     chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
     figVisible: 'on'   # whether display figures
@@ -142,7 +142,7 @@ internalChkCfg:
 # Below is the struct of `externalChkCfg`, which was used to inter-compare lidars.
 externalChkCfg:
   figVisible: 'on'   # whether display figures
-  WHULidar1064:
+  WH1:
     lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
     chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
     fullOverlapHeight: 400   # minimum height with complete overlap. (m)
@@ -153,7 +153,7 @@ externalChkCfg:
     bgBins: [1500, 2000]   # [start index, stop index] for background correction
     nPretrigger: 15   # if nPretrigger < 0, move signal up
     bgCorFile: ''   # data file of dark measurement results
-  WHULidar1064_2:
+  WH2:
     lidarNo: 13   # lidar number. (see ./docs/lidarList.md)
     chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
     fullOverlapHeight: 200   # minimum height with complete overlap. (m)
@@ -170,7 +170,7 @@ externalChkCfg:
   flagFernaldCmp: false
   flagRamanCmp: true
   rangeCmpCfg:
-    LidarList: ['WHULidar1064', 'WHULidar1064_2']   # lidar in comparison (1: standard lidar)
+    LidarList: ['WH1', 'WH2']   # lidar in comparison (1: standard lidar)
     tRange: '2021-09-18 17:00:38 ~ 2021-09-18 18:00:50'
     hRange: [2000, 3000]
     fitRange: [2200, 2400]
@@ -181,7 +181,7 @@ externalChkCfg:
       - [1]   # second lidar
     maxRangeDev: 15   # (m)
   RCSCmpCfg:
-    LidarList: ['WHULidar1064', 'WHULidar1064_2']
+    LidarList: ['WH1', 'WH2']
     sigCompose:
       - [1]   # first lidar
       - [1]   # second lidar
@@ -199,7 +199,7 @@ externalChkCfg:
     hRange: [0, 5000]
     sigRange: [1e8, 1e11]
   VDRCmpCfg:
-    LidarList: ['WHULidar1064', 'WHULidar1064_2']
+    LidarList: ['WH1', 'WH2']
     vdrCompose:
       - ['532p', '532s', 1, 0]   # first lidar    [pChannel, sChannel, gainRatio, offset]
       - ['532p', '532s', 1, 0]   # second lidar
@@ -216,7 +216,7 @@ externalChkCfg:
     hRange: [0, 5000]
     vdrRange: [0, 0.4]
   FernaldCmpCfg:
-    LidarList: ['WHULidar1064', 'WHULidar1064_2']
+    LidarList: ['WH1', 'WH2']
     wavelength: 1064   # (nm)
     sigCompose:
       - [1]   # first lidar   # ratio for each channel; [1, 0]: 1 * sig_ch1 + 0 * sig_ch2
@@ -239,7 +239,7 @@ externalChkCfg:
     bscRange: [0, 0.5e-5]
     extRange: [0, 2.5e-4]
   RamanCmpCfg:
-    LidarList: ['WHULidar1064', 'WHULidar1064_2']
+    LidarList: ['WH1', 'WH2']
     wavelengthMie: 532   # (nm)
     wavelengthRaman: 607   # (nm)
     RamanChTag: ['607', '607']
@@ -265,3 +265,22 @@ externalChkCfg:
     hRange: [0, 7000]
     bscRange: [0, 0.5e-5]
     extRange: [0, 2.5e-4]
+
+dataVisualCfg:
+  WH1:
+    lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1500, 2000]   # [start index, stop index] for background correction
+      nPretrigger: 15   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    tRange: '2021-09-18 16:36:00 ~ 2021-09-18 20:35:00'
+    markTRange: '2021-09-18 18:36:00 ~ 2021-09-18 19:35:00'
+    title: ''
+    hRange: [0, 10000]
+    deltaT: 1   # temporal resolution (min)
