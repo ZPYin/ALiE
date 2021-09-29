@@ -177,11 +177,12 @@ figure('Position', [0, 10, 300, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible'
 cmpSigSmTmp = cmpSigSm;
 cmpSigSmTmp(cmpSigSmTmp <= 0) = NaN;
 lineInstances = [];
-lineInstances(1) = semilogx(cmpSigSmTmp(:, 1), height, 'Color', 'k', 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{1}); hold on;
 for iLidar = 2:length(lidarType)
     p1 = semilogx(cmpSigSmTmp(:, iLidar), height, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', lidarType{iLidar}); hold on;
     lineInstances = cat(1, lineInstances, p1);
 end
+p1 = semilogx(cmpSigSmTmp(:, 1), height, 'Color', 'k', 'LineStyle', '-', 'LineWidth', 1, 'DisplayName', lidarType{1}); hold on;
+lineInstances = [p1; lineInstances];
 
 % fit range
 plot(config.externalChkCfg.RCSCmpCfg.sigRange, [1, 1] * config.externalChkCfg.RCSCmpCfg.normRange(1), '--', 'Color', [152, 78, 163]/255, 'LineWidth', 2);

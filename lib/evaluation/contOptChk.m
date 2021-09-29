@@ -69,7 +69,9 @@ for iCh = 1:length(lidarConfig.chTag)
         tIndGrid(1) = 1;
         for iT = 2:length(mTime)
             tInd = floor((mTime(iT) - mTime(iT - 1) + 1e-9 + 0.1 * deltaT) / deltaT) + tIndGrid(iT - 1);
-            % fprintf('%d, %d, %s\n', iT, tInd, datestr(mTime(iT), 'yyyy-mm-dd HH:MM:SS'));
+            if tInd > length(mTimeGrid)
+                continue;
+            end
             tIndGrid(iT) = tInd;
             sigGrid(:, tInd) = sig(:, iT); 
         end
@@ -90,14 +92,14 @@ for iCh = 1:length(lidarConfig.chTag)
     ylabel('Height (m)');
     title(sprintf('Continuous operation (%s, %s)', lidarType, lidarConfig.chTag{iCh}));
 
-    xlim([mTimeGrid(1), mTimeGrid(end)]);
+    xlim([tRange(1), tRange(2)]);
     ylim(lidarConfig.contOptChkCfg.hRange);
     caxis(lidarConfig.contOptChkCfg.cRange(iCh, :));
     colormap('jet');
 
-    set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'XTick', linspace(mTimeGrid(1), mTimeGrid(end), 5), 'Layer', 'Top', 'Box', 'on', 'TickDir', 'out', 'LineWidth', 2);
+    set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'XTick', linspace(tRange(1), tRange(2), 5), 'Layer', 'Top', 'Box', 'on', 'TickDir', 'out', 'LineWidth', 2);
     ax = gca;
-    ax.XAxis.MinorTickValues = linspace(mTimeGrid(1), mTimeGrid(end), 25);
+    ax.XAxis.MinorTickValues = linspace(tRange(1), tRange(2), 25);
 
     datetick(gca, 'x', 'HH:MM', 'KeepTicks', 'KeepLimits');
     colorbar('Position', [0.91, 0.20, 0.03, 0.65], 'Units', 'Normalized');

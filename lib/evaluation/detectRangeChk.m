@@ -48,7 +48,7 @@ for iCh = 1:length(lidarConfig.chTag)
 
     % signal-noise ratio
     sig = nansum(lidarData.(['sig', lidarConfig.chTag{iCh}])(:, isChosen), 2);
-    bg = nansum(lidarData.(['bg', lidarConfig.chTag{iCh}])(isChosen));
+    bg = abs(nansum(lidarData.(['bg', lidarConfig.chTag{iCh}])(isChosen)));
     snr0 = lidarSNR(sig, bg, 'bgBins', lidarConfig.preprocessCfg.bgBins);
     fprintf(fid, 'Time slot: %s\nNumber of profiles: %d\n', lidarConfig.detectRangeChkCfg.tRange, sum(isChosen));
 

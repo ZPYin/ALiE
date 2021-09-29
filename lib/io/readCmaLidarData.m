@@ -26,7 +26,7 @@ function [data] = readCmaLidarData(file, varargin)
 %        metadata: struct
 %        hBlindZone: double
 %            height of blind zone for each channel. (m)
-%        rawSignal: double
+%        rawSignal: double (nCh x height)
 %            raw signal.
 % HISTORY:
 %    2021-09-18: first edition by Zhenping

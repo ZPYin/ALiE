@@ -76,9 +76,10 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
     topInd = find(normInd, 1, 'last');
     normRatio = nansum(MieRCS(normInd)) ./ nansum(mRCS(normInd));
     normMRCS = smooth(mRCS .* normRatio, smWinLen);
+    MieRCSSm = smooth(MieRCS, smWinLen);
 
     % determine Rayleigh fit
-    devRayleigh = (normMRCS - MieRCS) ./ normMRCS * 100;
+    devRayleigh = (normMRCS - MieRCSSm) ./ normMRCS * 100;
     isPassRayleighChk(iWL) = nanmean(abs(devRayleigh(normInd))) <= lidarConfig.RayleighChkCfg.maxDev(iWL);
     fprintf(fid, 'Normalization range: %f - %f m\n', lidarConfig.RayleighChkCfg.fitRange(iWL, 1), lidarConfig.RayleighChkCfg.fitRange(iWL, 2));
     fprintf(fid, 'Mean relative deviation: %f%% (max: %f%%)\n', nanmean(abs(devRayleigh(normInd))), lidarConfig.RayleighChkCfg.maxDev(iWL));
@@ -87,7 +88,7 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
     %% signal visualization
     figure('Position', [0, 10, 300, 400], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
 
-    rcsTmp = smooth(MieRCS, smWinLen);
+    rcsTmp = MieRCSSm;
     rcsTmp(rcsTmp <= 0) = NaN;
     mRCSTmp = normMRCS;
     mRCSTmp(mRCSTmp <= 0) = NaN;

@@ -36,7 +36,7 @@ dataVisualCfg:
       nPretrigger: 0   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
       overlapFile: ''
-    tRange: '2021-09-27 00:00:00 ~ 2021-09-27 23:59:00'
+    tRange: '2021-09-27 19:00:00 ~ 2021-09-27 19:30:00'
     hRange: [0, 14000]
     sigRange: [0, 0.7e9]
     title: 'WHU1064_2 2021-09-27'

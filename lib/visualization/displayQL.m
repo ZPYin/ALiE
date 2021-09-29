@@ -118,6 +118,10 @@ for iLidar = 1:length(lidarType)
             tIndGrid(1) = 1;
             for iT = 2:length(mTime)
                 tInd = floor((mTime(iT) - mTime(iT - 1) + 1e-9 + 0.1 * deltaT) / deltaT) + tIndGrid(iT - 1);
+                if tInd > length(mTimeGrid)
+                    continue;
+                end
+
                 tIndGrid(iT) = tInd;
                 rcs532pGrid(:, tInd) = rcs532p(:, iT);
                 rcs532sGrid(:, tInd) = rcs532s(:, iT);
@@ -308,6 +312,10 @@ for iLidar = 1:length(lidarType)
             tIndGrid(1) = 1;
             for iT = 2:length(mTime)
                 tInd = floor((mTime(iT) - mTime(iT - 1) + 1e-9 + 0.1 * deltaT) / deltaT) + tIndGrid(iT - 1);
+                if tInd > length(mTimeGrid)
+                    continue;
+                end
+
                 tIndGrid(iT) = tInd;
                 rcs532pGrid(:, tInd) = rcs532p(:, iT); 
                 rcs532sGrid(:, tInd) = rcs532s(:, iT); 
@@ -413,6 +421,10 @@ for iLidar = 1:length(lidarType)
             tIndGrid(1) = 1;
             for iT = 2:length(mTime)
                 tInd = floor((mTime(iT) - mTime(iT - 1) + 1e-9 + 0.1 * deltaT) / deltaT) + tIndGrid(iT - 1);
+                if tInd > length(mTimeGrid)
+                    continue;
+                end
+
                 tIndGrid(iT) = tInd;
                 sigGrid(:, tInd) = sig(:, iT); 
             end

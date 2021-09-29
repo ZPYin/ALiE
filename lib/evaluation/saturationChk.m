@@ -164,10 +164,12 @@ for iCh = 1:length(lidarConfig.chTag)
     sigT4Tmp(sigT4Tmp <= 0) = NaN;
     sigT5Tmp = sigT5Sm;
     sigT5Tmp(sigT5Tmp <= 0) = NaN;
-    hShaded = patch([(100 - lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * sigT1Tmp(~ isnan(sigT1Tmp)); (100 + lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * flipud(sigT1Tmp(~ isnan(sigT1Tmp)))], [lidarData.height(~ isnan(sigT1Tmp)); flipud(lidarData.height(~ isnan(sigT1Tmp)))], [211, 211, 211]/255); hold on;
-    hShaded.FaceAlpha = 0.6;
-    hShaded.EdgeColor = 'None';
-    p2 = semilogx(sigT2Tmp, lidarData.height, 'Color', [106, 142, 34]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '80');
+    if any(~ isnan(sigT1Tmp))
+        hShaded = patch([(100 - lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * sigT1Tmp(~ isnan(sigT1Tmp)); (100 + lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * flipud(sigT1Tmp(~ isnan(sigT1Tmp)))], [lidarData.height(~ isnan(sigT1Tmp)); flipud(lidarData.height(~ isnan(sigT1Tmp)))], [211, 211, 211]/255); hold on;
+        hShaded.FaceAlpha = 0.6;
+        hShaded.EdgeColor = 'None';
+    end
+    p2 = semilogx(sigT2Tmp, lidarData.height, 'Color', [106, 142, 34]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '80'); hold on;
     p3 = semilogx(sigT3Tmp, lidarData.height, 'Color', [0, 191, 254]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '50');
     p4 = semilogx(sigT4Tmp, lidarData.height, 'Color', [230, 216, 189]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '20');
     p5 = semilogx(sigT5Tmp, lidarData.height, 'Color', [165, 118, 30]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '10');
@@ -200,10 +202,12 @@ for iCh = 1:length(lidarConfig.chTag)
     sigT4Tmp(sigT4Tmp <= 0) = NaN;
     sigT5Tmp = sigT5Norm;
     sigT5Tmp(sigT5Tmp <= 0) = NaN;
-    hShaded = patch([(100 - lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * sigT1Tmp(~ isnan(sigT1Tmp)); (100 + lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * flipud(sigT1Tmp(~ isnan(sigT1Tmp)))], [lidarData.height(~ isnan(sigT1Tmp)); flipud(lidarData.height(~ isnan(sigT1Tmp)))], [211, 211, 211]/255); hold on;
-    hShaded.FaceAlpha = 0.6;
-    hShaded.EdgeColor = 'None';
-    p2 = semilogx(sigT2Tmp, lidarData.height, 'Color', [106, 142, 34]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '80');
+    if any(~ isnan(sigT1Tmp))
+        hShaded = patch([(100 - lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * sigT1Tmp(~ isnan(sigT1Tmp)); (100 + lidarConfig.saturationChkCfg.maxDev(iCh)) / 100 * flipud(sigT1Tmp(~ isnan(sigT1Tmp)))], [lidarData.height(~ isnan(sigT1Tmp)); flipud(lidarData.height(~ isnan(sigT1Tmp)))], [211, 211, 211]/255); hold on;
+        hShaded.FaceAlpha = 0.6;
+        hShaded.EdgeColor = 'None';
+    end
+    p2 = semilogx(sigT2Tmp, lidarData.height, 'Color', [106, 142, 34]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '80'); hold on;
     p3 = semilogx(sigT3Tmp, lidarData.height, 'Color', [0, 191, 254]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '50');
     p4 = semilogx(sigT4Tmp, lidarData.height, 'Color', [230, 216, 189]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '20');
     p5 = semilogx(sigT5Tmp, lidarData.height, 'Color', [165, 118, 30]/255, 'LineStyle', '-', 'LineWidth', 2, 'DisplayName', '10');

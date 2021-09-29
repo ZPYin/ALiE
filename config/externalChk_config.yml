@@ -3,20 +3,20 @@
 # DON'T use Chinese characters!!!
 ################################################################################
 
-evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\externalChk
+evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\externalChk_20210929
 dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\externalChk
 figFormat: png   # figure format to be exported
 
 # data loader configuration
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
-  # AW:   # Ai wo si
-  #   dataPath: D:\Data\CMA_Lidar_Comparison\externalChk\aws
-  #   dataFilenamePattern: .*Lidar.*   # all files
-  #   dataFormat: 3
-  #   chTag: ['532p', '532s']
-  #   nMaxBin: 1800   # number of bins
-  #   flagFilenameTime: true
+  AW:   # Ai wo si
+    dataPath: D:\Data\CMA_Lidar_Comparison\externalChk\aws
+    dataFilenamePattern: .*Lidar.*   # all files
+    dataFormat: 3
+    chTag: ['532p', '532s']
+    nMaxBin: 1800   # number of bins
+    flagFilenameTime: true
   SY:   # Shan yi suo
     dataPath: D:\Data\CMA_Lidar_Comparison\externalChk\sys
     dataFilenamePattern: .*Lidar.*   # all files
@@ -37,6 +37,13 @@ dataLoaderCfg:
     dataFormat: 3
     chTag: ['1064p', '1064s']
     nMaxBin: 1250
+  DS1:   # Dasun1
+    dataPath: D:\Data\CMA_Lidar_Comparison\externalChk\DS1
+    dataFilenamePattern: .*Lidar.*
+    dataFormat: 3
+    chTag: ['1064e']
+    nMaxBin: 1330
+    flagFilenameTime: true
   SS:   # Qianhai
     dataPath: D:\Data\CMA_Lidar_Comparison\externalChk\Hz_QH
     dataFilenamePattern: .*Lidar.*
@@ -76,215 +83,243 @@ dataLoaderCfg:
     nMaxBin: 2300   # number of bgBins
 
 internalChkCfg:
-  # WH1:
-  #   lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
-  #   chTag: ['1064e']
-  #   figVisible: 'on'   # whether display figures
-  #   preprocessCfg:
-  #     hOffset: 0   # height offset. (m)
-  #     tOffset: 0   # time offset. (min)
-  #     deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-  #     bgBins: [1500, 2000]   # [start index, stop index] for background correction
-  #     nPretrigger: 15   # if nPretrigger < 0, move signal up
-  #     bgCorFile: ''   # data file of dark measurement results
-  #     overlapFile: ''
-  #   fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-  #   flagRetrievalChk: false   # backscatter retrieval check
-  #   flagSaturationChk: false   # signal saturation check
-  #   flagQuadrantChk: false   # quadrant check
-  #   flagOverlapChk: false   # overlap evaluation
-  #   flagRayleighChk: false   # Rayleigh fit check
-  #   flagBgNoiseChk: false   # background noise check
-  #   flagDetectRangeChk: false   # detection ability check
-  #   flagContOptChk: true   # continuous operation check
-  #   contOptChkCfg:
-  #     deltaT: 1   # temporal resolution (min)
-  #     nMinProfile: 1440   # minimum profiles required
-  #     tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
-  #     hRange: [0, 13000]
-  #     cRange:   # color range for Range-corrected signal
-  #       - [0, 0.2e10]   # channel 1
-  # REAL:
-  #   lidarNo: 11   # lidar number. (see ./docs/lidarList.md)
-  #   chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']
-  #   figVisible: 'on'   # whether display figures
-  #   preprocessCfg:
-  #     hOffset: 0   # height offset. (m)
-  #     tOffset: 0   # time offset. (min)
-  #     deadTime: [3.5, 3.5, 3.5, 3.5, 3.5, 30.4]   # deadtime (ns). If it's empty, deadtime correction is disabled.
-  #     bgBins: [1700, 2000]   # [start index, stop index] for background correction
-  #     nPretrigger: 55   # if nPretrigger < 0, move signal up
-  #     bgCorFile: ''   # data file of dark measurement results
-  #     overlapFile: ''
-  #   fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-  #   flagRetrievalChk: false   # backscatter retrieval check
-  #   flagSaturationChk: false   # signal saturation check
-  #   flagQuadrantChk: false   # quadrant check
-  #   flagOverlapChk: false   # overlap evaluation
-  #   flagRayleighChk: false   # Rayleigh fit check
-  #   flagBgNoiseChk: false   # background noise check
-  #   flagDetectRangeChk: false   # detection ability check
-  #   flagContOptChk: true   # continuous operation check
-  #   contOptChkCfg:
-  #     deltaT: 1   # temporal resolution (min)
-  #     nMinProfile: 1440   # minimum profiles required
-  #     tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
-  #     hRange: [0, 13000]
-  #     cRange:   # color range for Range-corrected signal
-  #       - [0, 0.2e14]   # channel 1
-  #       - [0, 0.2e14]   # channel 1
-  #       - [0, 0.5e13]   # channel 1
-  #       - [0, 0.2e14]   # channel 1
-  #       - [0, 0.2e12]   # channel 1
-  #       - [0, 0.2e12]   # channel 1
-  # DS:
-  #   lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
-  #   chTag: ['1064p', '1064s']
-  #   figVisible: 'on'   # whether display figures
-  #   preprocessCfg:
-  #     hOffset: 0   # height offset. (m)
-  #     tOffset: 0   # time offset. (min)
-  #     deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-  #     bgBins: [1100, 1200]   # [start index, stop index] for background correction
-  #     nPretrigger: 0   # if nPretrigger < 0, move signal up
-  #     bgCorFile: ''   # data file of dark measurement results
-  #     overlapFile: ''
-  #   fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-  #   flagRetrievalChk: false   # backscatter retrieval check
-  #   flagSaturationChk: false   # signal saturation check
-  #   flagQuadrantChk: false   # quadrant check
-  #   flagOverlapChk: false   # overlap evaluation
-  #   flagRayleighChk: false   # Rayleigh fit check
-  #   flagBgNoiseChk: false   # background noise check
-  #   flagDetectRangeChk: false   # detection ability check
-  #   flagContOptChk: true   # continuous operation check
-  #   contOptChkCfg:
-  #     deltaT: 1   # temporal resolution (min)
-  #     nMinProfile: 1440   # minimum profiles required
-  #     tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
-  #     hRange: [0, 13000]
-  #     cRange:   # color range for Range-corrected signal
-  #       - [0, 0.5e11]   # channel 1
-  #       - [0, 3e9]   # channel 1
-  # AW:
-  #   lidarNo: 7   # lidar number. (see ./docs/lidarList.md)
-  #   chTag: ['532p', '532s']
-  #   figVisible: 'on'   # whether display figures
-  #   preprocessCfg:
-  #     hOffset: 0   # height offset. (m)
-  #     tOffset: 0   # time offset. (min)
-  #     deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-  #     bgBins: [1600, 1700]   # [start index, stop index] for background correction
-  #     nPretrigger: 0   # if nPretrigger < 0, move signal up
-  #     bgCorFile: ''   # data file of dark measurement results
-  #     overlapFile: ''
-  #   fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-  #   flagRetrievalChk: false   # backscatter retrieval check
-  #   flagSaturationChk: false   # signal saturation check
-  #   flagQuadrantChk: false   # quadrant check
-  #   flagOverlapChk: false   # overlap evaluation
-  #   flagRayleighChk: false   # Rayleigh fit check
-  #   flagBgNoiseChk: false   # background noise check
-  #   flagDetectRangeChk: false   # detection ability check
-  #   flagContOptChk: true   # continuous operation check
-  #   contOptChkCfg:
-  #     deltaT: 1   # temporal resolution (min)
-  #     nMinProfile: 1440   # minimum profiles required
-  #     tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
-  #     hRange: [0, 13000]
-  #     cRange:   # color range for Range-corrected signal
-  #       - [0, 3e10]   # channel 1
-  #       - [0, 5e9]   # channel 1
-  # ZK:
-  #   lidarNo: 2   # lidar number. (see ./docs/lidarList.md)
-  #   chTag: ['532p', '532s']
-  #   figVisible: 'on'   # whether display figures
-  #   preprocessCfg:
-  #     hOffset: 0   # height offset. (m)
-  #     tOffset: 0   # time offset. (min)
-  #     deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-  #     bgBins: [1200, 1300]   # [start index, stop index] for background correction
-  #     nPretrigger: 0   # if nPretrigger < 0, move signal up
-  #     bgCorFile: ''   # data file of dark measurement results
-  #     overlapFile: ''
-  #   fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-  #   flagRetrievalChk: false   # backscatter retrieval check
-  #   flagSaturationChk: false   # signal saturation check
-  #   flagQuadrantChk: false   # quadrant check
-  #   flagOverlapChk: false   # overlap evaluation
-  #   flagRayleighChk: false   # Rayleigh fit check
-  #   flagBgNoiseChk: false   # background noise check
-  #   flagDetectRangeChk: false   # detection ability check
-  #   flagContOptChk: true   # continuous operation check
-  #   contOptChkCfg:
-  #     deltaT: 0.9725   # temporal resolution (min)
-  #     nMinProfile: 1440   # minimum profiles required
-  #     tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
-  #     hRange: [0, 13000]
-  #     cRange:   # color range for Range-corrected signal
-  #       - [0, 2e13]   # channel 1
-  #       - [0, 4e11]   # channel 1
-  # GB:
-  #   lidarNo: 8   # lidar number. (see ./docs/lidarList.md)
-  #   chTag: ['532p', '532s']
-  #   figVisible: 'on'   # whether display figures
-  #   preprocessCfg:
-  #     hOffset: 0   # height offset. (m)
-  #     tOffset: 0   # time offset. (min)
-  #     deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-  #     bgBins: [1200, 1300]   # [start index, stop index] for background correction
-  #     nPretrigger: 0   # if nPretrigger < 0, move signal up
-  #     bgCorFile: ''   # data file of dark measurement results
-  #     overlapFile: ''
-  #   fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-  #   flagRetrievalChk: false   # backscatter retrieval check
-  #   flagSaturationChk: false   # signal saturation check
-  #   flagQuadrantChk: false   # quadrant check
-  #   flagOverlapChk: false   # overlap evaluation
-  #   flagRayleighChk: false   # Rayleigh fit check
-  #   flagBgNoiseChk: false   # background noise check
-  #   flagDetectRangeChk: false   # detection ability check
-  #   flagContOptChk: true   # continuous operation check
-  #   contOptChkCfg:
-  #     deltaT: 1   # temporal resolution (min)
-  #     nMinProfile: 1440   # minimum profiles required
-  #     tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
-  #     hRange: [0, 13000]
-  #     cRange:   # color range for Range-corrected signal
-  #       - [0, 5e5]   # channel 1
-  #       - [0, 2e5]   # channel 1
-  # SY:
-  #   lidarNo: 14   # lidar number. (see ./docs/lidarList.md)
-  #   chTag: ['532p', '532s', '355e', '607', '1064e']
-  #   figVisible: 'on'   # whether display figures
-  #   preprocessCfg:
-  #     hOffset: 0   # height offset. (m)
-  #     tOffset: 0   # time offset. (min)
-  #     deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-  #     bgBins: [1400, 1500]   # [start index, stop index] for background correction
-  #     nPretrigger: 0   # if nPretrigger < 0, move signal up
-  #     bgCorFile: ''   # data file of dark measurement results
-  #     overlapFile: ''
-  #   fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-  #   flagRetrievalChk: false   # backscatter retrieval check
-  #   flagSaturationChk: false   # signal saturation check
-  #   flagQuadrantChk: false   # quadrant check
-  #   flagOverlapChk: false   # overlap evaluation
-  #   flagRayleighChk: false   # Rayleigh fit check
-  #   flagBgNoiseChk: false   # background noise check
-  #   flagDetectRangeChk: false   # detection ability check
-  #   flagContOptChk: true   # continuous operation check
-  #   contOptChkCfg:
-  #     deltaT: 1   # temporal resolution (min)
-  #     nMinProfile: 1440   # minimum profiles required
-  #     tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
-  #     hRange: [0, 13000]
-  #     cRange:   # color range for Range-corrected signal
-  #       - [0, 6e6]   # channel 1
-  #       - [0, 2e6]   # channel 1
-  #       - [0, 1e7]   # channel 1
-  #       - [0, 3e10]   # channel 1
-  #       - [0, 1e7]   # channel 1
+  WH1:
+    lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1500, 2000]   # [start index, stop index] for background correction
+      nPretrigger: 15   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 1   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 0.2e10]   # channel 1
+  DS1:
+    lidarNo: 6   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1100, 1200]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 1   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 0.2e10]   # channel 1
+  REAL:
+    lidarNo: 11   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: [3.5, 3.5, 3.5, 3.5, 3.5, 30.4]   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1700, 2000]   # [start index, stop index] for background correction
+      nPretrigger: 55   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 1   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 0.2e14]   # channel 1
+        - [0, 0.2e14]   # channel 1
+        - [0, 0.5e13]   # channel 1
+        - [0, 0.2e14]   # channel 1
+        - [0, 0.2e12]   # channel 1
+        - [0, 0.2e12]   # channel 1
+  DS:
+    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064p', '1064s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1100, 1200]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 1   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 0.5e11]   # channel 1
+        - [0, 3e9]   # channel 1
+  AW:
+    lidarNo: 7   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1600, 1700]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 1   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 3e10]   # channel 1
+        - [0, 5e9]   # channel 1
+  ZK:
+    lidarNo: 2   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1200, 1300]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 0.9725   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 2e13]   # channel 1
+        - [0, 4e11]   # channel 1
+  GB:
+    lidarNo: 8   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1200, 1300]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 1   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 5e5]   # channel 1
+        - [0, 2e5]   # channel 1
+  SY:
+    lidarNo: 14   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s', '355e', '607', '1064e']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1400, 1500]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 1   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 6e6]   # channel 1
+        - [0, 2e6]   # channel 1
+        - [0, 1e7]   # channel 1
+        - [0, 3e10]   # channel 1
+        - [0, 1e7]   # channel 1
   SS:
     lidarNo: 7   # lidar number. (see ./docs/lidarList.md)
     chTag: ['532p', '532s']
@@ -309,74 +344,74 @@ internalChkCfg:
     contOptChkCfg:
       deltaT: 1   # temporal resolution (min)
       nMinProfile: 1440   # minimum profiles required
-      tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
       hRange: [0, 13000]
       cRange:   # color range for Range-corrected signal
         - [0, 0.5e6]   # channel 1
         - [0, 5e6]   # channel 1
-  # L7:
-  #   lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
-  #   chTag: ['355p', '355s', '532p', '532s', '387', '407', '607', '1064e']
-  #   figVisible: 'on'   # whether display figures
-  #   preprocessCfg:
-  #     hOffset: 0   # height offset. (m)
-  #     tOffset: 0   # time offset. (min)
-  #     deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-  #     bgBins: [1500, 1600]   # [start index, stop index] for background correction
-  #     nPretrigger: 0   # if nPretrigger < 0, move signal up
-  #     bgCorFile: ''   # data file of dark measurement results
-  #     overlapFile: ''
-  #   fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-  #   flagRetrievalChk: false   # backscatter retrieval check
-  #   flagSaturationChk: false   # signal saturation check
-  #   flagQuadrantChk: false   # quadrant check
-  #   flagOverlapChk: false   # overlap evaluation
-  #   flagRayleighChk: false   # Rayleigh fit check
-  #   flagBgNoiseChk: false   # background noise check
-  #   flagDetectRangeChk: false   # detection ability check
-  #   flagContOptChk: true   # continuous operation check
-  #   contOptChkCfg:
-  #     deltaT: 1   # temporal resolution (min)
-  #     nMinProfile: 1440   # minimum profiles required
-  #     tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
-  #     hRange: [0, 13000]
-  #     cRange:   # color range for Range-corrected signal
-  #       - [0, 1.5e10]   # channel 1
-  #       - [0, 4e10]   # channel 1
-  #       - [0, 1.5e10]   # channel 1
-  #       - [0, 0.5e11]   # channel 1
-  #       - [0, 6e8]   # channel 1
-  #       - [0, 1.5e7]   # channel 1
-  #       - [0, 5e8]   # channel 1
-  #       - [0, 0.7e11]   # channel 1
-  # WH2:
-  #   lidarNo: 13   # lidar number. (see ./docs/lidarList.md)
-  #   chTag: ['1064e']
-  #   figVisible: 'on'   # whether display figures
-  #   preprocessCfg:
-  #     hOffset: 0   # height offset. (m)
-  #     tOffset: 0   # time offset. (min)
-  #     deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-  #     bgBins: [1100, 1200]   # [start index, stop index] for background correction
-  #     nPretrigger: 0   # if nPretrigger < 0, move signal up
-  #     bgCorFile: ''   # data file of dark measurement results
-  #     overlapFile: ''
-  #   fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-  #   flagRetrievalChk: false   # backscatter retrieval check
-  #   flagSaturationChk: false   # signal saturation check
-  #   flagQuadrantChk: false   # quadrant check
-  #   flagOverlapChk: false   # overlap evaluation
-  #   flagRayleighChk: false   # Rayleigh fit check
-  #   flagBgNoiseChk: false   # background noise check
-  #   flagDetectRangeChk: false   # detection ability check
-  #   flagContOptChk: true   # continuous operation check
-  #   contOptChkCfg:
-  #     deltaT: 0.5   # temporal resolution (min)
-  #     nMinProfile: 1440   # minimum profiles required
-  #     tRange: '2021-09-27 12:36:00 ~ 2021-09-28 12:00:00'
-  #     hRange: [0, 13000]
-  #     cRange:   # color range for Range-corrected signal
-  #       - [0, 0.2e10]   # channel 1
+  L7:
+    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['355p', '355s', '532p', '532s', '387', '407', '607', '1064e']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1500, 1600]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 1   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 1.5e9]   # channel 1
+        - [0, 1.5e9]   # channel 1
+        - [0, 2e9]   # channel 1
+        - [0, 1.5e9]   # channel 1
+        - [0, 1.5e8]   # channel 1
+        - [0, 2e6]   # channel 1
+        - [0, 1e8]   # channel 1
+        - [0, 3.5e8]   # channel 1
+  WH2:
+    lidarNo: 13   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1100, 1200]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 0.5   # temporal resolution (min)
+      nMinProfile: 1440   # minimum profiles required
+      tRange: '2021-09-28 12:00:00 ~ 2021-09-29 12:00:00'
+      hRange: [0, 13000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 0.2e10]   # channel 1
 
 # external-check
 # Below is the struct of `externalChkCfg`, which was used to inter-compare lidars.
@@ -492,8 +527,8 @@ externalChkCfg:
     nPretrigger: 0   # if nPretrigger < 0, move signal up
     bgCorFile: ''   # data file of dark measurement results
     overlapFile: ''
-  flagRangeCmp: true
-  flagRCSCmp: false
+  flagRangeCmp: false
+  flagRCSCmp: true
   flagVDRCmp: false
   flagFernaldCmp: false
   flagRamanCmp: false
@@ -534,8 +569,8 @@ externalChkCfg:
   #     - [1, 0]   # second lidar
   #     - [0, 0, 0, 0, 1]   # second lidar
   #     - [0, 0, 0, 0, 0, 0, 0, 1]   # second lidar
-  #   tRange: '2021-09-27 19:00:00 ~ 2021-19-27 19:30:00'
-  #   normRange: [2500, 3000]
+  #   tRange: '2021-09-27 19:00:00 ~ 2021-09-27 19:30:00'
+  #   normRange: [1500, 2000]
   #   hChkRange:
   #     - [500, 2000]
   #     - [2000, 5000]
@@ -545,30 +580,33 @@ externalChkCfg:
   #   smoothwindow:
   #     - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
   #     - [1000, 10000, 300]
-  #   hRange: [0, 6000]
+  #     - [10000, 20000, 600]
+  #   hRange: [0, 14000]
   #   sigRange: [1e7, 1e10]
-  # RCSCmpCfg:   # 532
-  #   LidarList: ['REAL', 'SY', 'L7', 'SS', 'ZK']
-  #   sigCompose:
-  #     - [0, 1, 0, 0, 0, 0]   # first lidar
-  #     - [1, 0, 0, 0, 0]   # second lidar
-  #     - [0, 0, 1, 0, 0, 0, 0, 0]   # second lidar
-  #     # - [1, 0]   # second lidar
-  #     - [1, 0]   # second lidar
-  #     - [1, 0]   # second lidar
-  #   tRange: '2021-09-27 19:00:00 ~ 2021-19-27 19:30:00'
-  #   normRange: [2000, 2500]
-  #   hChkRange:
-  #     - [500, 2000]
-  #     - [2000, 5000]
-  #   maxDev:
-  #     - 10
-  #     - 20
-  #   smoothwindow:
-  #     - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
-  #     - [1000, 10000, 300]
-  #   hRange: [0, 6000]
-  #   sigRange: [1e12, 1e14]
+  RCSCmpCfg:   # 532
+    LidarList: ['REAL', 'SY', 'L7', 'SS', 'ZK']
+    sigCompose:
+      - [0, 1, 0, 0, 0, 0]   # first lidar
+      - [1, 0, 0, 0, 0]   # second lidar
+      - [0, 0, 1, 0, 0, 0, 0, 0]   # second lidar
+      # - [1, 0]   # second lidar
+      - [1, 0]   # second lidar
+      - [1, 0]   # second lidar
+    tRange: '2021-09-27 19:00:00 ~ 2021-09-27 19:30:00'
+    normRange: [1500, 2000]
+    hChkRange:
+      - [500, 2000]
+      - [2000, 5000]
+    maxDev:
+      - 10
+      - 20
+    smoothwindow:
+      - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
+      - [1000, 10000, 300]
+      - [10000, 20000, 600]
+    hRange: [0, 14000]
+    # sigRange: [1e12, 1e14]
+    sigRange: [1e11, 1e15]
   VDRCmpCfg:
     LidarList: ['REAL']
     vdrCompose:
