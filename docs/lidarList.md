@@ -5,7 +5,6 @@
 |怡孚和融|532nm激光雷达|HR|http://www.everisetech.com/about_us/gywm.html|1|L0108|532p, 532s|
 |无锡中科|532nm激光雷达|ZK|http://www.cas-pe.com/|2|L0601|532p, 532s|
 |艾沃思|532nm激光雷达|AW|http://www.avorstech.com/|3|L0110|532p, 532s|
-|大舜|532nm激光雷达|DS2|http://www.darsunlaser.com/index.html|4|||
 |大舜|1064nm激光雷达(polarized)|DS|http://www.darsunlaser.com/index.html|5|L0104|1064p, 1064s|
 |大舜|1064nm激光雷达|DS1|http://www.darsunlaser.com/index.html|6|L0105|1064e|
 |浅海科技|532nm激光雷达|SS|https://www.shallow-sea.com/#page1|7|L0109|532p, 532s|
