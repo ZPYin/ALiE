@@ -1,5 +1,5 @@
-evaluationReportPath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\DS
-dataSavePath: D:\Coding\Matlab\lidar_evaluation_1064\lidar_evaluation\DS
+evaluationReportPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\DS
+dataSavePath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\DS
 figFormat: png   # figure format to be exported
 
 dataLoaderCfg:

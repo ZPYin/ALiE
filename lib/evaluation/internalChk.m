@@ -22,7 +22,12 @@ parse(p, config, varargin{:});
 logFile = fullfile(config.evaluationReportPath, 'lidar_internal_check.log');
 diaryon(logFile);
 
-lidarType = fieldnames(config.internalChkCfg);
+if isfield(config.internalChkCfg, 'lidarList')
+    lidarType = config.internalChkCfg.lidarList;
+else
+    lidarType = fieldnames(config.internalChkCfg);
+end
+
 for iLidar = 1:length(lidarType)
 
     lidarConfig = config.internalChkCfg.(lidarType{iLidar});

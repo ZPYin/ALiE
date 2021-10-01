@@ -46,6 +46,11 @@ case 1
     fprintf('[%s] %d data files were found!\n', tNow, length(dataFiles));
 
     for iFile = 1:length(dataFiles)
+
+        if iFile <= 1
+            fprintf('[%s] Wait until reading finishes!\n', tNow);
+        end
+
         lidarData = readWHU1064(dataFiles{iFile}, varargin{:});
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
@@ -61,6 +66,11 @@ case 2
     fprintf('[%s] %d data files were found!\n', tNow, length(dataFiles));
 
     for iFile = 1:length(dataFiles)
+
+        if iFile <= 1
+            fprintf('[%s] Wait until reading finishes!\n', tNow);
+        end
+
         lidarData = readWHU1064_2(dataFiles{iFile}, varargin{:});
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
@@ -76,6 +86,11 @@ case 3
     fprintf('[%s] %d data files were found!\n', tNow, length(dataFiles));
 
     for iFile = 1:length(dataFiles)
+
+        if iFile <= 1
+            fprintf('[%s] Wait until reading finishes!\n', tNow);
+        end
+
         lidarData = readCmaLidarData(dataFiles{iFile}, varargin{:});
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
@@ -91,6 +106,11 @@ case 4
     fprintf('[%s] %d data files were found!\n', tNow, length(dataFiles));
 
     for iFile = 1:length(dataFiles)
+
+        if iFile <= 1
+            fprintf('[%s] Wait until reading finishes!\n', tNow);
+        end
+
         lidarData = readDasun1064Pol(dataFiles{iFile}, varargin{:});
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
@@ -106,6 +126,11 @@ case 5
     fprintf('[%s] %d data files were found!\n', tNow, length(dataFiles));
 
     for iFile = 1:length(dataFiles)
+
+        if iFile <= 1
+            fprintf('[%s] Wait until reading finishes!\n', tNow);
+        end
+
         lidarData = readREAL(dataFiles{iFile}, varargin{:});
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);

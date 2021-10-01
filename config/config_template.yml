@@ -35,7 +35,7 @@ dataLoaderCfg:
     chTag: ['1064p', '1064s']
     nMaxBin: 1300   # number of bins
   REAL:   # lidar No.4
-    dataPath: D:\Coding\Matlab\lidar_evaluation_1064\data\REAL
+    dataPath: D:\Coding\Matlab\CMA-lidar-evaluation\data\REAL
     dataFilenamePattern: .*   # all files
     dataFormat: 5
     chTag: ['532p', '532s', '607']
@@ -98,7 +98,7 @@ internalChkCfg:
       maxDev: [15]   # maximum relative deviation. (%)
     bgNoiseChkCfg:
       closeTRange: '2021-09-18 17:00:00 ~ 2021-09-18 18:00:00'   # cover closed
-      randErrCalcWindowLength: 150   # window length for calculating random error. (m)
+      randErrCalcWindowLength: 300   # window length for calculating random error. (m)
       bgRange:
         - [0, 1e3]
       hRange:   # background display range. (m)

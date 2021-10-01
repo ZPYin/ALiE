@@ -36,13 +36,23 @@ fid = fopen(reportFile, 'a');
 fprintf(fid, '\n## Continuous Operation Check\n');
 
 % slot for continuous check
-tRange = [datenum(lidarConfig.contOptChkCfg.tRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(lidarConfig.contOptChkCfg.tRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
+tRange = [datenum(lidarConfig.contOptChkCfg.tRange(1:19), 'yyyy-mm-dd HH:MM:SS'), ...
+          datenum(lidarConfig.contOptChkCfg.tRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
 
 % continuous operation check
 isChosen = (lidarData.mTime >= tRange(1)) & (lidarData.mTime <= tRange(2));
-fprintf(fid, 'Profiles for continuous operation check: %d (min: %d)\n', sum(isChosen), lidarConfig.contOptChkCfg.nMinProfile);
+fprintf(fid, 'Profiles for continuous operation check: %d (min: %d)\n', ...
+    sum(isChosen), lidarConfig.contOptChkCfg.nMinProfile);
 isPassContOptChk = (sum(isChosen) >= lidarConfig.contOptChkCfg.nMinProfile);
 fprintf(fid, '\nPass continuous operation check (1: yes; 0: no): %d\n', isPassContOptChk);
+
+tRangeMark = [];
+if isfield(lidarConfig.contOptChkCfg, 'markTRange')
+    if ~ isempty(lidarConfig.contOptChkCfg.markTRange)
+        tRangeMark = [datenum(lidarConfig.contOptChkCfg.markTRange(1:19), 'yyyy-mm-dd HH:MM:SS'), ...
+                      datenum(lidarConfig.contOptChkCfg.markTRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
+    end
+end
 
 for iCh = 1:length(lidarConfig.chTag)
 
@@ -82,11 +92,15 @@ for iCh = 1:length(lidarConfig.chTag)
     end
 
     %% signal visualization
-    figure('Position', [0, 10, 600, 300], 'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
+    figure('Position', [0, 10, 600, 300], ...
+           'Units', 'Pixels', 'Color', 'w', 'Visible', lidarConfig.figVisible);
 
     subplot('Position', [0.14, 0.15, 0.75, 0.75], 'Units', 'Normalized');
     p1 = pcolor(mTimeGrid, heightGrid, sigGrid);
     p1.EdgeColor = 'None';
+    if ~ isempty(tRangeMark)
+        rectangle('Position', [tRangeMark(1), lidarConfig.contOptChkCfg.hRange(1, 1), (tRangeMark(2) - tRangeMark(1)), (lidarConfig.contOptChkCfg.hRange(1, 2) - lidarConfig.contOptChkCfg.hRange(1, 1))], 'EdgeColor', 'k', 'LineWidth', 2, 'LineStyle', '--', 'FaceColor', [[193, 193, 193]/255, 0.5]);
+    end
 
     xlabel('Local Time');
     ylabel('Height (m)');
