@@ -129,17 +129,21 @@ end
 
 rawBackscatter = fread(fileID, Inf, 'float32');   % backscatter signal
 if length(rawBackscatter) >= 8000*16
+
     % filled with 8000 bins
     rawSignal = NaN(nCh, length(rawBackscatter) / 16);
     for iCh = 1:nCh
         rawSignal(iCh, :) = rawBackscatter(((iCh - 1) * length(rawBackscatter) / 16 + 1):(iCh * length(rawBackscatter) / 16));
     end
+
 else
+
     % non-filled
     rawSignal = NaN(nCh, length(rawBackscatter) / nCh);
     for iCh = 1:nCh
         rawSignal(iCh, :) = rawBackscatter(((iCh - 1) * length(rawBackscatter) / nCh + 1):(iCh * length(rawBackscatter) / nCh));
     end
+
 end
 
 fclose(fileID);
@@ -161,10 +165,12 @@ else
 end
 data.elevation_angle = uint8_2_double(rawElevAng) / 8 * 180 / 4096;
 if ~ p.Results.flagFilenameTime
-    data.mTime = datenum(1970, 1, 1) + uint8_2_double(rawDate) + datenum(0, 1, 0, 0, 0, uint8_2_double(rawStopTime));
+    data.mTime = datenum(1970, 1, 1) + uint8_2_double(rawDate) + ...
+                 datenum(0, 1, 0, 0, 0, uint8_2_double(rawStopTime));
 else
     data.mTime = filenameTime;
 end
+
 % data.height = transpose(1:nMaxBin) * unique(hRes) * sin(data.elevation_angle ./ 180 * pi);   % (m)
 data.height = transpose(1:nMaxBin) * unique(hRes) * sin(90 ./ 180 * pi);   % (m)
 data.longitude = uint8_2_double(rawLon) / 8 * 180 / 4096;

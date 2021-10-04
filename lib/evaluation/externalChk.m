@@ -19,10 +19,10 @@ addParameter(p, 'flagDebug', false, @islogical);
 parse(p, config, varargin{:});
 
 %% log output
-logFile = fullfile(config.evaluationReportPath, 'lidar_external_check.log');
+logFile = fullfile(config.resultPath, 'lidar_external_check.log');
 diaryon(logFile);
 
-reportFile = fullfile(config.evaluationReportPath, sprintf('external_check_report.txt'));
+reportFile = fullfile(config.resultPath, sprintf('external_check_report.txt'));
 fid = fopen(reportFile, 'w');
 fprintf(fid, '# Evaluation Report\n');
 fclose(fid);

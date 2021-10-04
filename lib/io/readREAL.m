@@ -32,7 +32,8 @@ if exist(file, 'file') ~= 2
     error(errStruct);
 end
 
-mTime = datenum(file((end-16):(end-4)), 'yymmdd-HHMMSS') + datenum(0, 1, 0, 8, 0, 0);
+mTime = datenum(file((end-16):(end-4)), 'yymmdd-HHMMSS') + ...
+        datenum(0, 1, 0, 8, 0, 0);
 
 if p.Results.flagDebug
     fprintf('Reading %s\n', file);
@@ -66,8 +67,10 @@ sig607H = lidarData{6};
 
 %% deadtime correction
 PC2PCR = 1 / (binWidth * 1e-9 * nPulse);
-rawSignal = transpose([sig532SH, sig532PH, sig532SL, sig532PL, sig607L, sig607H]) .* PC2PCR;
-height = (transpose(1:length(sig532SH)) - 56) * (binWidth * 0.3 / 2) - (binWidth * 0.3 / 4);   % distance. (m)
+rawSignal = transpose([sig532SH, sig532PH, sig532SL, ...
+                       sig532PL, sig607L, sig607H]) .* PC2PCR;
+height = (transpose(1:length(sig532SH)) - 56) * (binWidth * 0.3 / 2) - ...
+    (binWidth * 0.3 / 4);   % distance. (m)
 
 oData = struct;
 oData.height = height;

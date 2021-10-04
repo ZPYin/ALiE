@@ -19,7 +19,7 @@ addParameter(p, 'flagDebug', false, @islogical);
 parse(p, config, varargin{:});
 
 %% log output
-logFile = fullfile(config.evaluationReportPath, 'lidar_internal_check.log');
+logFile = fullfile(config.resultPath, 'lidar_internal_check.log');
 diaryon(logFile);
 
 if isfield(config.internalChkCfg, 'lidarList')
@@ -31,7 +31,7 @@ end
 for iLidar = 1:length(lidarType)
 
     lidarConfig = config.internalChkCfg.(lidarType{iLidar});
-    reportFile = fullfile(config.evaluationReportPath, sprintf('%s_internal_check_report.txt', lidarType{iLidar}));
+    reportFile = fullfile(config.resultPath, sprintf('%s_internal_check_report.txt', lidarType{iLidar}));
     fid = fopen(reportFile, 'w');
     fprintf(fid, '# Evaluation Report for %s\n', lidarType{iLidar});
     fclose(fid);
@@ -84,7 +84,7 @@ for iLidar = 1:length(lidarType)
     if lidarConfig.flagDetectRangeChk
         fprintf('[%s] Start detection range test!\n', tNow);
         detectRangeChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-            'figFolder', config.evaluationReportPath, ...
+            'figFolder', config.resultPath, ...
             'figFormat', config.figFormat);
         fprintf('[%s] Finish!\n', tNow);
     end
@@ -98,7 +98,7 @@ for iLidar = 1:length(lidarType)
             continue;
         else
             quadrantChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-                'figFolder', config.evaluationReportPath, ...
+                'figFolder', config.resultPath, ...
                 'figFormat', config.figFormat);
         end
 
@@ -114,7 +114,7 @@ for iLidar = 1:length(lidarType)
             continue;
         else
             contOptChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-                'figFolder', config.evaluationReportPath, ...
+                'figFolder', config.resultPath, ...
                 'figFormat', config.figFormat);
         end
 
@@ -130,7 +130,7 @@ for iLidar = 1:length(lidarType)
             continue;
         else
             bgNoiseChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-                'figFolder', config.evaluationReportPath, ...
+                'figFolder', config.resultPath, ...
                 'figFormat', config.figFormat);
         end
 
@@ -146,7 +146,7 @@ for iLidar = 1:length(lidarType)
             continue;
         else
             RayleighChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-                'figFolder', config.evaluationReportPath, ...
+                'figFolder', config.resultPath, ...
                 'figFormat', config.figFormat);
         end
 
@@ -162,7 +162,7 @@ for iLidar = 1:length(lidarType)
             continue;
         else
             saturationChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-                'figFolder', config.evaluationReportPath, ...
+                'figFolder', config.resultPath, ...
                 'figFormat', config.figFormat);
         end
 

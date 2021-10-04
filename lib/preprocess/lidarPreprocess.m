@@ -56,7 +56,8 @@ case 11
     mergeOffset = [0, 0, 0];
 
     % pretrigger removes for height
-    lidarData.height = lidarData.height((p.Results.nPretrigger + 1):end) + p.Results.hOffset;
+    lidarData.height = lidarData.height((p.Results.nPretrigger + 1):end) + ...
+                       p.Results.hOffset;
     lidarData.mTime = lidarData.mTime + p.Results.tOffset;
 
     for iCh = 1:length(chTag)
@@ -88,14 +89,17 @@ case 11
 
         % overlap correction
         if ~ isempty(p.Results.overlapFile)
-            fid = fopen(fullfile(LEToolboxInfo.projectDir, 'lib', 'overlap', p.Results.overlapFile), 'r');
-            dataTmp = textscan(fid, '%f%f', 'headerlines', 0, 'delimiter', ' ', 'MultipleDelimsAsOne', true);
+            fid = fopen(fullfile(LEToolboxInfo.projectDir, ...
+                'lib', 'overlap', p.Results.overlapFile), 'r');
+            dataTmp = textscan(fid, '%f%f', 'headerlines', 0, ...
+                'delimiter', ' ', 'MultipleDelimsAsOne', true);
             ovHeight = dataTmp{1};
             ovFunc = dataTmp{2};
             fclose(fid);
 
             % interpolate overlap
-            ovFuncInterp = interp1(ovHeight, ovFunc, lidarData.height,'linear','extrap');
+            ovFuncInterp = interp1(ovHeight, ovFunc, lidarData.height, ...
+                'linear', 'extrap');
             sigCor = sigCor ./ ovFuncInterp;
         end
 
@@ -112,16 +116,21 @@ case 11
     end
 
     % signal merge
-    lidarData.sig532s = sigMergeREAL(lidarData.sig532sh, lidarData.sig532sl, lidarData.height, mergeRange(1, :), mergeSlope(1), mergeOffset(1));
+    lidarData.sig532s = sigMergeREAL(lidarData.sig532sh, lidarData.sig532sl, ...
+        lidarData.height, mergeRange(1, :), mergeSlope(1), mergeOffset(1));
     % lidarData.sig532p = sigMergeREAL(lidarData.sig532ph, lidarData.sig532pl, lidarData.height, mergeRange(2, :), mergeSlope(2), mergeOffset(2));
     lidarData.sig532p = lidarData.sig532ph;
-    lidarData.sig607 = sigMergeREAL(lidarData.sig607h, lidarData.sig607l, lidarData.height, mergeRange(3, :), mergeSlope(3), mergeOffset(3));
+    lidarData.sig607 = sigMergeREAL(lidarData.sig607h, lidarData.sig607l, ...
+        lidarData.height, mergeRange(3, :), mergeSlope(3), mergeOffset(3));
     lidarData.bg532s = lidarData.bg532sh;
     lidarData.bg532p = lidarData.bg532ph;
     lidarData.bg607 = lidarData.bg607h;
-    lidarData.rcs532s = lidarData.sig532s .* repmat(lidarData.height.^2, 1, length(lidarData.mTime));
-    lidarData.rcs532p = lidarData.sig532p .* repmat(lidarData.height.^2, 1, length(lidarData.mTime));
-    lidarData.rcs607 = lidarData.sig607 .* repmat(lidarData.height.^2, 1, length(lidarData.mTime));
+    lidarData.rcs532s = lidarData.sig532s .* ...
+        repmat(lidarData.height.^2, 1, length(lidarData.mTime));
+    lidarData.rcs532p = lidarData.sig532p .* ...
+        repmat(lidarData.height.^2, 1, length(lidarData.mTime));
+    lidarData.rcs607 = lidarData.sig607 .* ...
+        repmat(lidarData.height.^2, 1, length(lidarData.mTime));
     lidarData.mergeRange = mergeRange;
     lidarData.mergeOffset = mergeOffset;
     lidarData.mergeSlope = mergeSlope;
@@ -129,7 +138,8 @@ case 11
 case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14}
 
     % pretrigger removes for height
-    lidarData.height = lidarData.height((p.Results.nPretrigger + 1):end) + p.Results.hOffset;
+    lidarData.height = lidarData.height((p.Results.nPretrigger + 1):end) + ...
+                       p.Results.hOffset;
     lidarData.mTime = lidarData.mTime + p.Results.tOffset;
 
     for iCh = 1:length(chTag)
@@ -161,14 +171,17 @@ case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14}
 
         % overlap correction
         if ~ isempty(p.Results.overlapFile)
-            fid = fopen(fullfile(LEToolboxInfo.projectDir, 'lib', 'overlap', p.Results.overlapFile), 'r');
-            dataTmp = textscan(fid, '%f%f', 'headerlines', 0, 'delimiter', ' ', 'MultipleDelimsAsOne', true);
+            fid = fopen(fullfile(LEToolboxInfo.projectDir, ...
+                'lib', 'overlap', p.Results.overlapFile), 'r');
+            dataTmp = textscan(fid, '%f%f', 'headerlines', 0, ...
+                'delimiter', ' ', 'MultipleDelimsAsOne', true);
             ovHeight = dataTmp{1};
             ovFunc = dataTmp{2};
             fclose(fid);
 
             % interpolate overlap
-            ovFuncInterp = interp1(ovHeight, ovFunc, lidarData.height,'linear','extrap');
+            ovFuncInterp = interp1(ovHeight, ovFunc, ...
+                lidarData.height, 'linear', 'extrap');
             sigCor = sigCor ./ ovFuncInterp;
         end
 
@@ -185,7 +198,8 @@ case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14}
     end
 
 otherwise
-    errStruct.message = sprintf('Wrong configuration for lidarNo (%d).', p.Results.lidarNo);
+    errStruct.message = sprintf('Wrong configuration for lidarNo (%d).', ...
+        p.Results.lidarNo);
     errStruct.identifier = 'LEToolbox:Err003';
     error(errStruct);
 end

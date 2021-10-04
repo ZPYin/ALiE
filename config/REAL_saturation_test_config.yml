@@ -3,7 +3,7 @@
 # DON'T use Chinese characters!!!
 ################################################################################
 
-evaluationReportPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\REAL
+resultPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\REAL
 dataSavePath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\REAL
 figFormat: png   # figure format to be exported
 

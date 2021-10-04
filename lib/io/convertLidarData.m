@@ -21,7 +21,7 @@ parse(p, config, varargin{:});
 fprintf('[%s] Start data conversion!\n', tNow);
 
 %% log output
-logFile = fullfile(config.evaluationReportPath, 'lidar_data_loading.log');
+logFile = fullfile(config.resultPath, 'lidar_data_loading.log');
 diaryon(logFile);
 
 lidarType = fieldnames(config.dataLoaderCfg);
@@ -50,7 +50,8 @@ for iLidar = 1:length(lidarType)
 
     %% convert lidar data
     fprintf('[%s] Convert %s data to HDF5 format.\n', tNow, lidarType{iLidar});
-    h5Filename = fullfile(config.dataSavePath, sprintf('%s_lidar_data.h5', lidarType{iLidar}));
+    h5Filename = fullfile(config.dataSavePath, ...
+        sprintf('%s_lidar_data.h5', lidarType{iLidar}));
     convertLidar2h5(lidarData, h5Filename, lidarConfig.chTag);
     fprintf('[%s] Finish!\n', tNow);
 

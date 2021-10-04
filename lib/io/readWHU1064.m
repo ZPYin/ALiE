@@ -30,7 +30,8 @@ if exist(file, 'file') ~= 2
     error('Data file does not exist.\n%s', file);
 end
 
-mTime = datenum(file((end-16):(end-4)), 'yymmdd-HHMMSS') + datenum(0, 1, 0, 8, 0, 0);
+mTime = datenum(file((end-16):(end-4)), 'yymmdd-HHMMSS') + ...
+        datenum(0, 1, 0, 8, 0, 0);
 
 if p.Results.flagDebug
     fprintf('Reading %s\n', file);

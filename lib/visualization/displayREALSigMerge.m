@@ -44,7 +44,8 @@ addParameter(p, 'mergeSlope', [], @isnumeric);
 parse(p, height, mTime, sigH, sigL, mergeRange, varargin{:});
 
 if ~ isempty(p.Results.mergeOffset)
-    sigMerge = sigMergeREAL(sigH, sigL, height, mergeRange, p.Results.mergeSlope, p.Results.mergeOffset);
+    sigMerge = sigMergeREAL(sigH, sigL, height, mergeRange, ...
+        p.Results.mergeSlope, p.Results.mergeOffset);
 end
 
 %% linear fit plot
@@ -62,7 +63,9 @@ xlabel(sprintf('REAL Low %s', p.Results.channelTag));
 ylabel(sprintf('REAL High %s', p.Results.channelTag));
 
 set(gca, 'layer', 'top', 'box', 'on', 'LineWidth', 2);
-text(0.4, 0.2, sprintf('sigH = %f*sigL + %f\nslope: %f+-%f\noffset: %f+-%f\n', slope, offset, slope, slope_1sigma, offset, offset_1sigma), 'Units', 'Normalized');
+text(0.4, 0.2, ...
+    sprintf('sigH = %f*sigL + %f\nslope: %f+-%f\noffset: %f+-%f\n', slope, offset, slope, slope_1sigma, offset, offset_1sigma), ...
+    'Units', 'Normalized');
 
 if ~ isempty(p.Results.figFolder)
     export_fig(gcf, fullfile(p.Results.figFolder, sprintf('REAL_%s_linearfit.%s', p.Results.channelTag, 'png')), '-r300');
@@ -82,9 +85,16 @@ else
     sigPrf = NaN(size(sigHPrf));
 end
 
-p1 = semilogx(sigHPrf .* height.^2, height, '-r', 'LineWidth', 1, 'DisplayName', sprintf('High %s', p.Results.channelTag)); hold on;
-p2 = semilogx(sigLPrf .* height.^2, height, '-g', 'LineWidth', 1, 'DisplayName', sprintf('Low %s', p.Results.channelTag));
-p3 = semilogx(sigPrf .* height.^2, height, '-k', 'LineWidth', 1, 'DisplayName', sprintf('Merge %s', p.Results.channelTag));
+p1 = semilogx(sigHPrf .* height.^2, height, '-r', ...
+    'LineWidth', 1, ...
+    'DisplayName', sprintf('High %s', p.Results.channelTag));
+hold on;
+p2 = semilogx(sigLPrf .* height.^2, height, '-g', ...
+    'LineWidth', 1, ...
+    'DisplayName', sprintf('Low %s', p.Results.channelTag));
+p3 = semilogx(sigPrf .* height.^2, height, '-k', ...
+    'LineWidth', 1, ...
+    'DisplayName', sprintf('Merge %s', p.Results.channelTag));
 
 xlabel(sprintf('REAL %s', p.Results.channelTag));
 ylabel('Height (m)');

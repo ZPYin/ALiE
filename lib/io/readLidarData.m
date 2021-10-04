@@ -55,7 +55,9 @@ case 1
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
         oData.height = lidarData.height;
-        oData.rawSignal = cat(3, oData.rawSignal, reshape(lidarData.rawSignal, size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
+        oData.rawSignal = cat(3, oData.rawSignal, ...
+            reshape(lidarData.rawSignal, ...
+                size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
     end
 
 case 2
@@ -75,7 +77,9 @@ case 2
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
         oData.height = lidarData.height;
-        oData.rawSignal = cat(3, oData.rawSignal, reshape(lidarData.rawSignal, size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
+        oData.rawSignal = cat(3, oData.rawSignal, ...
+            reshape(lidarData.rawSignal, ...
+                size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
     end
 
 case 3
@@ -95,7 +99,9 @@ case 3
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
         oData.height = lidarData.height;
-        oData.rawSignal = cat(3, oData.rawSignal, reshape(lidarData.rawSignal, size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
+        oData.rawSignal = cat(3, oData.rawSignal, ...
+            reshape(lidarData.rawSignal, ...
+                size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
     end
 
 case 4
@@ -115,7 +121,9 @@ case 4
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
         oData.height = lidarData.height;
-        oData.rawSignal = cat(3, oData.rawSignal, reshape(lidarData.rawSignal, size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
+        oData.rawSignal = cat(3, oData.rawSignal, ...
+            reshape(lidarData.rawSignal, ...
+                size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
     end
 
 case 5
@@ -135,7 +143,9 @@ case 5
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
         oData.height = lidarData.height;
-        oData.rawSignal = cat(3, oData.rawSignal, reshape(lidarData.rawSignal, size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
+        oData.rawSignal = cat(3, oData.rawSignal, ...
+            reshape(lidarData.rawSignal, ...
+                size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
     end
 
     otherwise

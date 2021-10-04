@@ -44,7 +44,8 @@ end
 
 oData = struct;
 oData.height = lidarData{1}(1:p.Results.nMaxBin);   % distance. (m)
-oData.rawSignal = transpose([lidarData{2}(1:p.Results.nMaxBin), lidarData{3}(1:p.Results.nMaxBin)]);
+oData.rawSignal = transpose([lidarData{2}(1:p.Results.nMaxBin), ...
+                             lidarData{3}(1:p.Results.nMaxBin)]);
 oData.mTime = mTime;
 
 end

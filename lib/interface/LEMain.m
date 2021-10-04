@@ -49,10 +49,10 @@ else
 end
 
 % prepare output folder
-if ~ exist(config.evaluationReportPath, 'dir')
+if ~ exist(config.resultPath, 'dir')
     fprintf('[%s] Create path for saving evaluation report!\n', tNow);
-    mkdir(config.evaluationReportPath);
-    fprintf('[%s] Output folder: %s\n', tNow, config.evaluationReportPath);
+    mkdir(config.resultPath);
+    fprintf('[%s] Output folder: %s\n', tNow, config.resultPath);
 end
 if ~ exist(config.dataSavePath, 'dir')
     fprintf('[%s] Create path for saving data!\n', tNow);
@@ -62,7 +62,8 @@ end
 
 %% backup configuration
 if p.Results.flagBackupConfig
-    configFileSave = fullfile(config.evaluationReportPath, sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));
+    configFileSave = fullfile(config.resultPath, ...
+        sprintf('config_%s.yml', datestr(now, 'yyyymmddHHMMSS')));
     fprintf('[%s] Config file saved as: %s\n', tNow, configFileSave);
     copyfile(configFile, configFileSave);
 end

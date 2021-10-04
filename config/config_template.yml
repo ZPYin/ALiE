@@ -3,7 +3,7 @@
 # DON'T use Chinese characters!!!
 ################################################################################
 
-evaluationReportPath: C:\Users\zhenping\Desktop\lidar_evaluation\report
+resultPath: C:\Users\zhenping\Desktop\lidar_evaluation\report
 dataSavePath: C:\Users\zhenping\Desktop\lidar_evaluation\data
 figFormat: png   # figure format to be exported
 

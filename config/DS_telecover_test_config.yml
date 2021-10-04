@@ -1,4 +1,4 @@
-evaluationReportPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\DS
+resultPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\DS
 dataSavePath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\DS
 figFormat: png   # figure format to be exported
 
