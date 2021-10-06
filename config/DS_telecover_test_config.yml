@@ -40,8 +40,8 @@ internalChkCfg:
         - '2021-09-27 14:27:00 ~ 2021-09-27 14:28:00'   # north
         - '2021-09-27 14:23:00 ~ 2021-09-27 14:25:03'   # east2
       hRangeNear:
-        - [0, 3000]   # vertical range for near-range behavior to display. (m)
-        - [0, 3000]   # vertical range for near-range behavior to display. (m)
+        - [0, 5000]   # vertical range for near-range behavior to display. (m)
+        - [0, 5000]   # vertical range for near-range behavior to display. (m)
       hRangeAll:
         - [0, 10000]   # vertical range for overall behavior to display. (m)
         - [0, 10000]   # vertical range for overall behavior to display. (m)

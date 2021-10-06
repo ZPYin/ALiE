@@ -52,7 +52,7 @@ for iCh = 1:length(lidarConfig.chTag)
               (lidarData.height <= lidarConfig.bgNoiseChkCfg.hRange(iCh, 2));
     height = lidarData.height(hChosen);
     bg = nanmean(lidarData.(['sig', lidarConfig.chTag{iCh}])(hChosen, isChosen), 2);
-    bgMean = nanmean(bg);
+    bgMean = 0;
     bgStd = nanstd(bg);
     bgMeanBound = [bgMean - bgStd, bgMean + bgStd];
 
@@ -68,8 +68,9 @@ for iCh = 1:length(lidarConfig.chTag)
     randNoise = sqrt(randNoise) / sqrt(floor(length(height) / winLen));
 
     % systematic error
-    % sysNoise = nanstd(abs(bg - bgMean));
-    sysNoise = nanstd(meanVal);
+    % sysNoise = nanstd(abs(bg - bgMean));   % method a
+    % sysNoise = nanstd(meanVal);   % method b
+    sysNoise = max(abs(meanVal - nanmean(meanVal)));
 
     fprintf(fid, 'Random noise: %f\n', randNoise);
     fprintf(fid, 'Systematic noise: %f\n', sysNoise);
@@ -110,10 +111,10 @@ for iCh = 1:length(lidarConfig.chTag)
     hold on;
     plot([0, 100000], [bgMean, bgMean], '-.', ...
          'Color', [122, 122, 122]/255);
-    plot([0, 100000], [bgMeanBound(1), bgMeanBound(1)], '--', ...
-         'Color', [211, 211, 211]/255);
-    plot([0, 100000], [bgMeanBound(2), bgMeanBound(2)], '--', ...
-         'Color', [211, 211, 211]/255);
+    % plot([0, 100000], [bgMeanBound(1), bgMeanBound(1)], '--', ...
+    %      'Color', [211, 211, 211]/255);
+    % plot([0, 100000], [bgMeanBound(2), bgMeanBound(2)], '--', ...
+    %      'Color', [211, 211, 211]/255);
 
     ylabel('Background (a.u.)');
     xlabel('Height (m)');

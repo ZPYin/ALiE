@@ -136,16 +136,15 @@ for iCh = 1:length(lidarConfig.chTag)
     sigT5Norm = sigT5Sm * normRatio5;
 
     %% determine deviations
-    cmpInd = (lidarData.height >= lidarConfig.saturationChkCfg.normRange(iCh, 1)) & ...
-             (lidarData.height <= lidarConfig.saturationChkCfg.normRange(iCh, 2));
+    cmpInd = (lidarData.height >= 500) & (lidarData.height <= 2000);
     dev2 = (sigT2Norm - sigT1Sm) ./ sigT1Sm * 100;
-    totDev2 = nanmean(abs(sigT2Norm(cmpInd) - sigT1Sm(cmpInd)) ./ sigT1Sm(cmpInd)) * 100;
+    totDev2 = (nanmean(sigT2Norm(cmpInd)) - nanmean(sigT1Sm(cmpInd))) ./ nanmean(sigT1Sm(cmpInd)) * 100;
     dev3 = (sigT3Norm - sigT1Sm) ./ sigT1Sm * 100;
-    totDev3 = nanmean(abs(sigT3Norm(cmpInd) - sigT1Sm(cmpInd)) ./ sigT1Sm(cmpInd)) * 100;
+    totDev3 = (nanmean(sigT3Norm(cmpInd)) - nanmean(sigT1Sm(cmpInd))) ./ nanmean(sigT1Sm(cmpInd)) * 100;
     dev4 = (sigT4Norm - sigT1Sm) ./ sigT1Sm * 100;
-    totDev4 = nanmean(abs(sigT4Norm(cmpInd) - sigT1Sm(cmpInd)) ./ sigT1Sm(cmpInd)) * 100;
+    totDev4 = (nanmean(sigT4Norm(cmpInd)) - nanmean(sigT1Sm(cmpInd))) ./ nanmean(sigT1Sm(cmpInd)) * 100;
     dev5 = (sigT5Norm - sigT1Sm) ./ sigT1Sm * 100;
-    totDev5 = nanmean(abs(sigT5Norm(cmpInd) - sigT1Sm(cmpInd)) ./ sigT1Sm(cmpInd)) * 100;
+    totDev5 = (nanmean(sigT5Norm(cmpInd)) - nanmean(sigT1Sm(cmpInd))) ./ nanmean(sigT1Sm(cmpInd)) * 100;
 
     % deviation check
     isPassChk2 = (abs(totDev2) < lidarConfig.saturationChkCfg.maxDev(iCh));

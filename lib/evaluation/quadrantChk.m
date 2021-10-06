@@ -102,22 +102,22 @@ for iCh = 1:length(lidarConfig.chTag)
     %% determine deviations
 
     % stability check
-    cmpHeight = [2000, 2500];
+    cmpHeight = [2000, 4000];
     cmpInd = (lidarData.height >= cmpHeight(1)) & ...
              (lidarData.height <= cmpHeight(2));
     fprintf(fid, 'Comparison height: %f - %f m\n', cmpHeight(1), cmpHeight(2));
     % devEast1v2 = smooth(sigEast2Norm - sigEast1Norm, swBins) ./ smooth(sigEast1, swBins) * 100;   % (%)
-    totalDevEast1v2 = nanmean(abs(sigEast2Norm(cmpInd) - sigEast1Norm(cmpInd)) ./ sigEast1Norm(cmpInd)) * 100;
+    totalDevEast1v2 = (nanmean(sigEast2Norm(cmpInd)) - nanmean(sigEast1Norm(cmpInd))) ./ nanmean(sigEast1Norm(cmpInd)) * 100;
 
     % quadrant deviations
     devEast1 = (sigEast1Norm - totalSigNorm) ./ totalSigNorm * 100;
-    totalDevEast1 = nanmean(abs(sigEast1Norm(cmpInd) - totalSigNorm(cmpInd)) ./ totalSigNorm(cmpInd)) * 100;
+    totalDevEast1 = (nanmean(sigEast1Norm(cmpInd)) - nanmean(totalSigNorm(cmpInd))) ./ nanmean(totalSigNorm(cmpInd)) * 100;
     devSouth = (sigSouthNorm - totalSigNorm) ./ totalSigNorm * 100;
-    totalDevSouth = nanmean(abs(sigSouthNorm(cmpInd) - totalSigNorm(cmpInd)) ./ totalSigNorm(cmpInd)) * 100;
+    totalDevSouth = (nanmean(sigSouthNorm(cmpInd)) - nanmean(totalSigNorm(cmpInd))) ./ nanmean(totalSigNorm(cmpInd)) * 100;
     devWest = (sigWestNorm - totalSigNorm) ./ totalSigNorm * 100;
-    totalDevWest = nanmean(abs(sigEast1Norm(cmpInd) - totalSigNorm(cmpInd)) ./ totalSigNorm(cmpInd)) * 100;
+    totalDevWest = (nanmean(sigEast1Norm(cmpInd)) - nanmean(totalSigNorm(cmpInd))) ./ nanmean(totalSigNorm(cmpInd)) * 100;
     devNorth = (sigNorthNorm - totalSigNorm) ./ totalSigNorm * 100;
-    totalDevNorth = nanmean(abs(sigNorthNorm(cmpInd) - totalSigNorm(cmpInd)) ./ totalSigNorm(cmpInd)) * 100;
+    totalDevNorth = (nanmean(sigNorthNorm(cmpInd)) - nanmean(totalSigNorm(cmpInd))) ./ nanmean(totalSigNorm(cmpInd)) * 100;
 
     % deviation check
     isStable = (abs(totalDevEast1v2) < lidarConfig.quadrantChkCfg.stableThresh);
