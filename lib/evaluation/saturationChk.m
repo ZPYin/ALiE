@@ -121,10 +121,10 @@ for iCh = 1:length(lidarConfig.chTag)
         lidarConfig.saturationChkCfg.normRange(iCh, 2));
     normInd = (lidarData.height >= lidarConfig.saturationChkCfg.normRange(iCh, 1)) & ...
               (lidarData.height <= lidarConfig.saturationChkCfg.normRange(iCh, 2));
-    normRatio2 = nansum(sigT1(normInd)) ./ nansum(sigT2(normInd));
-    normRatio3 = nansum(sigT1(normInd)) ./ nansum(sigT3(normInd));
-    normRatio4 = nansum(sigT1(normInd)) ./ nansum(sigT4(normInd));
-    normRatio5 = nansum(sigT1(normInd)) ./ nansum(sigT5(normInd));
+    normRatio2 = nanmean(sigT1(normInd)) ./ nanmean(sigT2(normInd));
+    normRatio3 = nanmean(sigT1(normInd)) ./ nanmean(sigT3(normInd));
+    normRatio4 = nanmean(sigT1(normInd)) ./ nanmean(sigT4(normInd));
+    normRatio5 = nanmean(sigT1(normInd)) ./ nanmean(sigT5(normInd));
     sigT1Sm = smooth(sigT1, swBins);
     sigT2Sm = smooth(sigT2, swBins);
     sigT3Sm = smooth(sigT3, swBins);
@@ -145,6 +145,21 @@ for iCh = 1:length(lidarConfig.chTag)
     totDev4 = (nanmean(sigT4Norm(cmpInd)) - nanmean(sigT1Sm(cmpInd))) ./ nanmean(sigT1Sm(cmpInd)) * 100;
     dev5 = (sigT5Norm - sigT1Sm) ./ sigT1Sm * 100;
     totDev5 = (nanmean(sigT5Norm(cmpInd)) - nanmean(sigT1Sm(cmpInd))) ./ nanmean(sigT1Sm(cmpInd)) * 100;
+    transArr = [1, 0.8, 0.5, 0.2, 0.1];
+    sigArr = [nanmean(sigT1(cmpInd)), ...
+              nanmean(sigT2(cmpInd)), ...
+              nanmean(sigT3(cmpInd)), ...
+              nanmean(sigT4(cmpInd)), ...
+              nanmean(sigT5(cmpInd))];
+
+    %% signal linearity
+    lrSig = fitlm(transArr, sigArr);
+    R2Sig = lrSig.Rsquared.Ordinary;
+    slopeSig = lrSig.Coefficients.Estimate(2);
+    offsetSig = lrSig.Coefficients.Estimate(1);
+    fprintf(fid, 'R^2: %5.3f\n', R2Sig);
+    isPassLinearityChk = R2Sig > 0.95;
+    fprintf(fid, 'Pass linearity check (1: yes; 0: no): %d\n', isPassLinearityChk);
 
     % deviation check
     isPassChk2 = (abs(totDev2) < lidarConfig.saturationChkCfg.maxDev(iCh));
@@ -369,6 +384,43 @@ for iCh = 1:length(lidarConfig.chTag)
 
     if exist(p.Results.figFolder, 'dir')
         export_fig(gcf, fullfile(p.Results.figFolder, sprintf('saturation_test_deviation_%s_%s.%s', lidarType, lidarConfig.chTag{iCh}, p.Results.figFormat)), '-r300');
+    end
+
+    % linearity
+    figure('Position', [0, 10, 400, 330], ...
+           'Units', 'Pixels', ...
+           'Color', 'w', ...
+           'Visible', lidarConfig.figVisible);
+    p2 = scatter(transArr, sigArr, 'o', ...
+        'MarkerFaceColor', [90, 154, 213]/255, ...
+        'MarkerEdgeColor', [90, 154, 213]/255);
+    hold on;
+    p3 = plot([0, 2], [0, 2] * slopeSig + offsetSig, ...
+        'Color', [90, 154, 213]/255, ...
+        'LineStyle', '--', ...
+        'LineWidth', 1);
+    grid on;
+
+    xlabel('Transmittance');
+    ylabel('Ave. signal');
+    title(sprintf('Saturation test for %s, %s', lidarType, lidarConfig.chTag{iCh}));
+
+    xlim([0, 1.2]);
+    set(gca, 'XMinorTick', 'on', ...
+             'YMinorTick', 'on', ...
+             'XTick', sort(transArr), ...
+             'Box', 'on', ...
+             'LineWidth', 2);
+    text(0.1, 0.7, sprintf('y=%4.2fx+%4.2f\nR^2: %4.2f', slopeSig, offsetSig, R2Sig), 'Units', 'Normalized', 'FontSize', 11, 'FontWeight', 'bold', 'Color', 'k');
+
+    text(0, -0.13, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
+        'Units', 'Normalized', ...
+        'FontSize', 10, ...
+        'HorizontalAlignment', 'left', ...
+        'FontWeight', 'Bold');
+
+    if exist(p.Results.figFolder, 'dir')
+        export_fig(gcf, fullfile(p.Results.figFolder, sprintf('saturation_test_linearity_%s_%s.%s', lidarType, lidarConfig.chTag{iCh}, p.Results.figFormat)), '-r300');
     end
 
     if strcmpi(lidarConfig.figVisible, 'off')
