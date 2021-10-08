@@ -20,12 +20,19 @@ function [data] = readCmaLidarData(file, varargin)
 %        longitude: double
 %        latitude: double
 %        asl: double
-%        elevation_angle: double
 %        height: double
 %        nEffBin: double
 %        metadata: struct
 %        hBlindZone: double
 %            height of blind zone for each channel. (m)
+%        recWL: double
+%            central wavelength of the receiving channel. (nm)
+%        ChType: double
+%            channel type.
+%            0: Elastic
+%            1: parallel
+%            2: cross
+%            3: Raman
 %        rawSignal: double (nCh x height)
 %            raw signal.
 % HISTORY:

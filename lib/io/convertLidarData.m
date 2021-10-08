@@ -24,8 +24,19 @@ fprintf('[%s] Start data conversion!\n', tNow);
 logFile = fullfile(config.resultPath, 'lidar_data_loading.log');
 diaryon(logFile);
 
-lidarType = fieldnames(config.dataLoaderCfg);
+if isfield(config.internalChkCfg, 'lidarList')
+    lidarType = config.dataLoaderCfg.lidarList;
+else
+    lidarType = fieldnames(config.dataLoaderCfg);
+end
+
 for iLidar = 1:length(lidarType)
+
+    if ~ isfield(config.dataLoaderCfg, lidarType{iLidar})
+        errStruct.message = 'Wrong configuration for lidarList';
+        errStruct.identifier = 'LEToolbox:Err003';
+        error(errStruct);
+    end
 
     lidarConfig = config.dataLoaderCfg.(lidarType{iLidar});
     if ~ isfield(lidarConfig, 'flagFilenameTime')
