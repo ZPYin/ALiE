@@ -1,0 +1,72 @@
+resultPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\SY
+dataSavePath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\SY
+figFormat: png   # figure format to be exported
+
+dataLoaderCfg:
+  SY:   # Shan yi suo
+    dataPath: D:\Data\CMA_Lidar_Comparison\internalChk\SY\saturation-test
+    dataFilenamePattern: .*Lidar.*   # all files
+    dataFormat: 3
+    chTag: ['532p', '532s', '355e', '607', '1064e']
+    nMaxBin: 1600   # number of bins
+    flagFilenameTime: true
+
+internalChkCfg:
+  SY:
+    lidarNo: 14   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s', '355e', '607', '1064e']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1400, 1500]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: true   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    saturationChkCfg:
+      tRange:
+        - '2021-09-22 22:19:00 ~ 2021-09-22 22:20:00'   # 100% transmission
+        - '2021-09-22 22:39:00 ~ 2021-09-22 22:40:00'   # 60% transmission
+        - '2021-09-22 22:48:00 ~ 2021-09-22 22:49:00'   # 30% transmission
+        - '2021-09-22 22:53:00 ~ 2021-09-22 22:54:00'   # 20% transmission
+        - '2021-09-22 22:58:00 ~ 2021-09-22 22:59:38'   # 10% transmission
+      sigRange:
+        - [2e5, 3e7]
+        - [1e5, 1e7]
+        - [1e5, 1e8]
+        - [1e3, 1e6]
+        - [5e5, 1e8]
+      hRange:
+        - [0, 4000]
+        - [0, 4000]
+        - [0, 4000]
+        - [0, 4000]
+        - [0, 4000]
+      normRange:
+        - [2000, 4000]
+        - [2000, 4000]
+        - [2000, 4000]
+        - [2000, 4000]
+        - [2000, 4000]
+      maxDev:
+        - 10   # [%]
+        - 10   # [%]
+        - 10   # [%]
+        - 10   # [%]
+        - 10   # [%]
+      smoothwindow:
+        - 300   # (m)
+        - 300   # (m)
+        - 300   # (m)
+        - 300   # (m)
+        - 300   # (m)

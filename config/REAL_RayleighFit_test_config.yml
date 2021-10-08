@@ -1,0 +1,63 @@
+################################################################################
+# lidar configuration file
+# DON'T use Chinese characters!!!
+################################################################################
+
+resultPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\REAL
+dataSavePath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\REAL
+figFormat: png   # figure format to be exported
+
+# data loader configuration
+# Load lidar data to a specified directory (defined by `dataSavePath`)
+dataLoaderCfg:
+  REAL:   # lidar No.1
+    dataPath: D:\Data\CMA_Lidar_Comparison\internalChk\REAL\RayleighFit-test
+    dataFilenamePattern: .*   # all files
+    # data type
+    # 1: WHU standard 1064 nm lidar
+    # 2: WHU non-standard 1064 nm lidar
+    # 3: CMA standard data format in binary
+    # 4: Dasun visibility lidar
+    # 5: REAL
+    dataFormat: 5
+    chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    nMaxBin: 2300   # number of bins
+
+internalChkCfg:
+  REAL:
+    lidarNo: 11   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: [3.5, 3.5, 3.5, 3.5, 3.5, 30.4]   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1700, 2000]   # [start index, stop index] for background correction
+      nPretrigger: 55   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: true   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    RayleighChkCfg:
+      tRange: '2021-09-27 19:00:00 ~ 2021-09-27 19:59:00'
+      wavelength:
+        - [532]   # wavelength. (nm)
+      fitRange:
+        - [5100, 7000]   # Rayleigh fit range. (m)
+      smoothwindow:
+        - [60]
+      MieGlue:
+        - [0.85, 1, 0, 0, 0, 0]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
+      hRange:
+        - [0, 15000]   # display range. (m)
+      sigRange:
+        - [1e10, 5e14]   # signal display range. (a.u.)
+      maxDev:
+        - 15   # maximum relative deviation. (%)

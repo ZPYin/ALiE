@@ -1,0 +1,65 @@
+resultPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\SY
+dataSavePath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\SY
+figFormat: png   # figure format to be exported
+
+dataLoaderCfg:
+  SY:   # Shan yi suo
+    dataPath: D:\Data\CMA_Lidar_Comparison\internalChk\SY\telecover-test
+    dataFilenamePattern: .*Lidar.*   # all files
+    dataFormat: 3
+    chTag: ['532p', '532s', '355e', '607', '1064e']
+    nMaxBin: 1600   # number of bins
+    flagFilenameTime: true
+
+internalChkCfg:
+  SY:
+    lidarNo: 14   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '1064e']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1400, 1500]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: true   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    quadrantChkCfg:
+      quadrantTime:   # quadrant time (local time) [E-S-W-N-E]
+        - '2021-09-22 21:52:00 ~ 2021-09-22 21:55:00'   # east1
+        - '2021-09-22 21:56:00 ~ 2021-09-22 21:58:00'   # south
+        - '2021-09-22 22:00:00 ~ 2021-09-22 22:03:00'   # west
+        - '2021-09-22 22:04:00 ~ 2021-09-22 22:07:00'   # north
+        - '2021-09-22 21:52:00 ~ 2021-09-22 21:55:00'   # east2
+      hRangeNear:
+        - [0, 5000]   # vertical range for near-range behavior to display. (m)
+        - [0, 5000]   # vertical range for near-range behavior to display. (m)
+      hRangeAll:
+        - [0, 10000]   # vertical range for overall behavior to display. (m)
+        - [0, 10000]   # vertical range for overall behavior to display. (m)
+      normRange:
+        - [1500, 2500]   # normalization range. (m)
+        - [1500, 3000]   # normalization range. (m)
+      rcsDisplayRangeAll:
+        - [0, 4e6]   # range of rcs
+        - [0, 3e6]   # range of rcs
+      normSigDisplayRangeAll:
+        - [0, 4e6]   # range of rcs
+        - [0, 3e6]   # range of rcs
+      normSigDisplayRangeNear:
+        - [0, 4e6]   # range of rcs
+        - [0, 3e6]   # range of rcs
+      smoothwindow:
+        - 150   # smoothing window length. (m)
+        - 300   # smoothing window length. (m)
+      stableThresh: 10   # [%]
+      maxDev: 20   # [%]

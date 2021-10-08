@@ -1,0 +1,67 @@
+resultPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\SY
+dataSavePath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\SY
+figFormat: png   # figure format to be exported
+
+dataLoaderCfg:
+  SY:   # Shan yi suo
+    dataPath: D:\Data\CMA_Lidar_Comparison\internalChk\SY\detectRange-test
+    dataFilenamePattern: .*Lidar.*   # all files
+    dataFormat: 3
+    chTag: ['532p', '532s', '355e', '607', '1064e']
+    nMaxBin: 1600   # number of bins
+    flagFilenameTime: true
+
+internalChkCfg:
+  SY:
+    lidarNo: 14   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s', '355e', '607', '1064e']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1400, 1500]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: true   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    detectRangeChkCfg:
+      tRange: '2021-09-23 05:12:00 ~ 2021-09-23 05:14:00'   # temporal integral range for detection ability check
+      minSNR:
+        - 3   # minimum SNR
+        - 3   # minimum SNR
+        - 3   # minimum SNR
+        - 3   # minimum SNR
+        - 3   # minimum SNR
+      minHeight:
+        - 9000   # minimum height. (m)
+        - 9000   # minimum height. (m)
+        - 9000   # minimum height. (m)
+        - 9000   # minimum height. (m)
+        - 9000   # minimum height. (m)
+      sigRange:
+        - [1e-5, 1e1]
+        - [1e-5, 1e1]
+        - [1e-5, 1e1]
+        - [1e-5, 1e1]
+        - [1e-5, 5e1]
+      snrRange:
+        - [1e-1, 1e4]
+        - [1e-1, 1e4]
+        - [1e-1, 1e4]
+        - [1e-1, 1e4]
+        - [1e-1, 1e4]
+      hRange:
+        - [0, 15000]
+        - [0, 15000]
+        - [0, 15000]
+        - [0, 15000]
+        - [0, 15000]

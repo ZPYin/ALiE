@@ -1,0 +1,49 @@
+resultPath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\SS
+dataSavePath: D:\Coding\Matlab\CMA-lidar-evaluation\lidar_evaluation\SS
+figFormat: png   # figure format to be exported
+
+dataLoaderCfg:
+  SS:   # Qianhai
+    dataPath: D:\Data\CMA_Lidar_Comparison\internalChk\SS\RayleighFit-test
+    dataFilenamePattern: .*Lidar.*
+    dataFormat: 3
+    chTag: ['532p', '532s']
+    nMaxBin: 1000
+    nBin: 8000
+internalChkCfg:
+  SS:
+    lidarNo: 7   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [900, 950]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: true   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    RayleighChkCfg:
+      tRange: '2021-09-27 22:48:00 ~ 2021-09-27 22:49:00'
+      wavelength:
+        - [532]   # wavelength. (nm)
+      fitRange:
+        - [6000, 7000]   # Rayleigh fit range. (m)
+      smoothwindow:
+        - [30]
+      MieGlue:
+        - [1, 0]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
+      hRange:
+        - [0, 15000]   # display range. (m)
+      sigRange:
+        - [1e3, 1e7]   # signal display range. (a.u.)
+      maxDev: [15]   # maximum relative deviation. (%)
