@@ -53,9 +53,9 @@ internalChkCfg:
       wavelength:
         - [1064]   # wavelength. (nm)
       fitRange:
-        - [5100, 7000]   # Rayleigh fit range. (m)
+        - [4200, 7000]   # Rayleigh fit range. (m)
       smoothwindow:
-        - [60]
+        - [600]
       MieGlue:
         - [1]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
       hRange:
@@ -63,3 +63,4 @@ internalChkCfg:
       sigRange:
         - [1e7, 1e10]   # signal display range. (a.u.)
       maxDev: [15]   # maximum relative deviation. (%)
+      flagLinearFit: true

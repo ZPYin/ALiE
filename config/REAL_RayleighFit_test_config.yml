@@ -61,3 +61,4 @@ internalChkCfg:
         - [1e10, 5e14]   # signal display range. (a.u.)
       maxDev:
         - 15   # maximum relative deviation. (%)
+      flagLinearFit: true

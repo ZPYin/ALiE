@@ -58,7 +58,7 @@ internalChkCfg:
         - [12000, 15000]   # Rayleigh fit range. (m)
         - [5700, 7500]   # Rayleigh fit range. (m)
       smoothwindow:
-        - [15]
+        - [150]
         - [150]
       MieGlue:
         - [0, 0, 1, 0, 0, 0, 0, 0]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
@@ -72,3 +72,4 @@ internalChkCfg:
       maxDev:
         - [15]   # maximum relative deviation. (%)
         - [15]   # maximum relative deviation. (%)
+      flagLinearFit: true

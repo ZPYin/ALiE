@@ -32,6 +32,13 @@ parse(p, lidarData, lidarConfig, reportFile, lidarType, varargin{:});
 
 isPassRayleighChk = false(1, length(lidarConfig.RayleighChkCfg.wavelength));
 
+isLinearFit = false;   % whether to implement linear fit
+if isfield(lidarConfig.RayleighChkCfg, 'flagLinearFit')
+    if lidarConfig.RayleighChkCfg.flagLinearFit
+        isLinearFit = true;
+    end
+end
+
 fid = fopen(reportFile, 'a');
 fprintf(fid, '\n## Rayleigh Check\n');
 
@@ -82,7 +89,7 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
     normMRCS = smooth(mRCS .* normRatio, smWinLen);
     MieRCSSm = smooth(MieRCS, smWinLen);
 
-    % determine Rayleigh fit
+    % determine Rayleigh fit (with signal deviations)
     devRayleigh = (normMRCS - MieRCSSm) ./ normMRCS * 100;
     isPassRayleighChk(iWL) = nanmean(abs(devRayleigh(normInd))) <= lidarConfig.RayleighChkCfg.maxDev(iWL);
     fprintf(fid, 'Normalization range: %f - %f m\n', ...
@@ -92,6 +99,32 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
         nanmean(abs(devRayleigh(normInd))), ...
         lidarConfig.RayleighChkCfg.maxDev(iWL));
     fprintf(fid, 'Does pass Rayleigh check? (1: yes; 0: no): %d\n', isPassRayleighChk(iWL));
+
+    if isLinearFit
+        % determine Rayleigh fit with linear regression
+        mRCSFit = normMRCS(normInd);
+        isMRCSPos = mRCSFit > 0;
+        mieRCSFit = MieRCSSm(normInd);
+        isMieRCSPos = mieRCSFit > 0;
+        heightFit = lidarData.height(normInd);
+
+        lrMol = fitlm(log10(mRCSFit(isMRCSPos)), heightFit(isMRCSPos));
+        lrAer = fitlm(log10(mieRCSFit(isMieRCSPos)), heightFit(isMieRCSPos));
+
+        slopeMieRCS = lrAer.Coefficients.Estimate(2);
+        offsetMieRCS = lrAer.Coefficients.Estimate(1);
+        R2MieRCS = lrAer.Rsquared.Ordinary;
+
+        slopeMRCS = lrMol.Coefficients.Estimate(2);
+        offsetMRCS = lrMol.Coefficients.Estimate(1);
+        R2MRCS = lrMol.Rsquared.Ordinary;
+
+        devLinearFit = abs((slopeMieRCS - slopeMRCS) / slopeMRCS) * 100;
+
+        fprintf(fid, 'Linear fit (molecule) slope: %f; offset: %f', slopeMRCS, offsetMRCS);
+        fprintf(fid, 'Linear fit (lidar) slope: %f; offset: %f', slopeMieRCS, offsetMieRCS);
+        fprintf(fid, 'Rel. dev. slope: %6.2f%%\n', devLinearFit);
+    end
 
     %% signal visualization
     figure('Position', [0, 10, 300, 400], ...
@@ -110,7 +143,7 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
         'DisplayName', 'RCS');
     hold on;
     pMol = semilogx(mRCSTmp, lidarData.height, ...
-        'Color', [178, 34, 34]/255, ...
+        'Color', [250, 128, 113]/255, ...
         'LineStyle', '-', ...
         'LineWidth', 2, ...
         'DisplayName', 'Molecular');
@@ -128,12 +161,28 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
     % signal bound
     plot((100 - lidarConfig.RayleighChkCfg.maxDev(iWL)) / 100 * [mRCSTmp(baseInd), mRCSTmp(topInd)], ...
         lidarConfig.RayleighChkCfg.fitRange(iWL, :), '-.', ...
-        'Color', [178, 34, 34]/255, ...
+        'Color', [250, 128, 113]/255, ...
         'LineWidth', 1);
     plot((100 + lidarConfig.RayleighChkCfg.maxDev(iWL)) / 100 * [mRCSTmp(baseInd), mRCSTmp(topInd)], ...
         lidarConfig.RayleighChkCfg.fitRange(iWL, :), '-.', ...
-        'Color', [178, 34, 34]/255, ...
+        'Color', [250, 128, 113]/255, ...
         'LineWidth', 1);
+
+    if isLinearFit
+        % linear fit
+        plot(10.^((lidarConfig.RayleighChkCfg.fitRange(iWL, :) - offsetMieRCS) / slopeMieRCS), lidarConfig.RayleighChkCfg.fitRange(iWL, :), '--', ...
+            'Color', [0, 0, 0]/255, ...
+            'LineWidth', 1);
+        plot(10.^((lidarConfig.RayleighChkCfg.fitRange(iWL, :) - offsetMRCS) / slopeMRCS), lidarConfig.RayleighChkCfg.fitRange(iWL, :), '--', ...
+            'Color', [255, 69, 0]/255, ...
+            'LineWidth', 1);
+
+        text(lidarConfig.RayleighChkCfg.sigRange(iWL, 1), lidarConfig.RayleighChkCfg.fitRange(iWL, 2), sprintf('   s: %f; R^2: %4.2f\n   s (mol): %f; R^2: %4.2f', slopeMieRCS, R2MieRCS, slopeMRCS, R2MRCS), ...
+            'Units', 'data', ...
+            'fontweight', 'bold', ...
+            'fontsize', 9, ...
+            'verticalalignment', 'bottom');
+    end
 
     xlabel('RCS (a.u.)');
     ylabel('Height (m)');
