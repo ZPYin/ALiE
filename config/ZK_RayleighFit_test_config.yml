@@ -39,9 +39,9 @@ internalChkCfg:
       fitRange:
         - [5000, 6000]   # Rayleigh fit range. (m)
       smoothwindow:
-        - [60]
+        - [300]
       MieGlue:
-        - [0, 1]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
+        - [1, 0]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
       hRange:
         - [0, 15000]   # display range. (m)
       sigRange:

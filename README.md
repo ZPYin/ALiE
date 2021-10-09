@@ -37,7 +37,10 @@ git pull origin master
 
 整个对比代码的结构框图如下所示：
 
-![structure](./image/程序整体结构图.png)
+<p align='center'>
+<img src='./image/程序整体结构图.png', width=500, height=400, lat='结构图'>
+<br>
+<b>程序整体结构图</b>
 
 代码的所有功能通过配置文件进行控制，配置文件格式为[YAML][2]文件。通过**Matlab**版本的[YAML][2]文件解析库[yamlmatlab][3]可以将[YAML][2]文件解析成**Matlab**的结构体，利用这个结构体可以控制**Matlab**程序的运行。
 
@@ -50,6 +53,29 @@ setupLEToolbox   % 将本项目相关代码添加进入Matlab搜索路径中
 LEMain('/path/to/configFile', 'flagReadData', true, 'flagQL', true, 'flagDebug', false);   % 显示雷达数据快照，其中注意设置config文件的绝对路径
 % LEMain的其他使用方法，请使用 help LEMain 查看
 ```
+
+## Q&A （问题解答）
+
+**怎么知道REAL数据拼接结果的好坏？**
+
+```matlab
+close all;
+LEMain('D:\Coding\Matlab\lidar_evaluation_1064\config\test_REAL_signalMerge_config.yml', 'flagReadData', true, 'flagDebug', true, 'flagQL', true);
+```
+
+修改拼接系数的代码在`lidarPreprocess.m`中。
+
+**怎么设置chTag（通道标识）**
+
+在`config`文件设置通道标识需要按照实际数据中的通道顺序，通道类别标识代号可以参考[LidarList.md](lidarList.md)。
+
+**各个配置参数的含义如何？**
+
+关于配置参数的含义请参考[配置文件说明](docs/配置文件说明.pdf)
+
+**各个版本的更新内容？**
+
+关于各个版本的更新内容，请查看[CHANGELOG](CHANGELOG)
 
 ## 作者信息
 
