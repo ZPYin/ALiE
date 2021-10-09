@@ -204,6 +204,10 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
         'HorizontalAlignment', 'left', ...
         'FontWeight', 'Bold');
 
+    if exist(LEToolboxInfo.institute_logo, 'file') == 2
+        addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+    end
+
     if exist(p.Results.figFolder, 'dir')
         export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Rayleigh_test_%s_%d.%s', lidarType, lidarConfig.RayleighChkCfg.wavelength(iWL), p.Results.figFormat)), '-r300');
     end

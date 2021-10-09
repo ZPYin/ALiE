@@ -8,12 +8,12 @@ addpath(genpath(fullfile(rootDir, 'lib')));
 addpath(genpath(fullfile(rootDir, 'include')));
 
 global LEToolboxInfo
-LEToolboxInfo.programVersion = '0.3';
+LEToolboxInfo.programVersion = '0.4';
 LEToolboxInfo.updateDate = datenum(2021, 10, 8);
 LEToolboxInfo.institute = 'CMA';
 LEToolboxInfo.author = 'Zhenping Yin';
 LEToolboxInfo.email = 'zp.yin@whu.edu.cn';
-LEToolboxInfo.institute_logo = 'logo_cma.png';
+LEToolboxInfo.institute_logo = fullfile(rootDir, 'image', 'logo_cma.png');
 LEToolboxInfo.projectDir = rootDir;
 
 fprintf('Success!!!\n');

@@ -251,6 +251,10 @@ for iCh = 1:length(lidarConfig.chTag)
         'HorizontalAlignment', 'left', ...
         'FontWeight', 'Bold');
 
+    if exist(LEToolboxInfo.institute_logo, 'file') == 2
+        addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+    end
+
     if exist(p.Results.figFolder, 'dir')
         export_fig(gcf, fullfile(p.Results.figFolder, sprintf('saturation_check_signal_%s_%s.%s', lidarType, lidarConfig.chTag{iCh}, p.Results.figFormat)), '-r300');
     end
@@ -326,6 +330,10 @@ for iCh = 1:length(lidarConfig.chTag)
         'HorizontalAlignment', 'left', ...
         'FontWeight', 'Bold');
 
+    if exist(LEToolboxInfo.institute_logo, 'file') == 2
+        addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+    end
+
     if exist(p.Results.figFolder, 'dir')
         export_fig(gcf, fullfile(p.Results.figFolder, sprintf('saturation_check_norm_signal_%s_%s.%s', lidarType, lidarConfig.chTag{iCh}, p.Results.figFormat)), '-r300');
     end
@@ -382,6 +390,10 @@ for iCh = 1:length(lidarConfig.chTag)
         'HorizontalAlignment', 'left', ...
         'FontWeight', 'Bold');
 
+    if exist(LEToolboxInfo.institute_logo, 'file') == 2
+        addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+    end
+
     if exist(p.Results.figFolder, 'dir')
         export_fig(gcf, fullfile(p.Results.figFolder, sprintf('saturation_test_deviation_%s_%s.%s', lidarType, lidarConfig.chTag{iCh}, p.Results.figFormat)), '-r300');
     end
@@ -418,6 +430,10 @@ for iCh = 1:length(lidarConfig.chTag)
         'FontSize', 10, ...
         'HorizontalAlignment', 'left', ...
         'FontWeight', 'Bold');
+
+    if exist(LEToolboxInfo.institute_logo, 'file') == 2
+        addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+    end
 
     if exist(p.Results.figFolder, 'dir')
         export_fig(gcf, fullfile(p.Results.figFolder, sprintf('saturation_test_linearity_%s_%s.%s', lidarType, lidarConfig.chTag{iCh}, p.Results.figFormat)), '-r300');

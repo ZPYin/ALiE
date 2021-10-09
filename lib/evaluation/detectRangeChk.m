@@ -165,6 +165,10 @@ for iCh = 1:length(lidarConfig.chTag)
         'Box', 'on', ...
         'LineWidth', 2);
 
+    if exist(LEToolboxInfo.institute_logo, 'file') == 2
+        addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+    end
+
     if exist(p.Results.figFolder, 'dir')
         export_fig(gcf, fullfile(p.Results.figFolder, sprintf('detection_range_test_%s_%s.%s', lidarType, lidarConfig.chTag{iCh}, p.Results.figFormat)), '-r300');
     end

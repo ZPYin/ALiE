@@ -261,6 +261,10 @@ text(-0.2, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
     'HorizontalAlignment', 'left', ...
     'FontWeight', 'Bold');
 
+if exist(LEToolboxInfo.institute_logo, 'file') == 2
+    addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+end
+
 if exist(config.resultPath, 'dir')
     export_fig(gcf, fullfile(config.resultPath, sprintf('Raman_backscatter_comparison.%s', config.figFormat)), '-r300');
 end
@@ -317,6 +321,10 @@ text(-0.2, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
     'FontSize', 10, ...
     'HorizontalAlignment', 'left', ...
     'FontWeight', 'Bold');
+
+if exist(LEToolboxInfo.institute_logo, 'file') == 2
+    addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+end
 
 if exist(config.resultPath, 'dir')
     export_fig(gcf, fullfile(config.resultPath, sprintf('Raman_extinction_comparison.%s', config.figFormat)), '-r300');
@@ -424,6 +432,10 @@ text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
     'FontSize', 10, ...
     'HorizontalAlignment', 'left', ...
     'FontWeight', 'Bold');
+
+if exist(LEToolboxInfo.institute_logo, 'file') == 2
+    addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+end
 
 if exist(config.resultPath, 'dir')
     export_fig(gcf, fullfile(config.resultPath, sprintf('Raman_Backscatter_deviation.%s', config.figFormat)), '-r300');
@@ -533,6 +545,10 @@ text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
     'HorizontalAlignment', 'left', ...
     'FontWeight', 'Bold');
 
+if exist(LEToolboxInfo.institute_logo, 'file') == 2
+    addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+end
+
 if exist(config.resultPath, 'dir')
     export_fig(gcf, fullfile(config.resultPath, sprintf('Raman_Backscatter_mean_deviation.%s', config.figFormat)), '-r300');
 end
@@ -639,6 +655,10 @@ text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
     'FontSize', 10, ...
     'HorizontalAlignment', 'left', ...
     'FontWeight', 'Bold');
+
+if exist(LEToolboxInfo.institute_logo, 'file') == 2
+    addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+end
 
 if exist(config.resultPath, 'dir')
     export_fig(gcf, fullfile(config.resultPath, sprintf('Raman_Extinction_deviation.%s', config.figFormat)), '-r300');
@@ -747,6 +767,10 @@ text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
     'FontSize', 10, ...
     'HorizontalAlignment', 'left', ...
     'FontWeight', 'Bold');
+
+if exist(LEToolboxInfo.institute_logo, 'file') == 2
+    addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
+end
 
 if exist(config.resultPath, 'dir')
     export_fig(gcf, fullfile(config.resultPath, sprintf('Raman_Extinction_mean_deviation.%s', config.figFormat)), '-r300');

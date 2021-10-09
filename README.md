@@ -67,11 +67,11 @@ LEMain('D:\Coding\Matlab\lidar_evaluation_1064\config\test_REAL_signalMerge_conf
 
 **怎么设置chTag（通道标识）**
 
-在`config`文件设置通道标识需要按照实际数据中的通道顺序，通道类别标识代号可以参考[LidarList.md](lidarList.md)。
+在`config`文件设置通道标识需要按照实际数据中的通道顺序，通道类别标识代号可以参考[LidarList.md](./docs/lidarList.md)。
 
 **各个配置参数的含义如何？**
 
-关于配置参数的含义请参考[配置文件说明](docs/配置文件说明.pdf)
+关于配置参数的含义请参考[配置文件说明](./docs/配置文件说明.pdf)
 
 **各个版本的更新内容？**
 
