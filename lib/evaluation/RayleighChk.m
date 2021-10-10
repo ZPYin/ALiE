@@ -66,6 +66,12 @@ for iWL = 1:length(lidarConfig.RayleighChkCfg.wavelength)
 
     fprintf(fid, '\n**Wavelength: %6.1f nm**\n', lidarConfig.RayleighChkCfg.wavelength(iWL));
 
+    if size(rcs, 2) ~= length(lidarConfig.RayleighChkCfg.MieGlue(iWL, :))
+        errStruct.message = 'Wrong configuration for MieGlue. Incompatible size with channel number';
+        errStruct.identifier = 'LEToolbox:Err003';
+        error(errStruct);
+    end
+
     % Mie signal
     MieRCS = rcs * transpose(lidarConfig.RayleighChkCfg.MieGlue(iWL, :));
 

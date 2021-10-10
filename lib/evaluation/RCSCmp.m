@@ -95,6 +95,13 @@ if iscell(config.externalChkCfg.RCSCmpCfg.sigCompose)
 else
     sigCompose = transpose(config.externalChkCfg.RCSCmpCfg.sigCompose(1, :));
 end
+
+if size(rcs, 2) ~= length(sigCompose)
+    errStruct.message = 'Wrong configuration for sigCompose. Incompatible size with channel number';
+    errStruct.identifier = 'LEToolbox:Err003';
+    error(errStruct);
+end
+
 cmpSig = cat(2, cmpSig, rcs * sigCompose);
 fprintf(fid, 'Time slot: %s\n', config.externalChkCfg.RCSCmpCfg.tRange);
 fprintf(fid, 'Number of profiles for %s (standard): %d\n', lidarType{1}, sum(isChosen));
@@ -118,6 +125,13 @@ for iLidar = 2:length(lidarType)
     else
         sigCompose = transpose(config.externalChkCfg.RCSCmpCfg.sigCompose(iLidar, :));
     end
+
+    if size(rcs, 2) ~= length(sigCompose)
+        errStruct.message = 'Wrong configuration for sigCompose. Incompatible size with channel number';
+        errStruct.identifier = 'LEToolbox:Err003';
+        error(errStruct);
+    end
+
     thisCmpSig = rcs * sigCompose;
     thisCmpSigInterp = interp1(thisHeight, thisCmpSig, height);
     cmpSig = cat(2, cmpSig, thisCmpSigInterp);

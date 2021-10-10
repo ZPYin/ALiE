@@ -102,8 +102,8 @@ else
     sigCompose = transpose(config.externalChkCfg.FernaldCmpCfg.sigCompose(1, :));
 end
 
-cmpSig = cat(2, cmpSig, sig * transpose(sigCompose(1, :)));
-cmpBg = cat(2, cmpBg, bg * transpose(sigCompose(1, :)));
+cmpSig = cat(2, cmpSig, sig * sigCompose);
+cmpBg = cat(2, cmpBg, bg * sigCompose);
 fprintf(fid, 'Time slot: %s\n', config.externalChkCfg.FernaldCmpCfg.tRange);
 fprintf(fid, 'Number of profiles for %s (standard): %d\n', lidarType{1}, sum(isChosen));
 
@@ -124,6 +124,12 @@ for iLidar = 2:length(lidarType)
         sigCompose = transpose(config.externalChkCfg.FernaldCmpCfg.sigCompose{iLidar});
     else
         sigCompose = transpose(config.externalChkCfg.FernaldCmpCfg.sigCompose(iLidar, :));
+    end
+
+    if size(sig, 2) ~= length(sigCompose)
+        errStruct.message = 'Wrong configuration for sigCompose. Incompatible size with channel number';
+        errStruct.identifier = 'LEToolbox:Err003';
+        error(errStruct);
     end
 
     thisHeight = allData.(thisLidar).height;

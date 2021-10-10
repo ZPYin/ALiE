@@ -45,7 +45,7 @@ dataLoaderCfg:
     dataFilenamePattern: .*Lidar.*
     dataFormat: 3
     chTag: ['1064e']
-    nMaxBin: 1330
+    nMaxBin: 1250
     flagFilenameTime: true
   SS:   # Qianhai
     dataPath: D:\Data\CMA_Lidar_Comparison\externalChk\SS
@@ -177,7 +177,7 @@ internalChkCfg:
       hOffset: 0   # height offset. (m)
       tOffset: 0   # time offset. (min)
       deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-      bgBins: [1100, 1200]   # [start index, stop index] for background correction
+      bgBins: [1200, 1300]   # [start index, stop index] for background correction
       nPretrigger: 0   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
       overlapFile: ''
@@ -547,6 +547,17 @@ externalChkCfg:
     nPretrigger: 0   # if nPretrigger < 0, move signal up
     bgCorFile: ''   # data file of dark measurement results
     overlapFile: ''
+  DS1:
+    lidarNo: 6   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064e']
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    hOffset: 0   # height offset. (m)
+    tOffset: 0   # time offset. (min)
+    deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+    bgBins: [1150, 1250]   # [start index, stop index] for background correction
+    nPretrigger: 0   # if nPretrigger < 0, move signal up
+    bgCorFile: ''   # data file of dark measurement results
+    overlapFile: ''
   AW:
     lidarNo: 7   # lidar number. (see ./docs/lidarList.md)
     chTag: ['532p', '532s']
@@ -619,7 +630,7 @@ externalChkCfg:
   flagFernaldCmp: false
   flagRamanCmp: false
   rangeCmpCfg:   # 1064
-    LidarList: ['WH1', 'WH2', 'DS', 'SY', 'L7']   # lidar in comparison (1: standard lidar)
+    LidarList: ['WH1', 'WH2', 'DS', 'DS1', 'SY', 'L7']   # lidar in comparison (1: standard lidar)
     tRange: '2021-09-27 19:30:00 ~ 2021-09-27 19:35:00'
     hRange: [6000, 15000]
     fitRange: [8000, 12000]
@@ -648,11 +659,12 @@ externalChkCfg:
   #     - [1, 0]   # second lidar
   #   maxRangeDev: 15   # (m)
   RCSCmpCfg:   # 1064 e
-    LidarList: ['WH1', 'WH2', 'DS', 'SY', 'L7']
+    LidarList: ['WH1', 'WH2', 'DS', 'DS1', 'SY', 'L7']
     sigCompose:
       - [1]   # first lidar
       - [1]   # second lidar
       - [1, 0]   # second lidar
+      - [1]   # second lidar
       - [0, 0, 0, 0, 1]   # second lidar
       - [0, 0, 0, 0, 0, 0, 0, 1]   # second lidar
     tRange: '2021-09-27 19:00:00 ~ 2021-09-27 19:30:00'
