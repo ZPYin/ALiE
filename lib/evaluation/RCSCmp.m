@@ -109,14 +109,7 @@ for iLidar = 2:length(lidarType)
 
     for iCh = 1:length(config.externalChkCfg.(lidarType{iLidar}).chTag)
         sig = nanmean(allData.(lidarType{iLidar}).(['sig', config.externalChkCfg.(lidarType{iLidar}).chTag{iCh}])(:, isChosen), 2);
-        if strcmpi(lidarType{iLidar}, 'WH2')
-            % only for wh2
-            sigCor = sig - 0.25;
-            % sigCor = sig;
-            rcs = cat(2, rcs, sigCor .* thisHeight.^2);
-        else
-            rcs = cat(2, rcs, sig .* thisHeight.^2);
-        end
+        rcs = cat(2, rcs, sig .* thisHeight.^2);
     end
 
     %% signal interpolation

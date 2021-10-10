@@ -614,9 +614,9 @@ externalChkCfg:
     bgCorFile: ''   # data file of dark measurement results
     overlapFile: ''
   flagRangeCmp: false
-  flagRCSCmp: false
+  flagRCSCmp: true
   flagVDRCmp: false
-  flagFernaldCmp: true
+  flagFernaldCmp: false
   flagRamanCmp: false
   rangeCmpCfg:   # 1064
     LidarList: ['WH1', 'WH2', 'DS', 'SY', 'L7']   # lidar in comparison (1: standard lidar)

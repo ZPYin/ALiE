@@ -21,7 +21,7 @@ p.KeepUnmatched = true;
 
 addRequired(p, 'wmImgPath', @ischar);
 addRequired(p, 'wmRelPos', @isnumeric);
-addParameter(p, 'transparency', 0.5, @isnumeric);
+addParameter(p, 'transparency', 0.2, @isnumeric);
 
 parse(p, wmImgPath, wmRelPos, varargin{:});
 
@@ -41,6 +41,5 @@ imgHandle = imshow(wm1, []);
 set(axes_new, 'handlevisibility', 'off', ...
     'visible', 'off');
 imgHandle.AlphaData = imgAlpha;
-set(axPre);
 
 end

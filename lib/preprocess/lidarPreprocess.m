@@ -135,7 +135,7 @@ case 11
     lidarData.mergeOffset = mergeOffset;
     lidarData.mergeSlope = mergeSlope;
 
-case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14}
+case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14}
 
     % pretrigger removes for height
     lidarData.height = lidarData.height((p.Results.nPretrigger + 1):end) + ...
@@ -188,6 +188,69 @@ case {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14}
         % background correction
         bg = nanmean(sigCor(p.Results.bgBins(1):p.Results.bgBins(2), :), 1);
         sigCor = sigCor - repmat(bg, length(lidarData.height), 1);
+
+        % range correction
+        rcs = sigCor .* repmat(lidarData.height.^2, 1, length(lidarData.mTime));
+
+        lidarData.(['sig', chTag{iCh}]) = sigCor;
+        lidarData.(['bg', chTag{iCh}]) = bg;
+        lidarData.(['rcs', chTag{iCh}]) = rcs;
+    end
+
+case 13
+    % WHU non-standard 1064 lidar
+
+    % pretrigger removes for height
+    lidarData.height = lidarData.height((p.Results.nPretrigger + 1):end) + ...
+                       p.Results.hOffset;
+    lidarData.mTime = lidarData.mTime + p.Results.tOffset;
+
+    for iCh = 1:length(chTag)
+
+        sig = lidarData.(['sig', chTag{iCh}]);
+
+        % deadtime correction
+        if ~ isempty(p.Results.deadtime)
+
+            if length(p.Results.deadtime) ~= length(chTag)
+                errStruct.message = sprintf('Wrong configuration for deadtime.');
+                errStruct.identifier = 'LEToolbox:Err003';
+                error(errStruct);
+            end
+
+            sigCor = sig ./ (1 - p.Results.deadtime(iCh) * 1e-9 .* sig);
+        else
+            sigCor = sig;
+        end
+
+        % nPretrigger remove
+        sigCor = sigCor((p.Results.nPretrigger + 1):end, :);
+
+        if p.Results.bgBins(2) > length(lidarData.height)
+            errStruct.message = sprintf('Wrong configuration for bgBins.');
+            errStruct.identifier = 'LEToolbox:Err003';
+            error(errStruct);
+        end
+
+        % overlap correction
+        if ~ isempty(p.Results.overlapFile)
+            fid = fopen(fullfile(LEToolboxInfo.projectDir, ...
+                'lib', 'overlap', p.Results.overlapFile), 'r');
+            dataTmp = textscan(fid, '%f%f', 'headerlines', 0, ...
+                'delimiter', ' ', 'MultipleDelimsAsOne', true);
+            ovHeight = dataTmp{1};
+            ovFunc = dataTmp{2};
+            fclose(fid);
+
+            % interpolate overlap
+            ovFuncInterp = interp1(ovHeight, ovFunc, ...
+                lidarData.height, 'linear', 'extrap');
+            sigCor = sigCor ./ ovFuncInterp;
+        end
+
+        % background correction
+        bg = nanmean(sigCor(p.Results.bgBins(1):p.Results.bgBins(2), :), 1);
+        sigCor = sigCor - repmat(bg, length(lidarData.height), 1) - 0.25;   % remove additional magic background
 
         % range correction
         rcs = sigCor .* repmat(lidarData.height.^2, 1, length(lidarData.mTime));
