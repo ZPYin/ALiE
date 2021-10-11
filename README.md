@@ -4,8 +4,8 @@
 
 - 数据读取和转换
 - 数据预处理
-- 自对比验证
-- 互对比验证
+- 自对比验证(internalChk)
+- 互对比验证(externalChk)
 
 > 本项目基于**Matlab (b2017)**版本开发，对于低版本**Matlab**运行本项目出现的错误，作者本人概不负责。除此之外，因为**Matlab**对中文支持较差，在使用中请保证不要出现中文路径名。
 
@@ -42,7 +42,7 @@ git pull origin master
 <br>
 <b>程序整体结构图</b>
 
-代码的所有功能通过配置文件进行控制，配置文件格式为[YAML][2]文件。通过**Matlab**版本的[YAML][2]文件解析库[yamlmatlab][3]可以将[YAML][2]文件解析成**Matlab**的结构体，利用这个结构体可以控制**Matlab**程序的运行。
+代码所有功能都通过配置文件进行控制，配置文件格式为[YAML][2]文件。通过**Matlab**版本的[YAML][2]文件解析库[yamlmatlab][3]可以将[YAML][2]文件解析成**Matlab**的结构体，利用这个结构体可以控制**Matlab**程序的运行。
 
 打开**Matlab**，在**Matlab**命令行窗口中输入以下命令来使用雷达对比代码。
 
@@ -52,9 +52,34 @@ setupLEToolbox   % 将本项目相关代码添加进入Matlab搜索路径中
 
 LEMain('/path/to/configFile', 'flagReadData', true, 'flagQL', true, 'flagDebug', false);   % 显示雷达数据快照，其中注意设置config文件的绝对路径
 % LEMain的其他使用方法，请使用 help LEMain 查看
+
+% LEMAIN main program of lidar evaluation.
+% USAGE:
+%    % Usecase 1: make quicklook
+%    LEMain('config.yml', 'flagReadData', true, 'flagQL', true);
+%    % Usecase 2: internal check
+%    LEMain('config.yml', 'flagReadData', true, 'flagInternalChk', true);
+%    % Usecase 3: external check
+%    LEMain('config.yml', 'flagReadData', true, 'flagExternalChk', true);
+%    % Usecase 4: debug mode
+%    LEMain('config.yml', 'flagReadData', 'flagInternalChk', true, 'flagDebug', true);
+% INPUTS:
+%    configFile: char
+%        absolute path of config file.
+% KEYWORDS:
+%    flagDebug: logical
+%    flagReadData: logical
+%    flagInternalChk: logical
+%    flagExternalChk: logical
+%    flagQL: logical
+%    flagBackupConfig: logical
+% HISTORY:
+%    2021-09-23: first edition by Zhenping
+% .. Authors: - zhenping@tropos.de
+
 ```
 
-## Q&A （问题解答）
+## 问题解答
 
 **怎么知道REAL数据拼接结果的好坏？**
 
@@ -76,6 +101,11 @@ LEMain('D:\Coding\Matlab\lidar_evaluation_1064\config\test_REAL_signalMerge_conf
 **各个版本的更新内容？**
 
 关于各个版本的更新内容，请查看[CHANGELOG](CHANGELOG)
+
+**我有问题想问**
+
+1. 对于程序运行出现的问题，请将运行使用的配置文件，**Matlab**的报错信息和运行之后输出的*log*一起通过邮箱发送给开发人员。
+2. 对于程序使用的疑问和建议请提交[**Issues**](https://gitee.com/mualidar/cma-lidar-comparison/issues)，本人会及时处理。
 
 ## 作者信息
 
