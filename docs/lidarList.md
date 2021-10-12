@@ -7,7 +7,7 @@
 |艾沃思|532nm激光雷达|AW|http://www.avorstech.com/|3|L0110|532p, 532s|
 |大舜|1064nm激光雷达(polarized)|DS|http://www.darsunlaser.com/index.html|5|L0104|1064p, 1064s|
 |大舜|1064nm激光雷达|DS1|http://www.darsunlaser.com/index.html|6|L0105|1064e|
-|浅海科技|532nm激光雷达|SS|https://www.shallow-sea.com/#page1|7|L0109|532p, 532s|
+|浅海科技|532nm激光雷达|SS|https://www.shallow-sea.com/#page1|7|L0109|532s, 532p|
 |中科光博|532nm激光雷达|GB|http://www.gbqtech.com/info/16205.html|8|L0102|532p, 532s|
 |704所|多波长激光雷达|L7|http://www.caaet.cn/|9|L0102|355p, 355s, 532p, 532s, 387, 407, 607, 1064e|
 |武汉大学|532nm激光雷达|REAL|http://rsgis.whu.edu.cn/|11||532sh, 532ph, 532sl, 532pl, 607l, 607h|

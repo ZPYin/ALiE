@@ -658,39 +658,17 @@ externalChkCfg:
   #     - [1, 0]   # second lidar
   #     - [1, 0]   # second lidar
   #   maxRangeDev: 15   # (m)
-  RCSCmpCfg:   # 1064 e
-    LidarList: ['WH1', 'WH2', 'DS', 'DS1', 'SY', 'L7']
-    sigCompose:
-      - [1]   # first lidar
-      - [1]   # second lidar
-      - [1, 0]   # second lidar
-      - [1]   # second lidar
-      - [0, 0, 0, 0, 1]   # second lidar
-      - [0, 0, 0, 0, 0, 0, 0, 1]   # second lidar
-    tRange: '2021-09-27 19:00:00 ~ 2021-09-27 19:30:00'
-    normRange: [1500, 2000]
-    hChkRange:
-      - [500, 2000]
-      - [2000, 5000]
-    maxDev:
-      - 10
-      - 20
-    smoothwindow:
-      - [0, 1000, 50]   # Piecewise smoothing: [bottom height, top height, window length]
-      - [1000, 10000, 150]
-      - [10000, 20000, 600]
-    hRange: [0, 14000]
-    sigRange: [1e7, 3e10]
-  # RCSCmpCfg:   # 532 p
-  #   LidarList: ['REAL', 'SY', 'L7', 'SS', 'ZK']
+  # RCSCmpCfg:   # 1064 e
+  #   LidarList: ['WH1', 'WH2', 'DS', 'DS1', 'SY', 'L7']
   #   sigCompose:
-  #     - [0, 1, 0, 0, 0, 0]   # first lidar
-  #     - [1, 0, 0, 0, 0]   # second lidar
-  #     - [0, 0, 1, 0, 0, 0, 0, 0]   # second lidar
-  #     - [0, 1]   # second lidar
+  #     - [1]   # first lidar
+  #     - [1]   # second lidar
   #     - [1, 0]   # second lidar
+  #     - [1]   # second lidar
+  #     - [0, 0, 0, 0, 1]   # second lidar
+  #     - [0, 0, 0, 0, 0, 0, 0, 1]   # second lidar
   #   tRange: '2021-09-27 19:00:00 ~ 2021-09-27 19:30:00'
-  #   normRange: [3500, 4500]
+  #   normRange: [1500, 2000]
   #   hChkRange:
   #     - [500, 2000]
   #     - [2000, 5000]
@@ -698,11 +676,35 @@ externalChkCfg:
   #     - 10
   #     - 20
   #   smoothwindow:
-  #     - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
-  #     - [1000, 10000, 300]
+  #     - [0, 1000, 50]   # Piecewise smoothing: [bottom height, top height, window length]
+  #     - [1000, 10000, 150]
   #     - [10000, 20000, 600]
   #   hRange: [0, 14000]
-  #   sigRange: [1e10, 1e15]
+  #   sigRange: [1e7, 3e10]
+  RCSCmpCfg:   # 532 p
+    LidarList: ['REAL', 'SY', 'L7', 'SS', 'ZK', 'GB', 'AW']
+    sigCompose:
+      - [0, 1, 0, 0, 0, 0]   # first lidar
+      - [1, 0, 0, 0, 0]   # second lidar
+      - [0, 0, 1, 0, 0, 0, 0, 0]   # second lidar
+      - [0, 1]   # second lidar
+      - [1, 0]   # second lidar
+      - [1, 0]   # second lidar
+      - [1, 0]   # second lidar
+    tRange: '2021-09-27 19:00:00 ~ 2021-09-27 19:30:00'
+    normRange: [3500, 4500]
+    hChkRange:
+      - [500, 2000]
+      - [2000, 5000]
+    maxDev:
+      - 10
+      - 20
+    smoothwindow:
+      - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
+      - [1000, 10000, 300]
+      - [10000, 20000, 600]
+    hRange: [0, 14000]
+    sigRange: [1e10, 1e15]
   # RCSCmpCfg:   # 532 s
   #   LidarList: ['REAL', 'SY', 'L7', 'SS', 'ZK']
   #   sigCompose:
