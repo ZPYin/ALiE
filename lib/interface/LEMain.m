@@ -39,10 +39,12 @@ addParameter(p, 'flagWaterMark', false, @islogical);
 
 parse(p, configFile, varargin{:});
 
-if ~ p.Results.flagWaterMark
+global LEToolboxInfo
+if p.Results.flagWaterMark
     % remove watermark
-    global LEToolboxInfo
-    LEToolboxInfo.institute_logo = '';
+    LEToolboxInfo.flagWaterMark = true;
+else
+    LEToolboxInfo.flagWaterMark = false;
 end
 
 %% read configuration

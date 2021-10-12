@@ -111,10 +111,6 @@ for iCh = 1:length(lidarConfig.chTag)
     hold on;
     plot([0, 100000], [bgMean, bgMean], '-.', ...
          'Color', [122, 122, 122]/255);
-    % plot([0, 100000], [bgMeanBound(1), bgMeanBound(1)], '--', ...
-    %      'Color', [211, 211, 211]/255);
-    % plot([0, 100000], [bgMeanBound(2), bgMeanBound(2)], '--', ...
-    %      'Color', [211, 211, 211]/255);
 
     ylabel('Background (a.u.)');
     xlabel('Height (m)');
@@ -136,7 +132,7 @@ for iCh = 1:length(lidarConfig.chTag)
     l = legend([p1, p2, p3], 'Location', 'northeast');
     l.Orientation = 'horizontal';
 
-    if exist(LEToolboxInfo.institute_logo, 'file') == 2
+    if (exist(LEToolboxInfo.institute_logo, 'file') == 2) && LEToolboxInfo.flagWaterMark
         addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
     end
 

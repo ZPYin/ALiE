@@ -215,7 +215,7 @@ text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
     'HorizontalAlignment', 'left', ...
     'FontWeight', 'Bold');
 
-if exist(LEToolboxInfo.institute_logo, 'file') == 2
+if (exist(LEToolboxInfo.institute_logo, 'file') == 2) && LEToolboxInfo.flagWaterMark
     addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
 end
 
@@ -320,7 +320,7 @@ text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
     'HorizontalAlignment', 'left', ...
     'FontWeight', 'Bold');
 
-if exist(LEToolboxInfo.institute_logo, 'file') == 2
+if (exist(LEToolboxInfo.institute_logo, 'file') == 2) && LEToolboxInfo.flagWaterMark
     addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
 end
 
@@ -426,7 +426,7 @@ text(-0.16, -0.1, sprintf('Version: %s', LEToolboxInfo.programVersion), ...
     'HorizontalAlignment', 'left', ...
     'FontWeight', 'Bold');
 
-if exist(LEToolboxInfo.institute_logo, 'file') == 2
+if (exist(LEToolboxInfo.institute_logo, 'file') == 2) && LEToolboxInfo.flagWaterMark
     addWaterMark(LEToolboxInfo.institute_logo, [0.5, 0.5, 0.6, 0.6]);
 end
 
