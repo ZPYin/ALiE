@@ -101,10 +101,16 @@ for iLidar = 2:length(lidarType)
     isChosen = (allData.(lidarType{iLidar}).mTime >= tRange(1)) & ...
                (allData.(lidarType{iLidar}).mTime <= tRange(2));
 
-    thisRaman = allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.RamanCmpCfg.RamanChTag{iLidar}])(:, isChosen);
-    thisMie = allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.RamanCmpCfg.MieChCompose{iLidar}{1}]) + ...
-              allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.RamanCmpCfg.MieChCompose{iLidar}{2}]) * ...
-              externalChkCfg.RamanCmpCfg.MieChCompose{iLidar}{3};
+    if ~ any(isChosen)
+        warning('No profiles were chosen for %s', lidarType{iLidar});
+        thisRaman = NaN(size(allData.(lidarType{iLidar}).height));
+        thisMie = NaN(size(allData.(lidarType{iLidar}).height));
+    else
+        thisRaman = allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.RamanCmpCfg.RamanChTag{iLidar}])(:, isChosen);
+        thisMie = allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.RamanCmpCfg.MieChCompose{iLidar}{1}]) + ...
+                  allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.RamanCmpCfg.MieChCompose{iLidar}{2}]) * ...
+                  externalChkCfg.RamanCmpCfg.MieChCompose{iLidar}{3};
+    end
 
     %% signal interpolation
     thisHeight = allData.(lidarType{iLidar}).height;

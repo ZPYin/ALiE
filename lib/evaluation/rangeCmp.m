@@ -106,8 +106,13 @@ for iLidar = 2:length(lidarType)
     isChosen = (allData.(lidarType{iLidar}).mTime >= tRange(1)) & ...
                (allData.(lidarType{iLidar}).mTime <= tRange(2));
 
-    for iCh = 1:length(config.externalChkCfg.(lidarType{iLidar}).chTag)
-        rcs = cat(2, rcs, nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.(lidarType{iLidar}).chTag{iCh}])(:, isChosen), 2));
+    if ~ any(isChosen)
+        warning('No profiles were chosen for %s', lidarType{iLidar});
+        rcs = NaN(length(allData.(lidarType{iLidar}).height), length(config.externalChkCfg.(thisLidar).chTag));
+    else
+        for iCh = 1:length(config.externalChkCfg.(lidarType{iLidar}).chTag)
+            rcs = cat(2, rcs, nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.(lidarType{iLidar}).chTag{iCh}])(:, isChosen), 2));
+        end
     end
 
     %% signal interpolation
@@ -258,6 +263,8 @@ for iLidar = 2:length(lidarType)
          'Color', p1.Color, ...
          'LineWidth', 2);
 end
+
+plot([min(hLag), max(hLag)], [0, 0], '-.k');
 
 ylabel('Correlation Coeff. (a.u.)');
 xlabel('Range lag (m)');

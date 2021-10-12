@@ -113,10 +113,17 @@ for iLidar = 2:length(lidarType)
 
     thisHeight = allData.(lidarType{iLidar}).height;
     rcs = [];
+    thisLidar = lidarType{iLidar};
 
-    for iCh = 1:length(config.externalChkCfg.(lidarType{iLidar}).chTag)
-        sig = nanmean(allData.(lidarType{iLidar}).(['sig', config.externalChkCfg.(lidarType{iLidar}).chTag{iCh}])(:, isChosen), 2);
-        rcs = cat(2, rcs, sig .* thisHeight.^2);
+    if ~ any(isChosen)
+        % no profile selected
+        warning('No profiles were chosen for %s', lidarType{iLidar});
+        rcs = NaN(length(allData.(thisLidar).height), length(config.externalChkCfg.(thisLidar).chTag));
+    else
+        for iCh = 1:length(config.externalChkCfg.(lidarType{iLidar}).chTag)
+            sig = nanmean(allData.(lidarType{iLidar}).(['sig', config.externalChkCfg.(lidarType{iLidar}).chTag{iCh}])(:, isChosen), 2);
+            rcs = cat(2, rcs, sig .* thisHeight.^2);
+        end
     end
 
     %% signal interpolation

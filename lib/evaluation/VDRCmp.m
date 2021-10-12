@@ -102,9 +102,16 @@ fprintf(fid, 'Number of profiles for %s (standard): %d\n', lidarType{1}, sum(isC
 for iLidar = 2:length(lidarType)
     isChosen = (allData.(lidarType{iLidar}).mTime >= tRange(1)) & (allData.(lidarType{iLidar}).mTime <= tRange(2));
 
-    thisPSig = nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{1}])(:, isChosen), 2);
-    thisSSig = nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{2}])(:, isChosen), 2);
-    thisCmpVDR = sSig(:, iCh) ./ pSig(:, iCh) .* config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{3} + config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{4};
+    if ~ any(isChosen)
+        warning('No profiles were chosen for %s', lidarType{iLidar});
+        thisPSig = NaN(size(allData.(lidarType{iLidar}).height));
+        thisSSig = NaN(size(allData.(lidarType{iLidar}).height));
+        thisCmpVDR = NaN(size(allData.(lidarType{iLidar}).height));
+    else
+        thisPSig = nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{1}])(:, isChosen), 2);
+        thisSSig = nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{2}])(:, isChosen), 2);
+        thisCmpVDR = sSig(:, iCh) ./ pSig(:, iCh) .* config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{3} + config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{4};
+    end
 
     %% signal interpolation
     thisHeight = allData.(lidarType{iLidar}).height;

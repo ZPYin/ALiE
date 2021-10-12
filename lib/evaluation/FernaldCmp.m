@@ -114,9 +114,16 @@ for iLidar = 2:length(lidarType)
     thisLidar = lidarType{iLidar};
     isChosen = (allData.(thisLidar).mTime >= tRange(1)) & (allData.(thisLidar).mTime <= tRange(2));
 
-    for iCh = 1:length(config.externalChkCfg.(thisLidar).chTag)
-        sig = cat(2, sig, nanmean(allData.(thisLidar).(['sig', config.externalChkCfg.(thisLidar).chTag{iCh}])(:, isChosen), 2));
-        bg = cat(2, bg, nanmean(allData.(thisLidar).(['bg', config.externalChkCfg.(thisLidar).chTag{iCh}])(isChosen)));
+    if ~ any(isChosen)
+        % no profile selected
+        warning('No profiles were chosen for %s', lidarType{iLidar});
+        sig = NaN(length(allData.(thisLidar).height), length(config.externalChkCfg.(thisLidar).chTag));
+        bg = NaN(1, length(lidarType));
+    else
+        for iCh = 1:length(config.externalChkCfg.(thisLidar).chTag)
+            sig = cat(2, sig, nanmean(allData.(thisLidar).(['sig', config.externalChkCfg.(thisLidar).chTag{iCh}])(:, isChosen), 2));
+            bg = cat(2, bg, nanmean(allData.(thisLidar).(['bg', config.externalChkCfg.(thisLidar).chTag{iCh}])(isChosen)));
+        end
     end
 
     %% signal interpolation
