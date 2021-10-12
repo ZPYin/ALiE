@@ -9,6 +9,8 @@ function LEMain(configFile, varargin)
 %    LEMain('config.yml', 'flagReadData', true, 'flagExternalChk', true);
 %    % Usecase 4: debug mode
 %    LEMain('config.yml', 'flagReadData', 'flagInternalChk', true, 'flagDebug', true);
+%    % Turn on watermark
+%    LEMain('config.yml', 'flagReadData', 'flagInternalChk', true, 'flagWaterMark', true);
 % INPUTS:
 %    configFile: char
 %        absolute path of config file.
@@ -33,8 +35,15 @@ addParameter(p, 'flagInternalChk', false, @islogical);
 addParameter(p, 'flagExternalChk', false, @islogical);
 addParameter(p, 'flagQL', false, @islogical);
 addParameter(p, 'flagBackupConfig', false, @islogical);
+addParameter(p, 'flagWaterMark', false, @islogical);
 
 parse(p, configFile, varargin{:});
+
+if ~ p.Results.flagWaterMark
+    % remove watermark
+    global LEToolboxInfo
+    LEToolboxInfo.institute_logo = '';
+end
 
 %% read configuration
 if exist(configFile, 'file') == 2

@@ -53,29 +53,16 @@ setupLEToolbox   % 将本项目相关代码添加进入Matlab搜索路径中
 LEMain('/path/to/configFile', 'flagReadData', true, 'flagQL', true, 'flagDebug', false);   % 显示雷达数据快照，其中注意设置config文件的绝对路径
 % LEMain的其他使用方法，请使用 help LEMain 查看
 
-% LEMAIN main program of lidar evaluation.
-% USAGE:
-%    % Usecase 1: make quicklook
+%    % Usecase 1: make quicklook (数据快照)
 %    LEMain('config.yml', 'flagReadData', true, 'flagQL', true);
-%    % Usecase 2: internal check
+%    % Usecase 2: internal check (自对比)
 %    LEMain('config.yml', 'flagReadData', true, 'flagInternalChk', true);
-%    % Usecase 3: external check
+%    % Usecase 3: external check (互对比)
 %    LEMain('config.yml', 'flagReadData', true, 'flagExternalChk', true);
-%    % Usecase 4: debug mode
+%    % Usecase 4: debug mode (调试模式)
 %    LEMain('config.yml', 'flagReadData', 'flagInternalChk', true, 'flagDebug', true);
-% INPUTS:
-%    configFile: char
-%        absolute path of config file.
-% KEYWORDS:
-%    flagDebug: logical
-%    flagReadData: logical
-%    flagInternalChk: logical
-%    flagExternalChk: logical
-%    flagQL: logical
-%    flagBackupConfig: logical
-% HISTORY:
-%    2021-09-23: first edition by Zhenping
-% .. Authors: - zhenping@tropos.de
+%    % Turn on watermark (添加水印)
+%    LEMain('config.yml', 'flagReadData', 'flagInternalChk', true, 'flagWaterMark', true);
 
 ```
 
