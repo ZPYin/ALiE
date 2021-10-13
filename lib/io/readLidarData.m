@@ -1,4 +1,4 @@
-function [oData] = readLidarData(dataFolder, varargin)
+function [oData, chTag] = readLidarData(dataFolder, varargin)
 % READLIDARDATA read lidar data.
 % USAGE:
 %    [oData] = readLidarData(dataFolder)
@@ -13,6 +13,7 @@ function [oData] = readLidarData(dataFolder, varargin)
 %    flagFilenameTime: logical
 % OUTPUTS:
 %    oData: struct
+%    chTag: cell
 % HISTORY:
 %    2021-09-10: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -35,6 +36,7 @@ oData = struct();
 oData.mTime = [];
 oData.height = [];
 oData.rawSignal = [];
+chTag = cell(0);
 
 switch p.Results.dataFormat
 
@@ -59,6 +61,7 @@ case 1
             reshape(lidarData.rawSignal, ...
                 size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
     end
+    chTag = {'1064e'};
 
 case 2
     % WHU non-standard 1064 nm lidar
@@ -81,6 +84,7 @@ case 2
             reshape(lidarData.rawSignal, ...
                 size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
     end
+    chTag = {'1064e'};
 
 case 3
     % CMA standard data format
@@ -95,7 +99,7 @@ case 3
             fprintf('[%s] Wait until reading finishes!\n', tNow);
         end
 
-        lidarData = readCmaLidarData(dataFiles{iFile}, varargin{:});
+        [lidarData, chTag] = readCmaLidarData(dataFiles{iFile}, varargin{:});
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
         oData.height = lidarData.height;
@@ -125,6 +129,7 @@ case 4
             reshape(lidarData.rawSignal, ...
                 size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
     end
+    chTag = {'1064p', '1064s'};
 
 case 5
     % REAL
@@ -148,7 +153,9 @@ case 5
                 size(lidarData.rawSignal, 1), size(lidarData.rawSignal, 2), 1));
     end
 
-    otherwise
+    chTag = {'532sh', '532ph', '532sl', '532pl', '607l', '607h'};
+
+otherwise
     error('LE:Err001', 'Unknown lidar data format %d', p.Results.dataFormat);
 end
 

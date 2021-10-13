@@ -1,4 +1,4 @@
-function [data] = readCmaLidarData(file, varargin)
+function [data, chTag] = readCmaLidarData(file, varargin)
 % READCMALIDARDATA read CMA standard binary lidar data.
 % USAGE:
 %    [data] = readCmaLidarData(file)
@@ -35,6 +35,8 @@ function [data] = readCmaLidarData(file, varargin)
 %            3: Raman
 %        rawSignal: double (nCh x height)
 %            raw signal.
+%    chTag: cell
+%        channel identifier. {'355e', '355p', '355s', '387', '407', '532e', '532p', '532s', '607', '1064e', '1064p', '1064s', '532pl', '532sl', '607l', '532ph', '532sh', '607h'}
 % HISTORY:
 %    2021-09-18: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -115,6 +117,7 @@ hRes = [];   % range resolution. (m)
 hBlindZone = [];   % height of blind zone. (m)
 firstBin = [];   % pointer of first bin in binary file
 nBin = [];   % number of bins
+chTag = cell(0);
 for iCh = 1:nCh
     [thisChNo, thisDetectMode, thisRecWL, thisChType, thisHRes, thisHBlindZone, thisFirstBin, thisNBin] = parseCmaLidarInfo(rawChInfo(:, iCh));
 
@@ -126,6 +129,24 @@ for iCh = 1:nCh
     hBlindZone = cat(2, hBlindZone, thisHBlindZone);
     firstBin = cat(2, firstBin, thisFirstBin);
     nBin = cat(2, nBin, thisNBin);
+
+    chTypeIndenfier = '';
+    switch thisChType
+    case 0
+        chTypeIndenfier = 'e';
+    case 1
+        chTypeIndenfier = 'p';
+    case 2
+        chTypeIndenfier = 's';
+    case 3
+        chTypeIndenfier = '';
+    otherwise
+        errStruct.message = 'Data with unknown channel type';
+        errStruct.identifier = 'LEToolbox:Err002';
+        error(errStruct);
+    end
+
+    chTag = cat(2, chTag, sprintf('%d%s', thisRecWL, chTypeIndenfier));
 end
 
 if isempty(p.Results.nBin)

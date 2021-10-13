@@ -53,8 +53,8 @@ for iCh = 1:length(lidarConfig.chTag)
     height = lidarData.height(hChosen);
     bg = nanmean(lidarData.(['sig', lidarConfig.chTag{iCh}])(hChosen, isChosen), 2);
     bgMean = 0;
-    bgStd = nanstd(bg);
-    bgMeanBound = [bgMean - bgStd, bgMean + bgStd];
+    % bgStd = nanstd(bg);
+    % bgMeanBound = [bgMean - bgStd, bgMean + bgStd];
 
     % random noise
     winLen = round(lidarConfig.bgNoiseChkCfg.randErrCalcWindowLength ./ ...
