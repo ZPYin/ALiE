@@ -211,7 +211,7 @@ plot(config.externalChkCfg.rangeCmpCfg.sigRange, ...
     'Color', [152, 78, 163]/255, ...
     'LineWidth', 2);
 
-ylabel('Backscatter (a.u.)');
+ylabel('Lidar signal (a.u.)');
 xlabel('Height (m)');
 title('Range comparison');
 
