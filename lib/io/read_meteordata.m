@@ -82,12 +82,12 @@ case 'gdas1'
 case 'radiosonde'
 
     % Radiosonde profile
-    sondeFile = 'D:\Coding\Matlab\lidar_evaluation_1064\lib\misc\Beijing_RS_2021092112.h5';
-    rsData = h5read(sondeFile, '/Radiosonde');
+    sondeFile = 'D:\Coding\Matlab\CMA-lidar-evaluation\lib\misc\Beijing_RS_2021092112.h5';
+    rsData = h5read(sondeFile, '/RadioSonde');
     rs_alt = rsData.HGHT;
     rs_temp = rsData.TEMP;
     rs_pres = rsData.PRES;
-    rs_relh = rsData.RELG;
+    rs_relh = rsData.RELH;
     rs_time = datenum(2021, 9, 21, 20, 0, 0);
     % [rs_alt, rs_temp, rs_pres, rs_relh, rs_time] = ...
         % read_radiosonde(sondeFile, p.Results.RadiosondeType);

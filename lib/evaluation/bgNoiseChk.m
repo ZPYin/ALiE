@@ -52,7 +52,7 @@ for iCh = 1:length(lidarConfig.chTag)
               (lidarData.height <= lidarConfig.bgNoiseChkCfg.hRange(iCh, 2));
     height = lidarData.height(hChosen);
     bg = nanmean(lidarData.(['sig', lidarConfig.chTag{iCh}])(hChosen, isChosen), 2);
-    bgMean = 0;
+    bgMean = nanmean(lidarData.(['bg', lidarConfig.chTag{iCh}])(isChosen));
     % bgStd = nanstd(bg);
     % bgMeanBound = [bgMean - bgStd, bgMean + bgStd];
 
@@ -72,6 +72,7 @@ for iCh = 1:length(lidarConfig.chTag)
     % sysNoise = nanstd(meanVal);   % method b
     sysNoise = max(abs(meanVal - nanmean(meanVal)));
 
+    fprintf(fid, 'dark counts (signal): %f\n', bgMean);
     fprintf(fid, 'Random noise: %f\n', randNoise);
     fprintf(fid, 'Systematic noise: %f\n', sysNoise);
     isPassBgNoiseChk(iCh) = (randNoise >= sysNoise);
@@ -84,7 +85,7 @@ for iCh = 1:length(lidarConfig.chTag)
            'Color', 'w', ...
            'Visible', lidarConfig.figVisible);
 
-    p1 = plot(height, bg - bgMean, ...
+    p1 = plot(height, bg, ...
               'Color', [0, 128, 1]/255, ...
               'LineStyle', '-', ...
               'LineWidth', 2, ...
