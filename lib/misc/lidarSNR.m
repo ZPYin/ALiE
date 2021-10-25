@@ -37,8 +37,8 @@ if bg > 0
     snr0(flagZero) = 0;
 else
     tot = sig + bg;
-    tot(tot <= 0) = NaN;
-    snr0 = sig / ADSigStd(tot, 5);
+    snr0 = sig ./ ADSigStd(tot, 5);
+    % snr0 = sig ./ nanstd(sig((end - 50):end));
 end
 
 snr0(isnan(snr0)) = 0;

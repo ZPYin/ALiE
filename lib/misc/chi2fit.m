@@ -1,4 +1,4 @@
-function [a, b, sigmaA, sigmaB, chi2, Q] = chi2fit(x, y, measure_error)
+function [a, b, sigmaA, sigmaB, chi2, Q, yDev] = chi2fit(x, y, measure_error)
 % CHI2FIT Chi-2 fitting. All the code are translated from the exemplified code in Numerical 
 % Recipies in C (2nd Edition). Great help comes from Birgit Heese.
 %
@@ -15,15 +15,17 @@ function [a, b, sigmaA, sigmaB, chi2, Q] = chi2fit(x, y, measure_error)
 %    a: float
 %        intersect of the linear regression.
 %    b: float
-%        slope of the linear regression
+%        slope of the linear regression.
 %    sigmaA:
-%        Uncertainty of intersect 
+%        Uncertainty of intersect.
 %    sigmaB:
-%        Uncertainty of slope
+%        Uncertainty of slope.
 %    chi2:
-%        chi2 value
+%        chi2 value.
 %    Q: 
 %        goodness of fit.
+%    yDev:
+%        y deviation.
 %
 % HISTORY:
 %    2018-08-03. First edition by Zhenping.
@@ -74,5 +76,6 @@ sigmaA = sqrt(Sxx ./ Delta);
 sigmaB = sqrt(S ./ Delta);
 chi2 = sum(((yN - a - b.*xN) ./ measure_errorN) .^ 2);
 Q = gammainc(chi2/2, (length(xN) - 2)/2);
+yDev = y - (a + b .* x);
 
 end

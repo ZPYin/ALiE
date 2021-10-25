@@ -8,8 +8,8 @@ addpath(genpath(fullfile(rootDir, 'lib')));
 addpath(genpath(fullfile(rootDir, 'include')));
 
 global LEToolboxInfo
-LEToolboxInfo.programVersion = '0.4';
-LEToolboxInfo.updateDate = datenum(2021, 10, 8);
+LEToolboxInfo.programVersion = '0.5';
+LEToolboxInfo.updateDate = datenum(2021, 10, 25);
 LEToolboxInfo.institute = 'CMA';
 LEToolboxInfo.author = 'Zhenping Yin';
 LEToolboxInfo.email = 'zp.yin@whu.edu.cn';

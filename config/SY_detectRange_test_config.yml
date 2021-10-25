@@ -8,7 +8,7 @@ dataLoaderCfg:
     dataFilenamePattern: .*Lidar.*   # all files
     dataFormat: 3
     chTag: ['532p', '532s', '355e', '607', '1064e']
-    nMaxBin: 1600   # number of bins
+    nMaxBin: 1660   # number of bins
     flagFilenameTime: true
 
 internalChkCfg:
@@ -20,7 +20,7 @@ internalChkCfg:
       hOffset: 0   # height offset. (m)
       tOffset: 0   # time offset. (min)
       deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-      bgBins: [1400, 1500]   # [start index, stop index] for background correction
+      bgBins: [1550, 1600]   # [start index, stop index] for background correction
       nPretrigger: 0   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
       overlapFile: ''
@@ -34,7 +34,7 @@ internalChkCfg:
     flagDetectRangeChk: true   # detection ability check
     flagContOptChk: false   # continuous operation check
     detectRangeChkCfg:
-      tRange: '2021-09-23 05:12:00 ~ 2021-09-23 05:14:00'   # temporal integral range for detection ability check
+      tRange: '2021-10-12 21:31:00 ~ 2021-10-12 21:36:00'   # temporal integral range for detection ability check
       minSNR:
         - 3   # minimum SNR
         - 3   # minimum SNR
