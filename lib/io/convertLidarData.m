@@ -24,7 +24,7 @@ fprintf('[%s] Start data conversion!\n', tNow);
 logFile = fullfile(config.resultPath, 'lidar_data_loading.log');
 diaryon(logFile);
 
-if isfield(config.internalChkCfg, 'lidarList')
+if isfield(config.dataLoaderCfg, 'lidarList')
     lidarType = config.dataLoaderCfg.lidarList;
 else
     lidarType = fieldnames(config.dataLoaderCfg);

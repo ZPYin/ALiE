@@ -51,8 +51,8 @@ case 11
 
     %% parameter initialization (only for REAL data)
     % mergeRange = [1230, 1260; 1230, 1260; 1000, 1500];   % height range for signal merge. (m)
-    mergeRange = [800, 1200; 1000, 1500; 500, 1000];   % height range for signal merge. (m)
-    mergeSlope = [17.5, 0, 48];   % normalization ratio for 532S, 532P, 607 (High / Low)
+    mergeRange = [700, 1200; 1200, 2000; 700, 1200];   % height range for signal merge. (m)
+    mergeSlope = [15.46, 440.0, 50.8];   % normalization ratio for 532S, 532P, 607 (High / Low)
     mergeOffset = [0, 0, 0];
 
     % pretrigger removes for height

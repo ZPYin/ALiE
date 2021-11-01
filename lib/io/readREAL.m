@@ -58,12 +58,19 @@ lidarData = textscan(fid, '%f%f%f%f%f%f', 'HeaderLines', 3, 'Delimiter', '\t');
 
 fclose(fid);
 
-sig532SH = lidarData{1};
-sig532PH = lidarData{2};
-sig532SL = lidarData{3};
-sig532PL = lidarData{4};
-sig607L = lidarData{5};
-sig607H = lidarData{6};
+if p.Results.nMaxBin > length(lidarData{1})
+    errStruct.message = sprintf('Wrong configuration for nMaxBin (%d>%d)', ...
+        p.Results.nMaxBin, length(lidarData{1}));
+    errStruct.identifier = 'LEToolbox:Err003';
+    error(errStruct);
+end
+
+sig532SH = lidarData{1}(1:p.Results.nMaxBin);
+sig532PH = lidarData{2}(1:p.Results.nMaxBin);
+sig532SL = lidarData{3}(1:p.Results.nMaxBin);
+sig532PL = lidarData{4}(1:p.Results.nMaxBin);
+sig607L = lidarData{5}(1:p.Results.nMaxBin);
+sig607H = lidarData{6}(1:p.Results.nMaxBin);
 
 %% deadtime correction
 PC2PCR = 1 / (binWidth * 1e-9 * nPulse);
