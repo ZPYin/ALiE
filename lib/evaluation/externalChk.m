@@ -58,7 +58,7 @@ if config.externalChkCfg.flagVDRCmp
 end
 
 %% Raman comparison
-if config.externalChkCfg.flagVDRCmp
+if config.externalChkCfg.flagRamanCmp
     fprintf('[%s] Start Raman comparison!\n', tNow);
     RamanCmp(config, reportFile, varargin{:});
     fprintf('[%s] Finish!\n', tNow);
