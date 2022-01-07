@@ -24,7 +24,7 @@ git clone https://gitee.com/mualidar/cma-lidar-comparison   # 可能需要输入
 
 ## 代码更新
 
-本代码目前处在测试和更新中，可以通过在**Git Bash**中输入以下代码来更新你的本地代码库：
+本代码目前处在持续维护和更新中，可以通过在**Git Bash**中输入以下代码来更新你的本地代码库：
 
 ```bash
 cd {/path/to/work_directory/cma-lidar-comparison}
