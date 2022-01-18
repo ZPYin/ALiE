@@ -15,6 +15,6 @@ LEToolboxInfo.author = 'Zhenping Yin';
 LEToolboxInfo.email = 'zp.yin@whu.edu.cn';
 LEToolboxInfo.institute_logo = fullfile(rootDir, 'image', 'logo_cma.png');
 LEToolboxInfo.projectDir = rootDir;
-LEToolboxInfo.flagWaterMark = false;
+LEToolboxInfo.flagWaterMark = true;
 
 fprintf('Success!!!\n');
