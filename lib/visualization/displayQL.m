@@ -171,7 +171,7 @@ for iLidar = 1:length(lidarType)
 
         xlim([mTimeGrid(1), mTimeGrid(end)]);
         ylim(lidarConfig.hRange(1, :));
-        caxis(lidarConfig.sigRange(1, :));
+        caxis(lidarConfig.cRange(1, :));
         colormap('jet');
 
         set(gca, 'XMinorTick', 'on', ...
@@ -220,7 +220,7 @@ for iLidar = 1:length(lidarType)
 
         xlim([mTimeGrid(1), mTimeGrid(end)]);
         ylim(lidarConfig.hRange(2, :));
-        caxis(lidarConfig.sigRange(2, :));
+        caxis(lidarConfig.cRange(2, :));
         colormap('jet');
 
         set(gca, 'XMinorTick', 'on', ...
@@ -269,7 +269,7 @@ for iLidar = 1:length(lidarType)
 
         xlim([mTimeGrid(1), mTimeGrid(end)]);
         ylim(lidarConfig.hRange(3, :));
-        caxis(lidarConfig.sigRange(3, :));
+        caxis(lidarConfig.cRange(3, :));
         colormap('jet');
 
         set(gca, 'XMinorTick', 'on', ...
@@ -326,7 +326,7 @@ for iLidar = 1:length(lidarType)
                 lidarData.mergeRange(3, :), ...
                 'channelTag', '607', ...
                 'hRange', lidarConfig.hRange(3, :), ...
-                'cRange', [1e10, 1e13], ...
+                'cRange', lidarConfig.sigRange(3, :), ...
                 'mergeSlope', lidarData.mergeSlope(3), ...
                 'mergeOffset', lidarData.mergeOffset(3), ...
                 'figFolder', config.resultPath);
@@ -366,8 +366,8 @@ for iLidar = 1:length(lidarType)
                 'FontWeight', 'Bold', ...
                 'HorizontalAlignment', 'center');
 
-            xlim([min(lidarConfig.sigRange(1:2, 1)), ...
-                  max(lidarConfig.sigRange(1:2, 2))]);
+            xlim([min(lidarConfig.cRange(1:2, 1)), ...
+                  max(lidarConfig.cRange(1:2, 2))]);
             ylim([min(lidarConfig.hRange(1:2, 1)), ...
                   max(lidarConfig.hRange(1:2, 2))]);
             set(gca, 'XMinorTick', 'on', ...
@@ -399,7 +399,7 @@ for iLidar = 1:length(lidarType)
             xlabel('vol. depol.');
             ylabel('');
 
-            xlim(lidarConfig.sigRange(3, :));
+            xlim(lidarConfig.cRange(3, :));
             ylim(lidarConfig.hRange(3, :));
             set(gca, 'XMinorTick', 'on', ...
                      'YMinorTick', 'on', ...
@@ -487,7 +487,7 @@ for iLidar = 1:length(lidarType)
 
         xlim([mTimeGrid(1), mTimeGrid(end)]);
         ylim(lidarConfig.hRange(1, :));
-        caxis(lidarConfig.sigRange(1, :));
+        caxis(lidarConfig.cRange(1, :));
         colormap('jet');
 
         set(gca, 'XMinorTick', 'on', ...
@@ -536,7 +536,7 @@ for iLidar = 1:length(lidarType)
 
         xlim([mTimeGrid(1), mTimeGrid(end)]);
         ylim(lidarConfig.hRange(2, :));
-        caxis(lidarConfig.sigRange(2, :));
+        caxis(lidarConfig.cRange(2, :));
         colormap('jet');
 
         set(gca, 'XMinorTick', 'on', ...
@@ -628,7 +628,7 @@ for iLidar = 1:length(lidarType)
 
         xlim([mTimeGrid(1), mTimeGrid(end)]);
         ylim(lidarConfig.hRange);
-        caxis(lidarConfig.sigRange);
+        caxis(lidarConfig.cRange);
         colormap('jet');
 
         set(gca, 'XMinorTick', 'on', ...

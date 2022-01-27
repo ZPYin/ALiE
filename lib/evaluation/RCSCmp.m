@@ -50,16 +50,17 @@ for iLidar = 1:length(lidarType)
 
     lidarData.mTime = unix_timestamp_2_datenum(h5read(h5Filename, '/time'));
     lidarData.height = h5read(h5Filename, '/height');
-    for iCh = 1:length(lidarConfig.chTag)
+    for iCh = 1:length(config.dataLoaderCfg.(lidarType{iLidar}).chTag)
         if p.Results.flagDebug
-            fprintf('Reading lidar data of %s-%s\n', lidarType{iLidar}, lidarConfig.chTag{iCh});
+            fprintf('Reading lidar data of %s-%s\n', lidarType{iLidar}, ...
+                    config.dataLoaderCfg.(lidarType{iLidar}).chTag{iCh});
         end
 
-        lidarData.(['sig', lidarConfig.chTag{iCh}]) = h5read(h5Filename, sprintf('/sig%s', lidarConfig.chTag{iCh}));
+        lidarData.(['sig', config.dataLoaderCfg.(lidarType{iLidar}).chTag{iCh}]) = h5read(h5Filename, sprintf('/sig%s', config.dataLoaderCfg.(lidarType{iLidar}).chTag{iCh}));
     end
 
     %% pre-process
-    lidarData = lidarPreprocess(lidarData, lidarConfig.chTag, ...
+    lidarData = lidarPreprocess(lidarData, config.dataLoaderCfg.(lidarType{iLidar}).chTag, ...
         'deadtime', lidarConfig.deadTime, ...
         'bgBins', lidarConfig.bgBins, ...
         'nPretrigger', lidarConfig.nPretrigger, ...
@@ -74,7 +75,8 @@ for iLidar = 1:length(lidarType)
 end
 
 %% compose lidar signal
-tRange = [datenum(config.externalChkCfg.RCSCmpCfg.tRange(1:19), 'yyyy-mm-dd HH:MM:SS'), datenum(config.externalChkCfg.RCSCmpCfg.tRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
+tRange = [datenum(config.externalChkCfg.RCSCmpCfg.tRange(1:19), 'yyyy-mm-dd HH:MM:SS'), ...
+          datenum(config.externalChkCfg.RCSCmpCfg.tRange(23:41), 'yyyy-mm-dd HH:MM:SS')];
 cmpSig = [];
 mTime = allData.(lidarType{1}).mTime;
 height = allData.(lidarType{1}).height;

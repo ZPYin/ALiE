@@ -50,7 +50,11 @@ case 11
     % REAL
 
     %% parameter initialization (only for REAL data)
-    % mergeRange = [1230, 1260; 1230, 1260; 1000, 1500];   % height range for signal merge. (m)
+    % Beijing
+    % mergeRange = [700, 1200; 1200, 2000; 700, 1200];   % height range for signal merge. (m)
+    % mergeSlope = [15.46, 440.0, 50.8];   % normalization ratio for 532S, 532P, 607 (High / Low)
+    % mergeOffset = [0, 0, 0];
+    % Nanjing
     mergeRange = [700, 1200; 1200, 2000; 700, 1200];   % height range for signal merge. (m)
     mergeSlope = [15.46, 440.0, 50.8];   % normalization ratio for 532S, 532P, 607 (High / Low)
     mergeOffset = [0, 0, 0];
