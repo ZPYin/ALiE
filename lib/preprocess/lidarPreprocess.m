@@ -55,8 +55,12 @@ case 11
     % mergeSlope = [15.46, 440.0, 50.8];   % normalization ratio for 532S, 532P, 607 (High / Low)
     % mergeOffset = [0, 0, 0];
     % Nanjing
+    % mergeRange = [700, 1200; 1200, 2000; 700, 1200];   % height range for signal merge. (m)
+    % mergeSlope = [15.46, 440.0, 50.8];   % normalization ratio for 532S, 532P, 607 (High / Low)
+    % mergeOffset = [0, 0, 0];
+    % Wuhan
     mergeRange = [700, 1200; 1200, 2000; 700, 1200];   % height range for signal merge. (m)
-    mergeSlope = [15.46, 440.0, 50.8];   % normalization ratio for 532S, 532P, 607 (High / Low)
+    mergeSlope = [17.00, 860, 40.8];   % normalization ratio for 532S, 532P, 607 (High / Low)
     mergeOffset = [0, 0, 0];
 
     % pretrigger removes for height
