@@ -1,8 +1,10 @@
-# 忽略的文件夹
+# exclude folders
 data
 report
 configBkp
-.vscode
 lidar_evaluation
 tmp
 analysis
+
+# exclude files
+.vscode
