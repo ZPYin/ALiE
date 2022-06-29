@@ -76,14 +76,16 @@ signal532NoBg = signal532 - nanmean(signal532(1800:1900));
 signal607NoBg = signal607 - nanmean(signal607(1800:1900));
 
 %% Molecular scattering
+[temperature, pressure, ~, ~] = read_meteordata(datenum(0, 1, 0, 0, 0, 0), height355, ...
+'meteor_data', 'standard_atmosphere');
 [mBsc355, mExt355] = rayleigh_scattering(355, pressure, temperature + 273.14, 360, 80);
 [mBsc532, mExt532] = rayleigh_scattering(532, pressure, temperature + 273.14, 360, 80);
 
 %% Raman retrieval
 aExt355 = LidarRamanExt(height355', signal387NoBg', 355, 387, 1, pressure', temperature' + 273.14, 40, 380, 70, 'moving');
 aExt532 = LidarRamanExt(height532', signal607NoBg', 532, 607, 1, pressure', temperature' + 273.14, 40, 380, 70, 'moving');
-[aBsc355, aLR355] = LidarRamanBsc(height355', signal355NoBg', signal387NoBg', aExt355, 1, mExt355', mBsc355', [7000, 8000], 355, 0, 5, true);
-[aBsc532, aLR532] = LidarRamanBsc(height532', signal532NoBg', signal607NoBg', aExt532, 1, mExt532', mBsc532', [7000, 8000], 532, 0, 5, true);
+[aBsc355, aLR355] = LidarRamanBsc(height355', signal355NoBg', signal387NoBg', aExt355, 1, mExt355', mBsc355', [7500, 8500], 355, 0, 5, true);
+[aBsc532, aLR532] = LidarRamanBsc(height532', signal532NoBg', signal607NoBg', aExt532, 1, mExt532', mBsc532', [7500, 8500], 532, 0, 5, true);
 
 %% data visualization
 
