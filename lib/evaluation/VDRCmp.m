@@ -110,7 +110,7 @@ for iLidar = 2:length(lidarType)
     else
         thisPSig = nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{1}])(:, isChosen), 2);
         thisSSig = nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{2}])(:, isChosen), 2);
-        thisCmpVDR = thisPSig ./ thisSSig .* config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{3} + config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{4};
+        thisCmpVDR = thisSSig ./ thisPSig .* config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{3} + config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{4};
     end
 
     %% signal interpolation
@@ -137,10 +137,10 @@ pSigSm = NaN(size(pSig));
 sSigSm = NaN(size(sSig));
 cmpVDRSm = NaN(size(cmpVDR));
 for iLidar = 1:length(lidarType)
-    pSigSm(:, iLidar) = smoothWin(pSigSm(:, iLidar), piecewiseSM, 'moving');
-    sSigSm(:, iLidar) = smoothWin(sSigSm(:, iLidar), piecewiseSM, 'moving');
+    pSigSm(:, iLidar) = smoothWin(pSig(:, iLidar), piecewiseSM, 'moving');
+    sSigSm(:, iLidar) = smoothWin(sSig(:, iLidar), piecewiseSM, 'moving');
 
-    cmpVDRSm(:, iLidar) = pSigSm(:, iLidar) ./ sSigSm(:, iLidar) .* ...
+    cmpVDRSm(:, iLidar) = sSigSm(:, iLidar) ./ pSigSm(:, iLidar) .* ...
         config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{3} + ...
         config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{4};
 end
@@ -164,7 +164,7 @@ for iES = 1:nES
     meanVDRDev(iES, :) = nanmean(abs(cmpVDRSm(isInES, :) - repmat(cmpVDRSm(isInES, 1), 1, length(lidarType))) ./ ...
         repmat(cmpVDRSm(isInES, 1), 1, length(lidarType)), 1) * 100;
     stdVDRDev(iES, :) = nanstd(abs(cmpVDRSm(isInES, :) - repmat(cmpVDRSm(isInES, 1), 1, length(lidarType))) ./ ...
-        repmat(cmpVDRSm(isInES, 1), 1, length(lidarType)), 0, 1) * 100;
+        repmat(cmpVDRSm(isInES, 1), 1, length(lidarType)), 1, 0) * 100;
 
     for iLidar = 2:length(lidarType)
         fprintf(fid, 'Mean relative deviations of %s: %6.2f%% (max: %6.2f%%)\n', ...
