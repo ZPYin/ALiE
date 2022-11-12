@@ -110,7 +110,7 @@ for iLidar = 2:length(lidarType)
     else
         thisPSig = nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{1}])(:, isChosen), 2);
         thisSSig = nanmean(allData.(lidarType{iLidar}).(['rcs', config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{2}])(:, isChosen), 2);
-        thisCmpVDR = sSig(:, iCh) ./ pSig(:, iCh) .* config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{3} + config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{4};
+        thisCmpVDR = thisPSig ./ thisSSig .* config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{3} + config.externalChkCfg.VDRCmpCfg.vdrCompose{iLidar}{4};
     end
 
     %% signal interpolation
