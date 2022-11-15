@@ -263,7 +263,10 @@ for iES = 1:nES
         config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', ...
         'Color', [160, 160, 160]/255, ...
         'LineWidth', 2);
-    lineInstances0 = cat(1, lineInstances0, p3);
+
+    if iES <= 1
+        lineInstances0 = cat(1, lineInstances0, p3);
+    end
 end
 
 for iPatch = 1:nES
@@ -292,7 +295,10 @@ for iES = 1:nES
         config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '-.', ...
         'Color', [160, 160, 160]/255, ...
         'LineWidth', 2);
-    lineInstances0 = cat(1, lineInstances0, p4);
+
+    if iES <= 1
+        lineInstances0 = cat(1, lineInstances0, p4);
+    end
 end
 
 for iPatch = 1:nES
@@ -369,7 +375,10 @@ for iES = 1:nES
         config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '--', ...
         'Color', [160, 160, 160]/255, ...
         'LineWidth', 2);
-    lineInstances1 = cat(1, lineInstances1, p3);
+
+    if iES <= 1
+        lineInstances1 = cat(1, lineInstances1, p3);
+    end
 end
 
 for iPatch = 1:nES
@@ -398,7 +407,10 @@ for iES = 1:nES
         config.externalChkCfg.VDRCmpCfg.hChkRange(iES, :), '-.', ...
         'Color', [160, 160, 160]/255, ...
         'LineWidth', 2);
-    lineInstances1 = cat(1, lineInstances1, p4);
+
+    if iES <= 1
+        lineInstances1 = cat(1, lineInstances1, p4);
+    end
 end
 
 for iPatch = 1:nES
