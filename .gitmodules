@@ -1,0 +1,3 @@
+[submodule "include/myMatlabColorScheme"]
+	path = include/myMatlabColorScheme
+	url = https://gitee.com/mualidar/color_-scheme
