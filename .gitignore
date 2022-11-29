@@ -5,6 +5,7 @@ configBkp
 lidar_evaluation
 tmp
 analysis
+wx_config
 
 # exclude files
 .vscode
