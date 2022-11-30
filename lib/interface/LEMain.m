@@ -1,5 +1,6 @@
 function LEMain(configFile, varargin)
 % LEMAIN main program of lidar evaluation.
+%
 % USAGE:
 %    % Usecase 1: make quicklook
 %    LEMain('config.yml', 'flagReadData', true, 'flagQL', true);
@@ -11,9 +12,11 @@ function LEMain(configFile, varargin)
 %    LEMain('config.yml', 'flagReadData', 'flagInternalChk', true, 'flagDebug', true);
 %    % Turn on watermark
 %    LEMain('config.yml', 'flagReadData', 'flagInternalChk', true, 'flagWaterMark', true);
+%
 % INPUTS:
 %    configFile: char
 %        absolute path of config file.
+%
 % KEYWORDS:
 %    flagDebug: logical
 %    flagReadData: logical
@@ -21,6 +24,8 @@ function LEMain(configFile, varargin)
 %    flagExternalChk: logical
 %    flagQL: logical
 %    flagBackupConfig: logical
+%    flagQC: logical
+%
 % HISTORY:
 %    2021-09-23: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
@@ -34,6 +39,7 @@ addParameter(p, 'flagReadData', false, @islogical);
 addParameter(p, 'flagInternalChk', false, @islogical);
 addParameter(p, 'flagExternalChk', false, @islogical);
 addParameter(p, 'flagQL', false, @islogical);
+addParameter(p, 'flagQC', false, @islogical);
 addParameter(p, 'flagBackupConfig', false, @islogical);
 addParameter(p, 'flagWaterMark', false, @islogical);
 
@@ -97,6 +103,11 @@ end
 if p.Results.flagExternalChk
     % lidar external check
     externalChk(config, 'flagDebug', p.Results.flagDebug);
+end
+
+if p.Results.flagQC
+    % lidar QC
+    qualityControl(config, 'flagDebug', p.Results.flagDebug);
 end
 
 end
