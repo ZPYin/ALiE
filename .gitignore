@@ -10,3 +10,4 @@ wx_config
 # exclude files
 .vscode
 lidarList.md
+*.asv

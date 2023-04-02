@@ -87,7 +87,7 @@ case 2
     chTag = {'1064e'};
 
 case 3
-    % CMA standard data format
+    % CMA standard data format (old)
 
     % search files
     dataFiles = listfile(dataFolder, p.Results.dataFilePattern);
@@ -154,6 +154,28 @@ case 5
     end
 
     chTag = {'532sh', '532ph', '532sl', '532pl', '607l', '607h'};
+
+case 6
+    % CMA standard data format (2021 new)
+
+    % search files
+    dataFiles = listfile(dataFolder, p.Results.dataFilePattern);
+    fprintf('[%s] %d data files were found!\n', tNow, length(dataFiles));
+
+    for iFile = 1:length(dataFiles)
+
+        if iFile <= 1
+            fprintf('[%s] Wait until reading finishes!\n', tNow);
+        end
+
+        [lidarData, chTag] = read_CMA_L0(dataFiles{iFile}, varargin{:});
+
+        oData.mTime = cat(2, oData.mTime, lidarData.fileTime);
+        oData.height = (1:lidarData.nBin) * lidarData.resolution;
+        oData.rawSignal = cat(3, oData.rawSignal, ...
+            reshape(transpose(lidarData.rawSignal), ...
+                size(lidarData.rawSignal, 2), size(lidarData.rawSignal, 1), 1));
+    end
 
 otherwise
     error('LE:Err001', 'Unknown lidar data format %d', p.Results.dataFormat);

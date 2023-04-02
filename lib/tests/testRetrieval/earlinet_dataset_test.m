@@ -1,13 +1,12 @@
-clc;
-close all;
+global LEToolboxInfo
 
 %% Parameter definition
-dataFolder355 = 'D:\Data\EARLINET_test_dataset\ASCII\355';
-dataFolder387 = 'D:\Data\EARLINET_test_dataset\ASCII\Raman1';
-dataFolder532 = 'D:\Data\EARLINET_test_dataset\ASCII\532';
-dataFolder607 = 'D:\Data\EARLINET_test_dataset\ASCII\Raman2';
-solution355 = 'D:\Data\EARLINET_test_dataset\ASCII\Solutions\aerowv1.000.txt';
-solution532 = 'D:\Data\EARLINET_test_dataset\ASCII\Solutions\aerowv2.000.txt';
+dataFolder355 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII\355');
+dataFolder387 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', 'Raman1');
+dataFolder532 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', '532');
+dataFolder607 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', 'Raman2');
+solution355 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', 'Solutions', 'aerowv1.000.txt');
+solution532 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', 'Solutions', 'aerowv2.000.txt');
 
 %% Read data
 dataFiles355 = listfile(dataFolder355, '.*.txt', 1);
@@ -95,6 +94,8 @@ figure('Position', [0, 10, 650, 400], 'Units', 'Pixels', 'Color', 'w');
 subPos = subfigPos([0.1, 0.15, 0.88, 0.83], 1, 3, 0.02, 0);
 
 subplot('Position', subPos(1, :), 'Units', 'Normalized');
+signal355NoBg(signal355NoBg <= 0) = NaN;
+signal387NoBg(signal387NoBg <= 0) = NaN;
 p1 = semilogx(signal355NoBg / length(dataFiles355) * 10 / 2400, height355, '-b', 'DisplayName', '355'); hold on;
 p2 = semilogx(signal387NoBg / length(dataFiles355) * 10 / 2400, height355, '-g', 'DisplayName', '387');
 
@@ -142,6 +143,8 @@ figure('Position', [0, 10, 700, 400], 'Units', 'Pixels', 'Color', 'w');
 subPos = subfigPos([0.1, 0.15, 0.88, 0.83], 1, 3, 0.02, 0);
 
 subplot('Position', subPos(1, :), 'Units', 'Normalized');
+signal532NoBg(signal532NoBg <= 0) = NaN;
+signal607NoBg(signal607NoBg <= 0) = NaN;
 p1 = semilogx(signal532NoBg / length(dataFiles532) * 10 / 2400, height532, '-b', 'DisplayName', '532'); hold on;
 p2 = semilogx(signal607NoBg / length(dataFiles532) * 10 / 2400, height532, '-g', 'DisplayName', '607');
 

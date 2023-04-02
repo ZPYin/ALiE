@@ -16,9 +16,10 @@ dataLoaderCfg:
     # data type
     # 1: WHU standard 1064 nm lidar
     # 2: WHU non-standard 1064 nm lidar
-    # 3: CMA standard data format in binary
+    # 3: CMA standard data format in binary (old)
     # 4: Dasun visibility lidar
     # 5: REAL
+    # 6: CMA standard data format in binary (2021 new)
     dataFormat: 1
     chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h;
     nMaxBin: 2048   # number of bins

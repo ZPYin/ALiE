@@ -1,0 +1,68 @@
+################################################################################
+# lidar configuration file
+# DON'T use Chinese characters!!!
+################################################################################
+
+resultPath: C:\Users\ZPYin\Documents\Coding\Matlab\ALiE\lidar_evaluation\bdb
+dataSavePath: C:\Users\ZPYin\Documents\Coding\Matlab\ALiE\lidar_evaluation\bdb
+figFormat: png   # figure format to be exported
+
+# data loader configuration
+# Load lidar data to a specified directory (defined by `dataSavePath`)
+dataLoaderCfg:
+  AW:   # lidar No.1
+    dataPath: C:\Users\ZPYin\Documents\Data\bdb
+    dataFilenamePattern: .*   # all files
+    # data type
+    # 1: WHU standard 1064 nm lidar
+    # 2: WHU non-standard 1064 nm lidar
+    # 3: CMA standard data format in binary
+    # 4: Dasun visibility lidar
+    # 5: REAL
+    dataFormat: 6
+    chTag: ['355p', '355s', '532p', '532s', '386', '407', '607', '1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    nMaxBin: 1900   # number of bins
+
+dataVisualCfg:
+  AW:
+    lidarNo: 3   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['355p', '355s', '532p', '532s', '386', '407', '607', '1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1700, 1800]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    tRange: '2023-02-25 00:00:00 ~ 2023-02-25 23:59:00'
+    hRange:
+      - [0, 15000]
+      - [0, 15000]
+      - [0, 15000]
+      - [0, 15000]
+      - [0, 15000]
+      - [0, 15000]
+      - [0, 15000]
+      - [0, 15000]
+    cRange:
+      - [0, 5e10]
+      - [0, 0.5e10]
+      - [0, 5e10]
+      - [0, 0.5e10]
+      - [0, 5e10]
+      - [0, 0.5e10]
+      - [0, 5e10]
+      - [0, 0.5e10]
+    title:
+      - '2023-02-25 355p'
+      - '2023-02-25 355s'
+      - '2023-02-25 532p'
+      - '2023-02-25 532s'
+      - '2023-02-25 386'
+      - '2023-02-25 407'
+      - '2023-02-25 607'
+      - '2023-02-25 1064e'
+    deltaT: 1   # temporal resolution (min)
+    markTRange: ''
