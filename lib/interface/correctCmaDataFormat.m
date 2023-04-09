@@ -33,7 +33,6 @@ parse(p, folder, dataType, varargin{:});
 dataFiles = listfile(folder, p.Results.filePat, p.Results.searchDepth);
 
 %% correct files
-isSuccess = false;
 switch lower(dataType)
 
 case 'hr'
@@ -74,6 +73,7 @@ case 'hr'
     isSuccess = true;
 
 otherwise
+    isSuccess = false;
     error('Unknown data type %s', dataType);
 end
 
