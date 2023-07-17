@@ -1,14 +1,18 @@
 function displayQL(config, varargin)
 % DISPLAYQL display lidar data quicklooks.
+%
 % USAGE:
 %    displayQL(config)
+%
 % INPUTS:
 %    config: struct
 %        see examples in `./config` folder.
+%
 % KEYWORDS:
 %    flagDebug: logical
 %        flag to print debug messages.
 %    flagCorTime: logical
+%
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

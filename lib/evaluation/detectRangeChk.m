@@ -1,17 +1,22 @@
 function [isPassDetectRangeChk] = detectRangeChk(lidarData, lidarConfig, reportFile, lidarType, varargin)
 % DETECTRANGECHK detection range check.
+%
 % USAGE:
 %    [isPassDetectRangeChk] = detectRangeChk(lidarData, lidarConfig, reportFile, lidarType)
+%
 % INPUTS:
 %    lidarData: struct
 %    lidarConfig: struct
 %    reportFile: char
 %    lidarType: char
+%
 % KEYWORDS:
 %    figFolder: char
 %    figFormat: char
+%
 % OUTPUTS:
 %    isPassDetectRangeChk: logical
+%
 % HISTORY:
 %    2021-09-19: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

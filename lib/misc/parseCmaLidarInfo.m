@@ -1,9 +1,12 @@
 function [chNo, detectMode, recWL, chType, hRes, hFOV, pFirstBin, nBins] = parseCmaLidarInfo(chInfoBits)
 % PARSECMALIDARINFO parse the channel information from the channel information bits.
+%
 % USAGE:
 %    [chNo, detectMode, chType, hRes, hFOV, pFirstBin, nBins] = parseCmaLidarInfo(chInfoBits)
+%
 % INPUTS:
 %    chInfoBits: array
+%
 % OUTPUTS:
 %    chNo: double
 %        channel number.
@@ -28,6 +31,7 @@ function [chNo, detectMode, recWL, chType, hRes, hFOV, pFirstBin, nBins] = parse
 %        location of the first bin in the bindary file.
 %    nBins: double
 %        number of range bins.
+%
 % HISTORY:
 %    2021-09-24: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

@@ -1,11 +1,15 @@
 function internalChk(config, varargin)
 % INTERNALCHK lidar internal check.
+%
 % USAGE:
 %    internalChk(config)
+%
 % INPUTS:
 %    config: struct
+%
 % KEYWORDS:
 %    flagDebug: logical
+%
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

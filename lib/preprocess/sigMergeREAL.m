@@ -1,7 +1,9 @@
 function [sigGlue] = sigMergeREAL(sigH, sigL, height, mergeRange, slope, offset)
 % SIGMERGEREAL signal merge for REAL lidar data.
+%
 % USAGE:
 %    [sigGlue] = sigMergeREAL(sigH, sigL, height, mergeRange, slope, offset)
+%
 % INPUTS:
 %    sigH: numeric
 %    sigL: numeric
@@ -12,8 +14,10 @@ function [sigGlue] = sigMergeREAL(sigH, sigL, height, mergeRange, slope, offset)
 %        signal merge slope.
 %    offset: numeric
 %        signal merge offset.
+%
 % OUTPUTS:
 %    sigGlue: numeric
+%
 % HISTORY:
 %    2021-09-20: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

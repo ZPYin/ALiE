@@ -1,18 +1,23 @@
 function [oData] = readWHU1064(file, varargin)
 % READWHU1064 read data of Wuhan University (WHU) ceilometer at 1064 nm.
+%
 % USAGE:
 %    [oData] = readWHU1064(file)
+%
 % INPUTS:
 %    file: char
 %        absolute paht of data file.
+%
 % KEYWORDS:
 %    flagDebug: logical
 %    nMaxBin: numeric
+%
 % OUTPUTS:
 %    oData: struct
 %        height: array
 %        rawSignal: matrix
 %        mTime: numeric
+%
 % HISTORY:
 %    2021-09-06: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

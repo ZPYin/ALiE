@@ -1,5 +1,6 @@
 function hdf5writedata(filename, location, data, varargin)
 % HDF5WRITEDATA Write data and data attributes to HDF5 file.
+%
 % USAGE:
 %    % Usecase 1: save variable to HDF5 file
 %    hdf5writedata('/path/to/h5', '/data', data)
@@ -7,6 +8,7 @@ function hdf5writedata(filename, location, data, varargin)
 %    % Usecase 2: save variable to HDF5 file with attributes
 %    hdf5writedata('/path/to/h5', '/data', data, 'dataAttr', ...
 %                  struct('type', 'float'))
+%
 % INPUTS:
 %    filename: char
 %        HDF5 filename. (with absolute path)
@@ -14,6 +16,7 @@ function hdf5writedata(filename, location, data, varargin)
 %        location of the dataset.
 %    data: array
 %        exported data.
+%
 % KEYWORDS:
 %    dataAttr: struct
 %        dataset attributes.
@@ -22,6 +25,7 @@ function hdf5writedata(filename, location, data, varargin)
 %    FillValue: integer
 %        filling value (default: -999).
 %    flagArray: logical
+%
 % HISTORY:
 %    2021-09-24: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

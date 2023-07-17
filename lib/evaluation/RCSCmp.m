@@ -1,12 +1,16 @@
 function RCSCmp(config, reportFile, varargin)
 % RCSCMP range corrected signal comparison.
+%
 % USAGE:
 %    RCSCmp(config, reportFile)
+%
 % INPUTS:
 %    config: struct
 %    reportFile: char
+%
 % KEYWORDS:
 %    flagDebug: logical
+%
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

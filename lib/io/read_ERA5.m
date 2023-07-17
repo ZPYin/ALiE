@@ -1,12 +1,15 @@
 function [alt, temp, pres, relh, ERA5file, wind, wins] = read_ERA5(measTime, ERA5site, folder)
 % READ_ERA5 read the ERA5 file
+%
 % USAGE:
 %    [alt, temp, pres, relh] = read_ERA5(measTime, ERA5site, folder)
+%
 % INPUTS:
 %    measTime: datenum
 %        measurement time. 
 %    ERA5site: char
 %        the location for ERA5 site.
+%
 % OUTPUTS:
 %    alt: array
 %        altitute for each range bin. [m]
@@ -25,6 +28,7 @@ function [alt, temp, pres, relh, ERA5file, wind, wins] = read_ERA5(measTime, ERA
 %        wind direction. [degree]
 %    wins: array
 %        wind speed. [m/s]
+%
 % HISTORY:
 %    2021-09-24: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

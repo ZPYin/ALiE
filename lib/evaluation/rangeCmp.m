@@ -1,12 +1,16 @@
 function rangeCmp(config, reportFile, varargin)
 % RANGECMP range precision comparison. (external check)
+%
 % USAGE:
 %    rangeCmp(config, reportFile)
+%
 % INPUTS:
 %    config: struct
 %    reportFile: char
+%
 % KEYWORDS:
 %    flagDebug: logical
+%
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

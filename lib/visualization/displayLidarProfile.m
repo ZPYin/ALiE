@@ -1,10 +1,13 @@
 function [fh] = displayLidarProfile(inData, chTag, varargin)
 % DISPLAYLIDARPROFILE description
+%
 % USAGE:
 %    [fh] = displayLidarProfile(inData, chTag, varargin)
+%
 % INPUTS:
 %    inData: struct
 %    chTag: cell
+%
 % KEYWORDS:
 %    hRange: 2-element array
 %    sigRange: 2-element array
@@ -14,8 +17,10 @@ function [fh] = displayLidarProfile(inData, chTag, varargin)
 %    gliding_window: numeric
 %    figTitle: char
 %    figFile: char
+%
 % OUTPUTS:
 %    fh: figure handle
+%
 % HISTORY:
 %    2021-09-18: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

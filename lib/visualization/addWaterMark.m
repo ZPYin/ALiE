@@ -1,17 +1,22 @@
 function [ax] = addWaterMark(wmImgPath, wmRelPos, varargin)
 % ADDWATERMARK add watermark to current figure.
+%
 % USAGE:
 %    [ax] = addWaterMark(wmImgPath, wmRelPos)
+%
 % INPUTS:
 %    wmImgPath: char
 %        absolute path of watermark image.
 %    wmRelPos: 4-element array
 %        [left, bottom, width, height] of the watermark.
+%
 % KEYWORDS:
 %    transparency: numeric
 %        transparency. (0 for fully transparent)
+%
 % OUTPUTS:
 %    ax: axes handle.
+%
 % HISTORY:
 %    2021-10-09: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

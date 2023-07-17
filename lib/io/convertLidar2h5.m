@@ -1,11 +1,14 @@
 function convertLidar2h5(inData, oFile, chTag, varargin)
 % CONVERTLIDAR2H5 convert lidar data to HDF5 format.
+%
 % USAGE:
 %    convertLidar2h5(inData, oFile, chTag)
+%
 % INPUTS:
 %    inData: struct
 %    oFile: char
 %    chTag: cell
+%
 % HISTORY:
 %    2021-09-18: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

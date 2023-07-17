@@ -1,9 +1,12 @@
 function [oData, chTag] = readLidarData(dataFolder, varargin)
 % READLIDARDATA read lidar data.
+%
 % USAGE:
 %    [oData] = readLidarData(dataFolder)
+%
 % INPUTS:
 %    dataFolder: char
+%
 % KEYWORDS:
 %    dataFilenamePattern: char
 %    dataFormat: char
@@ -11,9 +14,11 @@ function [oData, chTag] = readLidarData(dataFolder, varargin)
 %    nMaxBin: numeric
 %    nBin: numeric
 %    flagFilenameTime: logical
+%
 % OUTPUTS:
 %    oData: struct
 %    chTag: cell
+%
 % HISTORY:
 %    2021-09-10: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

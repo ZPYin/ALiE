@@ -1,7 +1,9 @@
 function displayREALSigMerge(height, mTime, sigH, sigL, mergeRange, varargin)
 % DISPLAYREALSIGMERGE display REAL merged signal.
+%
 % USAGE:
 %    displayREALSigMerge(height, mTime, sigH, sigL, mergeRange)
+%
 % INPUTS:
 %    height: numeric
 %    mTime: numeric
@@ -9,6 +11,7 @@ function displayREALSigMerge(height, mTime, sigH, sigL, mergeRange, varargin)
 %    sigL: matrix (height x time)
 %    mergeRange: 2-element array
 %        signal merge range. (m)
+%
 % KEYWORDS:
 %    channelTag: char
 %        channel tag. (e.g., '532s')
@@ -22,6 +25,7 @@ function displayREALSigMerge(height, mTime, sigH, sigL, mergeRange, varargin)
 %        offset for signal merge.
 %    mergeSlope
 %        slope for signal merge
+%
 % HISTORY:
 %    2021-09-20: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

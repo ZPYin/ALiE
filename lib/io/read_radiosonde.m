@@ -1,8 +1,10 @@
 function [alt, temp, pres, relh, datetime] = read_radiosonde(file, ...
     fileType, missingValue)
 % READ_RADIOSONDE read the radiosonde data from netCDF file.
+%
 % USAGE:
 %     [alt, temp, pres, relh, datetime] = read_radiosonde(file, fileType)
+%
 % INPUTS:
 %     file: str
 %         filename of radiosonde data file. 
@@ -13,6 +15,7 @@ function [alt, temp, pres, relh, datetime] = read_radiosonde(file, ...
 %     missingValue: double
 %         missing value for filling the empty bins. These values need to be 
 %         replaced with NaN to be compatible with the processing program.
+%
 % OUTPUTS:
 %     alt: array
 %         altitute for each range bin. [m]
@@ -27,6 +30,7 @@ function [alt, temp, pres, relh, datetime] = read_radiosonde(file, ...
 %         filled. [%]
 %     datetime: datenum
 %         datetime for the radiosonde data.
+%
 % NOTE:
 %     The radiosonde file should be in netCDF and must contain the variable of 
 %     'altitude', 'temperature', 'pressure' and 'RH'. Below is the description 
@@ -53,6 +57,7 @@ function [alt, temp, pres, relh, datetime] = read_radiosonde(file, ...
 %           :long_name = "relative humidity";
 %           :standard_name = "RH";
 %           :_FillValue = -999.0; // double
+%
 % HISTORY:
 %    2019-07-19: First Edition by Zhenping
 %    2019-07-28: Add the criteria for empty file.

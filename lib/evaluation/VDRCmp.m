@@ -1,12 +1,16 @@
 function VDRCmp(config, reportFile, varargin)
 % VDRCMP volume depolarization ratio comparison.
+%
 % USAGE:
 %    VDRCmp(config, reportFile)
+%
 % INPUTS:
 %    config: struct
 %    reportFile: char
+%
 % KEYWORDS:
 %    flagDebug: logical
+%
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

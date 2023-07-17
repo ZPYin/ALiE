@@ -1,18 +1,23 @@
 function [isPassContOptChk] = contOptChk(lidarData, lidarConfig, reportFile, lidarType, varargin)
 % CONTOPTCHK continuous operation check
+%
 % USAGE:
 %    [isPasscontOptChk] = contOptChk(lidarData, lidarConfig, reportFile, lidarType)
+%
 % INPUTS:
 %    lidarData: struct
 %    lidarConfig: struct
 %    reportFile: char
 %    lidarType: char
+%
 % KEYWORDS:
 %    figFolder: char
 %    figFormat: char
 %    flagCorTime: logical
+%
 % OUTPUTS:
 %    isPasscontOptChk: logical
+%
 % HISTORY:
 %    2021-09-19: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

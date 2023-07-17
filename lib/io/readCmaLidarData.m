@@ -1,10 +1,13 @@
 function [data, chTag] = readCmaLidarData(file, varargin)
 % READCMALIDARDATA read CMA standard binary lidar data.
+%
 % USAGE:
 %    [data] = readCmaLidarData(file)
+%
 % INPUTS:
 %    file: char
 %        absolute path of the lidar data file.
+%
 % KEYWORDS:
 %    flagDebug: logical
 %        flag to control debugging message output (default: false).
@@ -13,6 +16,7 @@ function [data, chTag] = readCmaLidarData(file, varargin)
 %    nBin: numeric
 %        number of bins in the lidar data file (default: 8000).
 %    flagFilenameTime: logical
+%
 % OUTPUTS:
 %    data: struct
 %        mTime: datenum
@@ -37,6 +41,7 @@ function [data, chTag] = readCmaLidarData(file, varargin)
 %            raw signal.
 %    chTag: cell
 %        channel identifier. {'355e', '355p', '355s', '387', '407', '532e', '532p', '532s', '607', '1064e', '1064p', '1064s', '532pl', '532sl', '607l', '532ph', '532sh', '607h'}
+%
 % HISTORY:
 %    2021-09-18: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

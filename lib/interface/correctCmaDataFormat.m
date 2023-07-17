@@ -1,19 +1,24 @@
 function [isSuccess] = correctCmaDataFormat(folder, dataType, varargin)
 % CORRECTCMADATAFORMAT correct CMA data files with wrong format.
+%
 % USAGE:
 %    [isSuccess] = correctCmaDataFormat(folder, dataType, varargin)
+%
 % INPUTS:
 %    folder: char
 %        data folder.
 %    dataType: char
 %        data type identifier
 %        'HR': data from HR
+%
 % KEYWORDS:
 %    filePat: char
 %    searchDepth: numeric
 %    debug: logical
+%
 % OUTPUTS:
 %    isSuccess
+%
 % HISTORY:
 %    2021-10-20: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

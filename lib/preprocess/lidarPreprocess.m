@@ -1,10 +1,13 @@
 function lidarData = lidarPreprocess(lidarData, chTag, varargin)
 % LIDARPREPROCESS lidar signal pre-process.
+%
 % USAGE:
 %    lidarData = lidarPreprocess(lidarData, chTag)
+%
 % INPUTS:
 %    lidarData: struct
 %    chTag: cell
+%
 % KEYWORDS:
 %    deadtime: numeric (1 x nChs)
 %        deadtime. (ns)
@@ -18,9 +21,11 @@ function lidarData = lidarPreprocess(lidarData, chTag, varargin)
 %    hOffset: numeric
 %        height offset. (m)
 %    overlapFile: char
+%
 % OUTPUTS:
 %    lidarData: struct
 %        rcsxxx, bgxxx, sigxxx
+%
 % HISTORY:
 %    2021-09-19: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

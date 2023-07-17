@@ -1,12 +1,16 @@
 function [sigStd] = ADSigStd(signal, winLen)
 % ADSIGSTD calculate signal uncertainty in analog mode.
+%
 % USAGE:
 %    [sigStd] = ADSigStd(signal, winLen)
+%
 % INPUTS:
 %    signal: numeric
 %    winLen: integer
+%
 % OUTPUTS:
 %    sigStd: numeric
+%
 % HISTORY:
 %    2021-07-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

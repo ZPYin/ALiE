@@ -1,15 +1,19 @@
 function [oData] = readDasun1064Pol(file, varargin)
 % READDASUN1064POL read data of Dasun polarization ceilometer at 1064 nm.
+%
 % USAGE:
 %    [oData] = readDasun1064Pol(file)
+%
 % INPUTS:
 %    file: char
 %        absolute paht of data file.
+%
 % OUTPUTS:
 %    oData: struct
 %        height: array
 %        rawSignal: matrix
 %        mTime: numeric
+%
 % HISTORY:
 %    2021-09-06: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

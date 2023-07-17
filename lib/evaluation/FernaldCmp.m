@@ -1,12 +1,16 @@
 function FernaldCmp(config, reportFile, varargin)
 % FERNALDCMP Fernald retrieval results comparison (external check)
+%
 % USAGE:
 %    FernaldCmp(config, reportFile)
+%
 % INPUTS:
 %    config: struct
 %    reportFile: char
+%
 % KEYWORDS:
 %    flagDebug: logical
+%
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de

@@ -1,12 +1,16 @@
 function RamanCmp(config, reportFile, varargin)
 % RAMANCMP Raman retrieval results comparison (external check)
+%
 % USAGE:
 %    RamanCmp(config, reportFile)
+%
 % INPUTS:
 %    config: struct
 %    reportFile: char
+%
 % KEYWORDS:
 %    flagDebug: logical
+%
 % HISTORY:
 %    2021-09-22: first edition by Zhenping
 % .. Authors: - zhenping@tropos.de
