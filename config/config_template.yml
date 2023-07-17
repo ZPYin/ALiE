@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-resultPath: C:\Users\ZPYin\Desktop\lidar-evaluation\report
-dataSavePath: C:\Users\ZPYin\Desktop\lidar-evaluation\data
+resultPath: C:\Users\ZPYin\Desktop\数据评估\report
+dataSavePath: C:\Users\ZPYin\Desktop\数据评估\data
 figFormat: png   # figure format to be exported
 
 # data loader configuration
