@@ -1,6 +1,6 @@
 ################################################################################
-# lidar configuration file
-# DON'T use Chinese characters!!!
+#
+# lidar configuration file (example)
 #
 ################################################################################
 
@@ -11,92 +11,99 @@ figFormat: png   # figure format to be exported
 # data loader configuration
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
-  WH1:   # lidar No.1
-    dataPath: D:\Data\1064nm_lidar_comparison\20210918\WHU1064_1
-    dataFilenamePattern: .*   # all files
-    # data type
-    # 1: WHU standard 1064 nm lidar
-    # 2: WHU non-standard 1064 nm lidar
-    # 3: CMA standard data format in binary (old)
-    # 4: Dasun visibility lidar
-    # 5: REAL
-    # 6: CMA standard data format in binary (2021 new)
-    dataFormat: 1
-    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h;
-    nMaxBin: 2048   # number of bins
-  WH2:   # lidar No.2
-    dataPath: D:\Data\1064nm_lidar_comparison\20210918\WHU1064_2
-    dataFilenamePattern: .*   # all files
-    dataFormat: 2
-    chTag: ['1064e']
-    nMaxBin: 1300   # number of bins
-  DS:   # lidar No.3
-    dataPath: D:\Data\1064nm_lidar_comparison\20210909\Dasun-Pol
-    dataFilenamePattern: .*   # all files
+  TestCO:
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\ContOptTest
+    dataFilenamePattern: .*
+    dataFormat: 5
+    chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    nMaxBin: 2030   # number of bins
+  TestST:
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\SaturationTest
+    dataFilenamePattern: .*
     dataFormat: 4
     chTag: ['1064p', '1064s']
-    nMaxBin: 1300   # number of bins
-  REAL:   # lidar No.4
-    dataPath: D:\Coding\Matlab\CMA-lidar-evaluation\data\REAL
-    dataFilenamePattern: .*   # all files
-    dataFormat: 5
-    chTag: ['532p', '532s', '607']
-    nMaxBin: 2400   # number of bins
-  L7:
+    nMaxBin: 1000
+  TestTCT:
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\TelecoverTest
+    dataFilenamePattern: .*Lidar.*
+    dataFormat: 3
+    chTag: ['1064p', '1064s']
+    nMaxBin: 1250
+  TestDR:
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\DetectionRangeTest
+    dataFilenamePattern: .*Lidar.*
+    dataFormat: 3
+    chTag: ['1064p', '1064s']
+    nMaxBin: 1250
+  TestBG:
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\BackgroundNoiseTest
+    dataFilenamePattern: .*
+    dataFormat: 3
+    chTag: ['532p', '532s']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    nMaxBin: 2000   # number of bins
+  TestWV:
     dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\WVTest\lidar
     dataFilenamePattern: .*   # all files
     dataFormat: 6
     nMaxBin: 1960   # number of bins
+  TestRF:
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\RayleighFitTest
+    dataFilenamePattern: .*Lidar.*
+    dataFormat: 3
+    chTag: ['1064p', '1064s']
+    nMaxBin: 1250
 
 # internal-check
 # Below is the struct of `internalChkCfg`, which holds the specific configurations for each lidar.
 # Lidar type is configured in the second level (with 1 indention), while the detailed configuration for each lidar is configured in the third level (with 2 indentions).
 internalChkCfg:
-  L7:
-    lidarNo: 1   # lidar number. (see ./docs/lidarList.md)
-    chTag: ['407', '386']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+  TestRF:
+    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064p', '1064s']
     figVisible: 'on'   # whether display figures
     preprocessCfg:
       hOffset: 0   # height offset. (m)
       tOffset: 0   # time offset. (min)
       deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-      bgBins: [1900, 1950]   # [start index, stop index] for background correction
+      bgBins: [1100, 1200]   # [start index, stop index] for background correction
       nPretrigger: 0   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
       overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
     flagRetrievalChk: false   # backscatter retrieval check
     flagSaturationChk: false   # signal saturation check
     flagQuadrantChk: false   # quadrant check
     flagOverlapChk: false   # overlap evaluation
-    flagRayleighChk: false   # Rayleigh fit check
+    flagRayleighChk: true   # Rayleigh fit check
     flagBgNoiseChk: false   # background noise check
     flagDetectRangeChk: false   # detection ability check
     flagContOptChk: false   # continuous operation check
-    flagWVChk: true   # water vapor check
-    wvChkCfg:
-      tRange: '2023-01-28 20:00:00 ~ 2023-01-28 20:30:00'
+    RayleighChkCfg:
+      tRange: '2021-09-27 18:30:00 ~ 2021-09-27 19:02:00'
+      wavelength:
+        - [1064]   # wavelength. (nm)
+      fitRange:
+        - [6000, 7000]   # Rayleigh fit range. (m)
       smoothwindow:
-        - [60]
-      fitRange: [1000, 5000]
-      flagWVFit: false
-      wvConst: 0.0
-      MeteorSource: 'websonde'   # 'localsonde'
-      WMOStationID: 54511
-      MeteorFile: 'C:\Users\ZPYin\Documents\Data\ALiE-TestData\WVTest\sonde\UPAR_WEA_CHN_MUL_FTM_SEC-56312-2023012812.txt'
-      evalRange: [500, 4000]
-      wvmrRange: [0, 5]
-      hRange: [0, 7000]
-      meanAbsDev: 0.3   # g/kg
-  WH1:
-    lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
-    chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+        - [300]
+      MieGlue:
+        - [1, 0]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
+      hRange:
+        - [0, 15000]   # display range. (m)
+      sigRange:
+        - [5e8, 1e11]   # signal display range. (a.u.)
+      maxDev: [15]   # maximum relative deviation. (%)
+      flagLinearFit: true
+  TestCO:
+    lidarNo: 11
+    chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
     figVisible: 'on'   # whether display figures
     preprocessCfg:
       hOffset: 0   # height offset. (m)
       tOffset: 0   # time offset. (min)
-      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-      bgBins: [1500, 2000]   # [start index, stop index] for background correction
-      nPretrigger: 15   # if nPretrigger < 0, move signal up
+      deadTime: [3.5, 3.5, 3.5, 3.5, 3.5, 30.4]   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1900, 1950]   # [start index, stop index] for background correction
+      nPretrigger: 55   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
       overlapFile: ''
     fullOverlapHeight: 400   # minimum height with complete overlap. (m)
@@ -107,50 +114,173 @@ internalChkCfg:
     flagRayleighChk: false   # Rayleigh fit check
     flagBgNoiseChk: false   # background noise check
     flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: true   # continuous operation check
+    contOptChkCfg:
+      deltaT: 1   # temporal resolution (min)
+      nMinProfile: 1100   # minimum profiles required
+      tRange: '2021-10-25 00:00:00 ~ 2021-10-25 23:30:00'
+      hRange: [0, 10000]
+      cRange:   # color range for Range-corrected signal
+        - [0, 1e10]   # channel 1
+        - [0, 1e10]   # channel 1
+        - [0, 1e10]   # channel 1
+        - [0, 1e10]   # channel 1
+        - [0, 1e10]   # channel 1
+        - [0, 1e10]   # channel 1
+      markTRange: '2021-10-25 19:00:00 ~ 2021-10-25 19:30:00'
+  TestST:
+    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064p', '1064s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [900, 990]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: true   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
     flagContOptChk: false   # continuous operation check
-    flagWVChk: false   # water vapor check
-    wvChkCfg:
-      tRange: ''
-      smoothwindow:
-        - [60]
-      fitRange: []
-      flagWVFit: false
-      wvConst: 0.0
-      MeteorSource: 'websonde'   # 'localsonde'
-      WMOStationID: 57511
-      MeteorFile: ''
-      evalRange: []
-      meanAbsDev: 0.3   # g/kg
     saturationChkCfg:
       tRange:
-        - '2021-09-18 20:14:38 ~ 2021-09-18 20:14:50'   # 100% transmission
-        - '2021-09-18 20:16:05 ~ 2021-09-18 20:16:08'   # 80% transmission
-        - '2021-09-18 20:21:30 ~ 2021-09-18 20:21:38'   # 50% transmission
-        - '2021-09-18 20:17:32 ~ 2021-09-18 20:17:40'   # 20% transmission
-        - '2021-09-18 20:23:00 ~ 2021-09-18 20:23:10'   # 10% transmission
+        - '2021-10-09 17:32:00 ~ 2021-10-09 17:33:00'
+        - '2021-10-09 17:36:00 ~ 2021-10-09 17:37:00'
+        - '2021-10-09 17:39:00 ~ 2021-10-09 17:40:00'
+        - '2021-10-09 17:42:00 ~ 2021-10-09 17:43:00'
+        - '2021-10-09 17:44:00 ~ 2021-10-09 17:45:00'
       sigRange:
-        - [1e7, 1e9]
+        - [1e6, 1e12]
+        - [1e6, 1e11]
       hRange:
         - [0, 4000]
+        - [0, 4000]
       normRange:
-        - [500, 2000]
-      maxDev: [10]   # [%]
-      smoothwindow: [300]   # (m)
-    RayleighChkCfg:
-      tRange: '2021-09-18 20:00:00 ~ 2021-09-18 21:00:00'
-      wavelength:
-        - [1064]   # wavelength. (nm)
-      fitRange:
-        - [6000, 7000]   # Rayleigh fit range. (m)
+        - [2000, 4000]
+        - [2000, 4000]
+      maxDev:
+        - 10   # [%]
+        - 10   # [%]
       smoothwindow:
-        - [300]
-      MieGlue:
-        - [1]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
-      hRange:
-        - [0, 10000]   # display range. (m)
+        - 300   # (m)
+        - 300   # (m)
+  TestTCT:
+    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064p', '1064s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1100, 1200]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: true   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    quadrantChkCfg:
+      quadrantTime:   # quadrant time (local time) [E-S-W-N-E]
+        - '2021-09-27 14:23:00 ~ 2021-09-27 14:25:03'   # east1
+        - '2021-09-27 14:25:00 ~ 2021-09-27 14:26:00'   # south
+        - '2021-09-27 14:26:00 ~ 2021-09-27 14:27:00'   # west
+        - '2021-09-27 14:27:00 ~ 2021-09-27 14:28:00'   # north
+        - '2021-09-27 14:23:00 ~ 2021-09-27 14:25:03'   # east2
+      hRangeNear:
+        - [0, 5000]   # vertical range for near-range behavior to display. (m)
+        - [0, 5000]   # vertical range for near-range behavior to display. (m)
+      hRangeAll:
+        - [0, 10000]   # vertical range for overall behavior to display. (m)
+        - [0, 10000]   # vertical range for overall behavior to display. (m)
+      normRange:
+        - [1500, 2500]   # normalization range. (m)
+        - [1500, 3000]   # normalization range. (m)
+      rcsDisplayRangeAll:
+        - [0, 5e9]   # range of rcs
+        - [0, 7e8]   # range of rcs
+      normSigDisplayRangeAll:
+        - [0, 5e9]   # normalized signal display range. (photon count)
+        - [0, 6e8]   # normalized signal display range. (photon count)
+      normSigDisplayRangeNear:
+        - [0, 4e9]   # normalized signal display range. (photon count)
+        - [0, 5e8]   # normalized signal display range. (photon count)
+      smoothwindow:
+        - 150   # smoothing window length. (m)
+        - 600   # smoothing window length. (m)
+      stableThresh: 10   # [%]
+      maxDev: 20   # [%]
+  TestDR:
+    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064p', '1064s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1100, 1200]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: true   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    detectRangeChkCfg:
+      tRange: '2021-09-27 20:00:00 ~ 2021-09-27 20:32:00'   # temporal integral range for detection ability check
+      minSNR:
+        - 3   # minimum SNR
+        - 3   # minimum SNR
+      minHeight:
+        - 9000   # minimum height. (m)
+        - 9000   # minimum height. (m)
       sigRange:
-        - [1e8, 1.4e10]   # signal display range. (a.u.)
-      maxDev: [15]   # maximum relative deviation. (%)
+        - [1, 1e6]
+        - [1, 1e6]
+      snrRange:
+        - [1e-1, 1e4]
+        - [1e-1, 1e4]
+      hRange:
+        - [0, 15000]
+        - [0, 15000]
+  TestBG:
+    lidarNo: 3   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['532p', '532s']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: -885   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1700, 1900]   # [start index, stop index] for background correction
+      nPretrigger: 59   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: true   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
     bgNoiseChkCfg:
       closeTRange: '2021-09-18 17:00:00 ~ 2021-09-18 18:00:00'   # cover closed
       randErrCalcWindowLength: 300   # window length for calculating random error. (m)
@@ -193,6 +323,41 @@ internalChkCfg:
       smoothwindow: 300   # smoothing window length. (m)
       stableThresh: 10   # [%]
       maxDev: 20   # [%]
+  TestWV:
+    lidarNo: 1   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['407', '386']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1900, 1950]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    flagWVChk: true   # water vapor check
+    wvChkCfg:
+      tRange: '2023-01-28 20:00:00 ~ 2023-01-28 20:30:00'
+      smoothwindow:
+        - [60]
+      fitRange: [1000, 5000]
+      flagWVFit: false
+      wvConst: 0.0
+      MeteorSource: 'websonde'   # 'localsonde'
+      WMOStationID: 54511
+      MeteorFile: 'C:\Users\ZPYin\Documents\Data\ALiE-TestData\WVTest\sonde\UPAR_WEA_CHN_MUL_FTM_SEC-56312-2023012812.txt'
+      evalRange: [500, 4000]
+      wvmrRange: [0, 5]
+      hRange: [0, 7000]
+      meanAbsDev: 0.3   # g/kg
 
 # external-check
 # Below is the struct of `externalChkCfg`, which was used to inter-compare lidars.
