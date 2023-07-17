@@ -4,19 +4,19 @@
 #
 ################################################################################
 
-resultPath: C:\Users\ZPYin\Desktop\数据评估\report
-dataSavePath: C:\Users\ZPYin\Desktop\数据评估\data
-figFormat: png   # figure format to be exported
+resultPath: C:\Users\ZPYin\Desktop\数据评估\report   # 测试报告输出目录
+dataSavePath: C:\Users\ZPYin\Desktop\数据评估\data   # 雷达数据输出目录
+figFormat: png   # 保存图片的格式
 
 # data loader configuration
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
   TestCO:
-    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\ContOptTest
-    dataFilenamePattern: .*
-    dataFormat: 5
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\ContOptTest   # 雷达数据目录
+    dataFilenamePattern: .*   # 雷达数据文件过滤关键字
+    dataFormat: 5   # 雷达数据格式(./docs/配置文件说明.md)
     chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
-    nMaxBin: 2030   # number of bins
+    nMaxBin: 2030   # 需要读取的距离门个数
   TestST:
     dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\SaturationTest
     dataFilenamePattern: .*
@@ -68,7 +68,7 @@ internalChkCfg:
       bgBins: [1100, 1200]   # [start index, stop index] for background correction
       nPretrigger: 0   # if nPretrigger < 0, move signal up
       bgCorFile: ''   # data file of dark measurement results
-      overlapFile: ''
+      overlapFile: ''   # overlap文件
     fullOverlapHeight: 400   # minimum height with complete overlap. (m)
     flagRetrievalChk: false   # backscatter retrieval check
     flagSaturationChk: false   # signal saturation check
@@ -78,14 +78,15 @@ internalChkCfg:
     flagBgNoiseChk: false   # background noise check
     flagDetectRangeChk: false   # detection ability check
     flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
     RayleighChkCfg:
-      tRange: '2021-09-27 18:30:00 ~ 2021-09-27 19:02:00'
+      tRange: '2021-09-27 18:30:00 ~ 2021-09-27 19:02:00'   # 选取Rayleigh Fit信号的时间范围
       wavelength:
-        - [1064]   # wavelength. (nm)
+        - [1064]   # wavelength. (nm)；如果有多个波长，则新增加一行，对应下列信息均需要新增一行
       fitRange:
         - [6000, 7000]   # Rayleigh fit range. (m)
       smoothwindow:
-        - [300]
+        - [300]   # 平滑窗长度（米）
       MieGlue:
         - [1, 0]   # MieGlue * signal ([1, 0.5] * [PSignal, SSignal])
       hRange:
@@ -93,7 +94,7 @@ internalChkCfg:
       sigRange:
         - [5e8, 1e11]   # signal display range. (a.u.)
       maxDev: [15]   # maximum relative deviation. (%)
-      flagLinearFit: true
+      flagLinearFit: true   # 是否进行Rayleigh fit判读
   TestCO:
     lidarNo: 11
     chTag: ['532sh', '532ph', '532sl', '532pl', '607l', '607h']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
@@ -115,19 +116,20 @@ internalChkCfg:
     flagBgNoiseChk: false   # background noise check
     flagDetectRangeChk: false   # detection ability check
     flagContOptChk: true   # continuous operation check
+    flagWVChk: false   # water vapor check
     contOptChkCfg:
       deltaT: 1   # temporal resolution (min)
       nMinProfile: 1100   # minimum profiles required
-      tRange: '2021-10-25 00:00:00 ~ 2021-10-25 23:30:00'
-      hRange: [0, 10000]
+      tRange: '2021-10-25 00:00:00 ~ 2021-10-25 23:30:00'   # 选取信号的时间范围
+      hRange: [0, 10000]   # 信号显示的高度范围
       cRange:   # color range for Range-corrected signal
         - [0, 1e10]   # channel 1
-        - [0, 1e10]   # channel 1
-        - [0, 1e10]   # channel 1
-        - [0, 1e10]   # channel 1
-        - [0, 1e10]   # channel 1
-        - [0, 1e10]   # channel 1
-      markTRange: '2021-10-25 19:00:00 ~ 2021-10-25 19:30:00'
+        - [0, 1e10]   # channel 2
+        - [0, 1e10]   # channel 3
+        - [0, 1e10]   # channel 4
+        - [0, 1e10]   # channel 5
+        - [0, 1e10]   # channel 6
+      markTRange: '2021-10-25 19:00:00 ~ 2021-10-25 19:30:00'   # 信号标注的时间范围
   TestST:
     lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
     chTag: ['1064p', '1064s']
@@ -149,6 +151,7 @@ internalChkCfg:
     flagBgNoiseChk: false   # background noise check
     flagDetectRangeChk: false   # detection ability check
     flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
     saturationChkCfg:
       tRange:
         - '2021-10-09 17:32:00 ~ 2021-10-09 17:33:00'
@@ -156,21 +159,22 @@ internalChkCfg:
         - '2021-10-09 17:39:00 ~ 2021-10-09 17:40:00'
         - '2021-10-09 17:42:00 ~ 2021-10-09 17:43:00'
         - '2021-10-09 17:44:00 ~ 2021-10-09 17:45:00'
+      transmission: [1, 0.9, 0.8, 0.7, 0.6]   # 每个文件对应的透过率
       sigRange:
-        - [1e6, 1e12]
-        - [1e6, 1e11]
+        - [1e6, 1e12]   # 通道1信号范围
+        - [1e6, 1e11]   # 通道2信号范围
       hRange:
-        - [0, 4000]
-        - [0, 4000]
+        - [0, 4000]   # 通道1信号展示高度范围
+        - [0, 4000]   # 通道1信号展示高度范围
       normRange:
-        - [2000, 4000]
-        - [2000, 4000]
+        - [2000, 4000]   # 通道1信号归一化范围
+        - [2000, 4000]   # 通道1信号归一化范围
       maxDev:
-        - 10   # [%]
-        - 10   # [%]
+        - 10   # 通道1信号最大偏差 [%]
+        - 10   # 通道2信号最大偏差 [%]
       smoothwindow:
-        - 300   # (m)
-        - 300   # (m)
+        - 300   # 通道1信号平滑窗长(m)
+        - 300   # 通道2信号平滑窗长(m)
   TestTCT:
     lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
     chTag: ['1064p', '1064s']
@@ -192,6 +196,7 @@ internalChkCfg:
     flagBgNoiseChk: false   # background noise check
     flagDetectRangeChk: false   # detection ability check
     flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
     quadrantChkCfg:
       quadrantTime:   # quadrant time (local time) [E-S-W-N-E]
         - '2021-09-27 14:23:00 ~ 2021-09-27 14:25:03'   # east1
@@ -243,14 +248,15 @@ internalChkCfg:
     flagBgNoiseChk: false   # background noise check
     flagDetectRangeChk: true   # detection ability check
     flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
     detectRangeChkCfg:
       tRange: '2021-09-27 20:00:00 ~ 2021-09-27 20:32:00'   # temporal integral range for detection ability check
       minSNR:
         - 3   # minimum SNR
         - 3   # minimum SNR
       minHeight:
-        - 9000   # minimum height. (m)
-        - 9000   # minimum height. (m)
+        - 9000   # 通道1 minimum height. (m)
+        - 9000   # 通道2 minimum height. (m)
       sigRange:
         - [1, 1e6]
         - [1, 1e6]
@@ -288,41 +294,6 @@ internalChkCfg:
         - [0, 1e3]
       hRange:   # background display range. (m)
         - [0, 20000]
-    detectRangeChkCfg:
-      tRange: '2021-09-18 20:00:00 ~ 2021-09-18 21:00:00'   # temporal integral range for detection ability check
-      minSNR: [3]   # minimum SNR
-      minHeight: [9000]   # minimum height. (m)
-      sigRange:
-        - [1, 1e6]
-      snrRange:
-        - [1e-1, 1e3]
-      hRange:
-        - [0, 12000]
-    contOptChkCfg:
-      deltaT: 1   # temporal resolution (min)
-      nMinProfile: 1440   # minimum profiles required
-      tRange: '2021-09-18 16:36:00 ~ 2021-09-18 20:35:00'
-      hRange: [0, 10000]
-      cRange:   # color range for Range-corrected signal
-        - [0, 1e10]   # channel 1
-      markTRange: '2021-09-19 19:00:00 ~ 2021-09-19 19:30:00'
-    quadrantChkCfg:
-      quadrantTime:   # quadrant time (local time) [E-S-W-N-E]
-        - '2021-09-18 20:14:38 ~ 2021-09-18 20:14:50'   # east1
-        - '2021-09-18 20:16:05 ~ 2021-09-18 20:16:08'   # south
-        - '2021-09-18 20:17:32 ~ 2021-09-18 20:17:40'   # west
-        - '2021-09-18 20:21:30 ~ 2021-09-18 20:21:38'   # north
-        - '2021-09-18 20:23:00 ~ 2021-09-18 20:23:10'   # east2
-      hRangeNear: [0, 1500]   # vertical range for near-range behavior to display. (m)
-      rcsDisplayRangeAll:
-        - [0, 1e11]   # range of rcs
-      hRangeAll: [0, 5000]   # vertical range for overall behavior to display. (m)
-      normRange: [800, 1500]   # normalization range. (m)
-      normSigDisplayRangeAll: [0, 1.4e10]   # normalized signal display range. (photon count)
-      normSigDisplayRangeNear: [0, 1.4e10]   # normalized signal display range. (photon count)
-      smoothwindow: 300   # smoothing window length. (m)
-      stableThresh: 10   # [%]
-      maxDev: 20   # [%]
   TestWV:
     lidarNo: 1   # lidar number. (see ./docs/lidarList.md)
     chTag: ['407', '386']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
@@ -347,17 +318,17 @@ internalChkCfg:
     wvChkCfg:
       tRange: '2023-01-28 20:00:00 ~ 2023-01-28 20:30:00'
       smoothwindow:
-        - [60]
-      fitRange: [1000, 5000]
-      flagWVFit: false
-      wvConst: 0.0
-      MeteorSource: 'websonde'   # 'localsonde'
-      WMOStationID: 54511
-      MeteorFile: 'C:\Users\ZPYin\Documents\Data\ALiE-TestData\WVTest\sonde\UPAR_WEA_CHN_MUL_FTM_SEC-56312-2023012812.txt'
-      evalRange: [500, 4000]
-      wvmrRange: [0, 5]
-      hRange: [0, 7000]
-      meanAbsDev: 0.3   # g/kg
+        - [60]   # 信号平滑窗长（米）
+      fitRange: [1000, 5000]   # 水汽拟合高度范围
+      flagWVFit: false   # 是否进行水汽拟合
+      wvConst: 0.0   # 默认的水汽标定常数
+      MeteorSource: 'websonde'   # 气球数据文件'localsonde'；网上气球'websonde'
+      WMOStationID: 54511   # 获取网上气球数据时的站点号（五位数字）
+      MeteorFile: 'C:\Users\ZPYin\Documents\Data\ALiE-TestData\WVTest\sonde\UPAR_WEA_CHN_MUL_FTM_SEC-56312-2023012812.txt'   # 气球数据文件决定路径
+      evalRange: [500, 4000]   # 水汽误差评估高度范围
+      wvmrRange: [0, 5]   # 水汽廓线展示范围 [g/kg]
+      hRange: [0, 7000]   # 水汽廓线展示高度范围
+      meanAbsDev: 0.3   # 允许最大水汽混合比偏差 [g/kg]
 
 # external-check
 # Below is the struct of `externalChkCfg`, which was used to inter-compare lidars.
