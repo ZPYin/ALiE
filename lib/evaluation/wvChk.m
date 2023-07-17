@@ -103,7 +103,9 @@ case 'websonde'
         sondeTime = mDate + datenum(0, 1, 0, 12, 0, 0);
     end
 
-    [alt, temp, pres, rh] = read_websonde(sondeTime, [sondeTime - datenum(0, 1, 0, 6, 0, 0), sondeTime + datenum(0, 1, 0, 6, 0, 0)], lidarConfig.wvChkCfg.WMOStationID, 'BUFR');
+    [alt, temp, pres, rh] = read_websonde(sondeTime, ...
+        [sondeTime - datenum(0, 1, 0, 6, 0, 0), sondeTime + datenum(0, 1, 0, 6, 0, 0)], ...
+        lidarConfig.wvChkCfg.WMOStationID, 'BUFR');
     es = saturated_vapor_pres(temp);
     WVMR_rs = 18.0160 / 28.9660 * rh / 100 .* es ./ (pres - rh / 100 .* es) * 1000;
     sonde.altitude = alt;
@@ -113,7 +115,8 @@ case 'localsonde'
     sondeData = read_sonde(lidarConfig.wvChkCfg.MeteorFile);
     es = saturated_vapor_pres(sondeData.temperature);
     sonde.altitude = sondeData.height;
-    sonde.WVMR = 18.0160 / 28.9660 * sondeData.relative_humidity / 100 .* es ./ (sondeData.pressure - sondeData.relative_humidity / 100 .* es) * 1000;
+    sonde.WVMR = 18.0160 / 28.9660 * sondeData.relative_humidity / 100 .* ...
+        es ./ (sondeData.pressure - sondeData.relative_humidity / 100 .* es) * 1000;
 
 otherwise
 
@@ -153,10 +156,14 @@ WVMRRawStd = WVMRRaw .* sqrt(1 ./ SNR407.^2 + 1 ./ SNR386.^2);
 wvConst = NaN;
 if isLinearFit && (~ isempty(rsWVMRInterp))
     % linear fit
-    isInCaliRange = (lidarData.height >= lidarConfig.wvChkCfg.fitRange(1)) & (lidarData.height <= lidarConfig.wvChkCfg.fitRange(2));
+    isInCaliRange = (lidarData.height >= lidarConfig.wvChkCfg.fitRange(1)) & ...
+                    (lidarData.height <= lidarConfig.wvChkCfg.fitRange(2));
     isValidCaliPoints =  (SNR407 >= 3) & (SNR386 >= 3) & (~ isnan(rsWVMRInterp));
 
-    lrWV = fitlm(WVMRRaw(isInCaliRange & isValidCaliPoints), rsWVMRInterp(isInCaliRange & isValidCaliPoints), 'Intercept', false, 'weights', WVMRRawStd(isInCaliRange & isValidCaliPoints));
+    lrWV = fitlm(WVMRRaw(isInCaliRange & isValidCaliPoints), ...
+                 rsWVMRInterp(isInCaliRange & isValidCaliPoints), ...
+                 'Intercept', false, ...
+                 'weights', WVMRRawStd(isInCaliRange & isValidCaliPoints));
 
     wvConst = lrWV.Coefficients.Estimate(1);
 
@@ -176,10 +183,10 @@ if ~ isnan(wvConst)
     WVBias = WVMR_lidar - rsWVMRInterp;
     WVAbsErr = abs(WVMR_lidar - rsWVMRInterp);
 
-    isInEvalRange = (lidarData.height >= lidarConfig.wvChkCfg.evalRange(1)) & (lidarData.height <= lidarConfig.wvChkCfg.evalRange(2));
+    isInEvalRange = (lidarData.height >= lidarConfig.wvChkCfg.evalRange(1)) & ...
+                    (lidarData.height <= lidarConfig.wvChkCfg.evalRange(2));
 
     meanAbsDev = nanmean(WVAbsErr(isInEvalRange));
-
 end
 
 % determine water vapor test
@@ -238,7 +245,8 @@ if isLinearFit && (~ isempty(rsWVMRInterp))
     end
 
     if exist(p.Results.figFolder, 'dir')
-        export_fig(gcf, fullfile(p.Results.figFolder, sprintf('wv_test_linearfit_%s.%s', lidarType, p.Results.figFormat)), '-r300');
+        export_fig(gcf, fullfile(p.Results.figFolder, ...
+            sprintf('wv_test_linearfit_%s.%s', lidarType, p.Results.figFormat)), '-r300');
     end
 end
 

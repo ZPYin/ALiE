@@ -182,6 +182,29 @@ case 6
                 size(lidarData.rawSignal, 2), size(lidarData.rawSignal, 1), 1));
     end
 
+case 7
+    % General ALA Data Format
+
+    % search files
+    dataFiles = listfile(dataFolder, p.Results.dataFilePattern);
+    fprintf('[%s] %d data files were found!\n', tNow, length(dataFiles));
+
+    for iFile = 1:length(dataFiles)
+
+        if iFile <= 1
+            fprintf('[%s] Wait until reading finishes!\n', tNow);
+        end
+
+        [lidarData] = readALADat(dataFiles{iFile}, varargin{:});
+        chTag = lidarData.channelLabel;
+
+        oData.mTime = cat(2, oData.mTime, lidarData.mTime);
+        oData.height = (1:size(lidarData, 1)) * lidarData.hRes;
+        oData.rawSignal = cat(3, oData.rawSignal, ...
+            reshape(transpose(lidarData.rawSignal), ...
+                size(lidarData.rawSignal, 2), size(lidarData.rawSignal, 1), 1));
+    end
+
 otherwise
     error('LE:Err001', 'Unknown lidar data format %d', p.Results.dataFormat);
 end
