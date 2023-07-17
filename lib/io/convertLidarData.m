@@ -53,6 +53,10 @@ for iLidar = 1:length(lidarType)
     fprintf('[%s] Convert lidar data for %s\n', tNow, lidarType{iLidar});
 
     %% read lidar data
+    if ~ isfield(lidarConfig, 'nMaxBin')
+        lidarConfig.nMaxBin = [];
+    end
+
     fprintf('[%s] Reading %s data.\n', tNow, lidarType{iLidar});
     [lidarData, chTagFromFile] = readLidarData(lidarConfig.dataPath, ...
         'dataFormat', lidarConfig.dataFormat, ...

@@ -110,7 +110,7 @@ lidarData.nBin = [];
 for iCh = 1:lidarData.numChannel
     lidarData.channelIndex = cat(2, lidarData.channelIndex, fread(fid, 1, 'ushort'));
     tmp = fread(fid, 1, 'ushort');
-    tmp1 = dec2bin(tmp);
+    tmp1 = dec2bin(tmp, 16);
     lidarData.digitier = cat(2, lidarData.digitier, bin2dec(tmp1(1:2)));
     lidarData.recWavelength = cat(2, lidarData.recWavelength, bin2dec(tmp1(3:end)));
     lidarData.type = cat(2, lidarData.type, fread(fid, 1, 'ushort'));
@@ -150,10 +150,10 @@ for iCh = 1:lidarData.numChannel
     chTag = cat(2, chTag, sprintf('%d%s', lidarData.recWavelength(iCh), chTypeIndenfier));
 end
 
-lidarData.rawSignal = [];
+lidarData.rawSignal = nan(p.Results.nMaxBin, lidarData.numChannel);
 for iCh = 1:lidarData.numChannel
-    rawSignal = fread(fid, lidarData.nBin, 'float');
-    lidarData.rawSignal = cat(2, lidarData.rawSignal, rawSignal(1:p.Results.nMaxBin, :));
+    rawSignal = fread(fid, nBin, 'float');
+    lidarData.rawSignal(:, iCh) = rawSignal(1:p.Results.nMaxBin, :);
 end
 
 fclose(fid);
@@ -165,7 +165,7 @@ if strcmp(p.Results.visible, 'on')
     for iCh = 1:lidarData.numChannel
         typeStr = {'非偏振', '偏振', '偏振S', '拉曼'};
 
-        plot(lidarData.rawSignal(:, iCh), lidarData.resolution * (1:lidarData.nBin), 'DisplayName', sprintf('%d-%s', lidarData.recWavelength(iCh), typeStr{lidarData.type(iCh) + 1})); hold on;
+        plot(lidarData.rawSignal(:, iCh), lidarData.resolution * (1:lidarData.nBin), 'LineWidth', 2, 'DisplayName', sprintf('%d-%s', lidarData.recWavelength(iCh), typeStr{lidarData.type(iCh) + 1})); hold on;
     end
 
     ylabel('高度 (米)');

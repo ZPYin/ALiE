@@ -1,10 +1,11 @@
 ################################################################################
 # lidar configuration file
 # DON'T use Chinese characters!!!
+#
 ################################################################################
 
-resultPath: C:\Users\zhenping\Desktop\lidar_evaluation\report
-dataSavePath: C:\Users\zhenping\Desktop\lidar_evaluation\data
+resultPath: C:\Users\ZPYin\Desktop\lidar-evaluation\report
+dataSavePath: C:\Users\ZPYin\Desktop\lidar-evaluation\data
 figFormat: png   # figure format to be exported
 
 # data loader configuration
@@ -41,11 +42,51 @@ dataLoaderCfg:
     dataFormat: 5
     chTag: ['532p', '532s', '607']
     nMaxBin: 2400   # number of bins
+  L7:
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\WVTest\lidar
+    dataFilenamePattern: .*   # all files
+    dataFormat: 6
+    nMaxBin: 1960   # number of bins
 
 # internal-check
 # Below is the struct of `internalChkCfg`, which holds the specific configurations for each lidar.
 # Lidar type is configured in the second level (with 1 indention), while the detailed configuration for each lidar is configured in the third level (with 2 indentions).
 internalChkCfg:
+  L7:
+    lidarNo: 1   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['407', '386']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1900, 1950]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    flagWVChk: true   # water vapor check
+    wvChkCfg:
+      tRange: '2023-01-28 20:00:00 ~ 2023-01-28 20:30:00'
+      smoothwindow:
+        - [60]
+      fitRange: [1000, 5000]
+      flagWVFit: false
+      wvConst: 0.0
+      MeteorSource: 'websonde'   # 'localsonde'
+      WMOStationID: 54511
+      MeteorFile: 'C:\Users\ZPYin\Documents\Data\ALiE-TestData\WVTest\sonde\UPAR_WEA_CHN_MUL_FTM_SEC-56312-2023012812.txt'
+      evalRange: [500, 4000]
+      wvmrRange: [0, 5]
+      hRange: [0, 7000]
+      meanAbsDev: 0.3   # g/kg
   WH1:
     lidarNo: 12   # lidar number. (see ./docs/lidarList.md)
     chTag: ['1064e']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
@@ -66,7 +107,20 @@ internalChkCfg:
     flagRayleighChk: false   # Rayleigh fit check
     flagBgNoiseChk: false   # background noise check
     flagDetectRangeChk: false   # detection ability check
-    flagContOptChk: true   # continuous operation check
+    flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
+    wvChkCfg:
+      tRange: ''
+      smoothwindow:
+        - [60]
+      fitRange: []
+      flagWVFit: false
+      wvConst: 0.0
+      MeteorSource: 'websonde'   # 'localsonde'
+      WMOStationID: 57511
+      MeteorFile: ''
+      evalRange: []
+      meanAbsDev: 0.3   # g/kg
     saturationChkCfg:
       tRange:
         - '2021-09-18 20:14:38 ~ 2021-09-18 20:14:50'   # 100% transmission

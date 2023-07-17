@@ -168,6 +168,20 @@ for iLidar = 1:length(lidarType)
 
         fprintf('[%s] Finish!\n', tNow);
     end
+
+    %% Water Vapor check
+    fprintf('[%s] Start water vapor test!\n', tNow);
+
+    if ~ isfield(lidarConfig, 'wvChkCfg')
+        warning('wvChkCfg must be set for water vapor test!');
+        continue;
+    else
+        wvChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
+              'figFolder', config.resultPath, ...
+              'figFormat', config.figFormat);
+    end
+
+    fprintf('[%s] Finish!\n', tNow);
 end
 
 diaryoff;
