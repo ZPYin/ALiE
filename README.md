@@ -99,6 +99,10 @@ LEMain('D:\Coding\Matlab\lidar_evaluation_1064\config\test_REAL_signalMerge_conf
 殷振平，武汉大学遥感信息工程学院
 邮箱：zp.yin@whu.edu.cn
 
+**如果你使用到本代码库，请引用如下文章，谢谢支持**
+
+Wang, L., Yin, Z., Bu, Z., Wang, A., Mao, S., Yi, Y., Müller, D., Chen, Y., and Wang, X.: Quality assessment of aerosol lidars at 1064 nm in the framework of the MEMO campaign, Atmos. Meas. Tech. Discuss. [preprint], https://doi.org/10.5194/amt-2023-23, in review, 2023.
+
 [1]: https://git-scm.com/downloads
 [2]: https://yaml.org/
 [3]: https://code.google.com/archive/p/yamlmatlab/
