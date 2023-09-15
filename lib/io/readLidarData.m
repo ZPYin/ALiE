@@ -199,7 +199,7 @@ case 7
         chTag = lidarData.channelLabel;
 
         oData.mTime = cat(2, oData.mTime, lidarData.mTime);
-        oData.height = (1:size(lidarData, 1)) * lidarData.hRes;
+        oData.height = (1:size(lidarData.rawSignal, 1)) * lidarData.hRes(1);
         oData.rawSignal = cat(3, oData.rawSignal, ...
             reshape(transpose(lidarData.rawSignal), ...
                 size(lidarData.rawSignal, 2), size(lidarData.rawSignal, 1), 1));
