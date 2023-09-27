@@ -15,6 +15,9 @@ function lidarData = lidarPreprocess(lidarData, chTag, varargin)
 %    nPretrigger: numeric
 %    bgCorFile: char
 %    lidarNo: numeric
+%        11: REAL
+%        13: WHU non-standard lidar
+%        1-10 and 12: normal lidar
 %    flagDebug: logical
 %    tOffset: numeric
 %        time offset. (days)
