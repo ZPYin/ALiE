@@ -30,7 +30,7 @@ git pull origin master
 ## Usage
 
 <p align='center'>
-<img src='./image/程序整体结构图.png', width=500, height=400, lat='结构图'>
+<img src='./image/flowchart_of_ALiE.png', width=500, height=400, lat='结构图'>
 <br>
 <b>Structure of the code</b>
 
