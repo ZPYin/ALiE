@@ -10,6 +10,7 @@ slCharacterEncoding('UTF-8');
 rootDir = fileparts(mfilename('fullpath'));
 addpath(genpath(fullfile(rootDir, 'lib')));
 addpath(genpath(fullfile(rootDir, 'include')));
+addpath(genpath(fullfile(rootDir, 'data')));
 
 global LEToolboxInfo
 LEToolboxInfo.programVersion = '1.3';

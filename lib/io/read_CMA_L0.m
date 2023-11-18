@@ -116,7 +116,7 @@ for iCh = 1:lidarData.numChannel
     lidarData.type = cat(2, lidarData.type, fread(fid, 1, 'ushort'));
     lidarData.resolution =  fread(fid, 1, 'ushort') / 100;
     lidarData.overlap = cat(2, lidarData.overlap, fread(fid, 1, 'ushort') / 10);
-    fread(fid, 1, 'uint');
+    a= fread(fid, 1, 'uint');
     nBin = fread(fid, 1, 'ushort');
 
     if p.Results.nMaxBin > nBin

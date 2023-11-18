@@ -18,6 +18,7 @@ function [oData] = readALADat(file, varargin)
 %    oData: struct
 %        rawSignal: matrix
 %        mTime: numeric
+%        hRes: numeric
 %        nPretrigger: numeric
 %        nShots: numeric
 %        channelLabel: cell
