@@ -13,6 +13,8 @@ function [fileInfo] = parseFilenameInfo(fileStr, varargin)
 %        stationNumber: numeric
 %        createTime: datenum
 %        fileType: char
+%        deviceIdent: char
+%        equipType: char
 %        dataType: char
 %
 % HISTORY:
@@ -40,6 +42,8 @@ fileInfo = struct();
 fileInfo.stationNumber = str2double(subStrs{4});
 fileInfo.createTime = datenum(subStrs{5}, 'yyyymmddHHMMSS');
 fileInfo.fileType = subStrs{6};
+fileInfo.deviceIdent = subStrs{7};
+fileInfo.equipType = subStrs{8};
 fileInfo.dataType = subStrs{9};
 
 end
