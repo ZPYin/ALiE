@@ -156,9 +156,9 @@ netcdf.endDef(ncID);
 % write data to NC file
 netcdf.putVar(ncID, varID_sig355, sigAVGNoBg355);
 netcdf.putVar(ncID, varID_sig386, sigAVGNoBg386);
-netcdf.putVar(ncID, varID_sig532, sigAVGNoBg1064);
-netcdf.putVar(ncID, varID_sig607, sigAVGNoBg386);
-netcdf.putVar(ncID, varID_sig1064, sigAVGNoBg607);
+netcdf.putVar(ncID, varID_sig532, sigAVGNoBg532);
+netcdf.putVar(ncID, varID_sig607, sigAVGNoBg607);
+netcdf.putVar(ncID, varID_sig1064, sigAVGNoBg1064);
 netcdf.putVar(ncID, varID_height, height355);
 netcdf.putVar(ncID, varID_temperature, temperature);
 netcdf.putVar(ncID, varID_pressure, pressure);
@@ -212,13 +212,13 @@ dimID_height = netcdf.defDim(ncID, 'height', length(height355));
 
 % define variables
 varID_aExt355 = netcdf.defVar(ncID, 'aerosol_extinction_coefficient_355', 'NC_FLOAT', dimID_height);
-varID_aBsc355 = netcdf.defVar(ncID, 'aerosol_backscatter_backscatter_355', 'NC_FLOAT', dimID_height);
+varID_aBsc355 = netcdf.defVar(ncID, 'aerosol_backscatter_coefficient_355', 'NC_FLOAT', dimID_height);
 varID_aLR355 = netcdf.defVar(ncID, 'lidar_ratio_355', 'NC_FLOAT', dimID_height);
 varID_aExt532 = netcdf.defVar(ncID, 'aerosol_extinction_coefficient_532', 'NC_FLOAT', dimID_height);
-varID_aBsc532 = netcdf.defVar(ncID, 'aerosol_backscatter_backscatter_532', 'NC_FLOAT', dimID_height);
+varID_aBsc532 = netcdf.defVar(ncID, 'aerosol_backscatter_coefficient_532', 'NC_FLOAT', dimID_height);
 varID_aLR532 = netcdf.defVar(ncID, 'lidar_ratio_532', 'NC_FLOAT', dimID_height);
 varID_aExt1064 = netcdf.defVar(ncID, 'aerosol_extinction_coefficient_1064', 'NC_FLOAT', dimID_height);
-varID_aBsc1064 = netcdf.defVar(ncID, 'aerosol_backscatter_backscatter_1064', 'NC_FLOAT', dimID_height);
+varID_aBsc1064 = netcdf.defVar(ncID, 'aerosol_backscatter_coefficient_1064', 'NC_FLOAT', dimID_height);
 varID_aLR1064 = netcdf.defVar(ncID, 'lidar_ratio_1064', 'NC_FLOAT', dimID_height);
 varID_height = netcdf.defVar(ncID, 'height', 'NC_FLOAT', dimID_height);
 

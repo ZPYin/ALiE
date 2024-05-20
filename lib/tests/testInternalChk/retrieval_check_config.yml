@@ -1,0 +1,56 @@
+################################################################################
+#
+# lidar configuration file (example)
+#
+################################################################################
+
+resultPath: C:\Users\ZPYin\Desktop\数据评估\report   # 测试报告输出目录
+dataSavePath: C:\Users\ZPYin\Desktop\数据评估\data   # 雷达数据输出目录
+figFormat: png   # 保存图片的格式
+
+# data loader configuration
+# Load lidar data to a specified directory (defined by `dataSavePath`)
+dataLoaderCfg:
+  TestST:
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\SaturationTest
+    dataFilenamePattern: .*
+    dataFormat: 4
+    chTag: ['1064p', '1064s']
+    nMaxBin: 1000
+
+# internal-check
+# Below is the struct of `internalChkCfg`, which holds the specific configurations for each lidar.
+# Lidar type is configured in the second level (with 1 indention), while the detailed configuration for each lidar is configured in the third level (with 2 indentions).
+internalChkCfg:
+  TestST:
+    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064p', '1064s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [900, 990]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: true   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
+    retrievalChkCfg:
+      hChkRange:
+        - [500, 2000]
+        - [2000, 5000]
+      maxDev:
+        - [10, 10]   # [mean relative deviation, standard relative deviation]
+        - [20, 20]
+      smoothwindow:
+        - [0, 1000, 100]   # Piecewise smoothing: [bottom height, top height, window length]
+        - [1000, 10000, 300]

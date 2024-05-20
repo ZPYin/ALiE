@@ -17,7 +17,7 @@ function [isSuccess] = correctCmaDataFormat(folder, dataType, varargin)
 %    debug: logical
 %
 % OUTPUTS:
-%    isSuccess
+%    isSuccess: logical
 %
 % HISTORY:
 %    2021-10-20: first edition by Zhenping
@@ -41,6 +41,7 @@ dataFiles = listfile(folder, p.Results.filePat, p.Results.searchDepth);
 switch lower(dataType)
 
 case 'hr'
+
     %% correct HR data
     for iFile = 1:length(dataFiles)
         if p.Results.debug
@@ -78,9 +79,7 @@ case 'hr'
     isSuccess = true;
 
 otherwise
-    isSuccess = false;
     error('Unknown data type %s', dataType);
 end
-
 
 end

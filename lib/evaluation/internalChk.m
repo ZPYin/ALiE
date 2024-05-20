@@ -75,13 +75,11 @@ for iLidar = 1:length(lidarType)
 
     %% backscatter retrieval check
     if lidarConfig.flagRetrievalChk
-        %% convert data
-
-        %% evaluation
-
-        %% visualization
-
-        %% evaluation report output
+        fprintf('[%s] Start retrieval test!\n', tNow);
+        retrievalChk(lidarConfig, reportFile, ...
+            'figFolder', config.resultPath, ...
+            'figFormat', config.figFormat);
+        fprintf('[%s] Finish!\n', tNow);
     end
 
     %% detection ability check
@@ -174,18 +172,20 @@ for iLidar = 1:length(lidarType)
     end
 
     %% Water Vapor check
-    fprintf('[%s] Start water vapor test!\n', tNow);
+    if lidarConfig.flagWVChk
+        fprintf('[%s] Start water vapor test!\n', tNow);
 
-    if ~ isfield(lidarConfig, 'wvChkCfg')
-        warning('wvChkCfg must be set for water vapor test!');
-        continue;
-    else
-        wvChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-              'figFolder', config.resultPath, ...
-              'figFormat', config.figFormat);
+        if ~ isfield(lidarConfig, 'wvChkCfg')
+            warning('wvChkCfg must be set for water vapor test!');
+            continue;
+        else
+            wvChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
+                'figFolder', config.resultPath, ...
+                'figFormat', config.figFormat);
+        end
+
+        fprintf('[%s] Finish!\n', tNow);
     end
-
-    fprintf('[%s] Finish!\n', tNow);
 end
 
 diaryoff;

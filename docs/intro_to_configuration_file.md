@@ -24,7 +24,7 @@ resultsStruct:                  # Matlab struct with two fields ('results' and '
 
 ## Configuration file
 
-The configurations are composed of KEYWORDS. The keywords in the configuration file can be divided into two groups: **General** and **Specific**. The general keywords are mandatory and will be valid for all the outputs; while, specific keywords are only valid for single lidar.
+The configurations are composed of KEYWORDS. The keywords in the configuration file can be divided into two groups: **General** and **Specific**. The general keywords are mandatory and will be valid for all the outputs; while, specific keywords are only valid for single lidar. An example of the configuration file can be found [here](../lib/config/config_template.yml).
 
 Genreal keywords are as below:
 
@@ -96,7 +96,7 @@ internalChkCfg:
       bgCorFile: ''   # data file of dark measurement results
       overlapFile: ''
     fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-    flagRetrievalChk: false   # backscatter retrieval check
+    flagRetrievalChk: false   # Fernald/Raman retrieval check
     flagSaturationChk: false   # signal saturation check
     flagQuadrantChk: false   # quadrant check
     flagOverlapChk: false   # overlap evaluation

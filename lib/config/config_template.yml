@@ -57,6 +57,90 @@ dataLoaderCfg:
 # Below is the struct of `internalChkCfg`, which holds the specific configurations for each lidar.
 # Lidar type is configured in the second level (with 1 indention), while the detailed configuration for each lidar is configured in the third level (with 2 indentions).
 internalChkCfg:
+  TestST:
+    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064p', '1064s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [900, 990]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: true   # backscatter retrieval check
+    flagSaturationChk: true   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
+    retrievalChkCfg:
+      hChkRange:
+        - [500, 2000]
+        - [2000, 5000]
+      maxDev:
+        - [10, 10]   # [mean relative deviation, standard relative deviation]
+        - [20, 20]
+      smoothwindow:
+        - [0, 2000, 300]   # Piecewise smoothing: [bottom height, top height, window length]
+        - [2000, 10000, 600]
+  TestTCT:
+    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['1064p', '1064s']
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1100, 1200]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: true   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
+    quadrantChkCfg:
+      quadrantTime:   # quadrant time (local time) [E-S-W-N-E]
+        - '2021-09-27 14:23:00 ~ 2021-09-27 14:25:03'   # east1
+        - '2021-09-27 14:25:00 ~ 2021-09-27 14:26:00'   # south
+        - '2021-09-27 14:26:00 ~ 2021-09-27 14:27:00'   # west
+        - '2021-09-27 14:27:00 ~ 2021-09-27 14:28:00'   # north
+        - '2021-09-27 14:23:00 ~ 2021-09-27 14:25:03'   # east2
+      hRangeNear:
+        - [0, 5000]   # vertical range for near-range behavior to display. (m)
+        - [0, 5000]   # vertical range for near-range behavior to display. (m)
+      hRangeAll:
+        - [0, 10000]   # vertical range for overall behavior to display. (m)
+        - [0, 10000]   # vertical range for overall behavior to display. (m)
+      normRange:
+        - [1500, 2500]   # normalization range. (m)
+        - [1500, 3000]   # normalization range. (m)
+      rcsDisplayRangeAll:
+        - [0, 5e9]   # range of rcs
+        - [0, 7e8]   # range of rcs
+      normSigDisplayRangeAll:
+        - [0, 5e9]   # normalized signal display range. (photon count)
+        - [0, 6e8]   # normalized signal display range. (photon count)
+      normSigDisplayRangeNear:
+        - [0, 4e9]   # normalized signal display range. (photon count)
+        - [0, 5e8]   # normalized signal display range. (photon count)
+      smoothwindow:
+        - 150   # smoothing window length. (m)
+        - 600   # smoothing window length. (m)
+      stableThresh: 10   # [%]
+      maxDev: 20   # [%]
   TestRF:
     lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
     chTag: ['1064p', '1064s']
@@ -130,103 +214,6 @@ internalChkCfg:
         - [0, 1e10]   # channel 5
         - [0, 1e10]   # channel 6
       markTRange: '2021-10-25 19:00:00 ~ 2021-10-25 19:30:00'   # 信号标注的时间范围
-  TestST:
-    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
-    chTag: ['1064p', '1064s']
-    figVisible: 'on'   # whether display figures
-    preprocessCfg:
-      hOffset: 0   # height offset. (m)
-      tOffset: 0   # time offset. (min)
-      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-      bgBins: [900, 990]   # [start index, stop index] for background correction
-      nPretrigger: 0   # if nPretrigger < 0, move signal up
-      bgCorFile: ''   # data file of dark measurement results
-      overlapFile: ''
-    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-    flagRetrievalChk: false   # backscatter retrieval check
-    flagSaturationChk: true   # signal saturation check
-    flagQuadrantChk: false   # quadrant check
-    flagOverlapChk: false   # overlap evaluation
-    flagRayleighChk: false   # Rayleigh fit check
-    flagBgNoiseChk: false   # background noise check
-    flagDetectRangeChk: false   # detection ability check
-    flagContOptChk: false   # continuous operation check
-    flagWVChk: false   # water vapor check
-    saturationChkCfg:
-      tRange:
-        - '2021-10-09 17:32:00 ~ 2021-10-09 17:33:00'
-        - '2021-10-09 17:36:00 ~ 2021-10-09 17:37:00'
-        - '2021-10-09 17:39:00 ~ 2021-10-09 17:40:00'
-        - '2021-10-09 17:42:00 ~ 2021-10-09 17:43:00'
-        - '2021-10-09 17:44:00 ~ 2021-10-09 17:45:00'
-      transmission: [1, 0.9, 0.8, 0.7, 0.6]   # 每个文件对应的透过率
-      sigRange:
-        - [1e6, 1e12]   # 通道1信号范围
-        - [1e6, 1e11]   # 通道2信号范围
-      hRange:
-        - [0, 4000]   # 通道1信号展示高度范围
-        - [0, 4000]   # 通道1信号展示高度范围
-      normRange:
-        - [2000, 4000]   # 通道1信号归一化范围
-        - [2000, 4000]   # 通道1信号归一化范围
-      maxDev:
-        - 10   # 通道1信号最大偏差 [%]
-        - 10   # 通道2信号最大偏差 [%]
-      smoothwindow:
-        - 300   # 通道1信号平滑窗长(m)
-        - 300   # 通道2信号平滑窗长(m)
-  TestTCT:
-    lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
-    chTag: ['1064p', '1064s']
-    figVisible: 'on'   # whether display figures
-    preprocessCfg:
-      hOffset: 0   # height offset. (m)
-      tOffset: 0   # time offset. (min)
-      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
-      bgBins: [1100, 1200]   # [start index, stop index] for background correction
-      nPretrigger: 0   # if nPretrigger < 0, move signal up
-      bgCorFile: ''   # data file of dark measurement results
-      overlapFile: ''
-    fullOverlapHeight: 400   # minimum height with complete overlap. (m)
-    flagRetrievalChk: false   # backscatter retrieval check
-    flagSaturationChk: false   # signal saturation check
-    flagQuadrantChk: true   # quadrant check
-    flagOverlapChk: false   # overlap evaluation
-    flagRayleighChk: false   # Rayleigh fit check
-    flagBgNoiseChk: false   # background noise check
-    flagDetectRangeChk: false   # detection ability check
-    flagContOptChk: false   # continuous operation check
-    flagWVChk: false   # water vapor check
-    quadrantChkCfg:
-      quadrantTime:   # quadrant time (local time) [E-S-W-N-E]
-        - '2021-09-27 14:23:00 ~ 2021-09-27 14:25:03'   # east1
-        - '2021-09-27 14:25:00 ~ 2021-09-27 14:26:00'   # south
-        - '2021-09-27 14:26:00 ~ 2021-09-27 14:27:00'   # west
-        - '2021-09-27 14:27:00 ~ 2021-09-27 14:28:00'   # north
-        - '2021-09-27 14:23:00 ~ 2021-09-27 14:25:03'   # east2
-      hRangeNear:
-        - [0, 5000]   # vertical range for near-range behavior to display. (m)
-        - [0, 5000]   # vertical range for near-range behavior to display. (m)
-      hRangeAll:
-        - [0, 10000]   # vertical range for overall behavior to display. (m)
-        - [0, 10000]   # vertical range for overall behavior to display. (m)
-      normRange:
-        - [1500, 2500]   # normalization range. (m)
-        - [1500, 3000]   # normalization range. (m)
-      rcsDisplayRangeAll:
-        - [0, 5e9]   # range of rcs
-        - [0, 7e8]   # range of rcs
-      normSigDisplayRangeAll:
-        - [0, 5e9]   # normalized signal display range. (photon count)
-        - [0, 6e8]   # normalized signal display range. (photon count)
-      normSigDisplayRangeNear:
-        - [0, 4e9]   # normalized signal display range. (photon count)
-        - [0, 5e8]   # normalized signal display range. (photon count)
-      smoothwindow:
-        - 150   # smoothing window length. (m)
-        - 600   # smoothing window length. (m)
-      stableThresh: 10   # [%]
-      maxDev: 20   # [%]
   TestDR:
     lidarNo: 9   # lidar number. (see ./docs/lidarList.md)
     chTag: ['1064p', '1064s']
