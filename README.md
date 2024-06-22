@@ -68,7 +68,7 @@ Wuhan University
 
 **If you used this code in your research, please cite the reference below, as a support for our work.**
 
-Wang, L., Yin, Z., Bu, Z., Wang, A., Mao, S., Yi, Y., Müller, D., Chen, Y., and Wang, X.: Quality assessment of aerosol lidars at 1064 nm in the framework of the MEMO campaign, Atmos. Meas. Tech. Discuss. [preprint], https://doi.org/10.5194/amt-2023-23, in review, 2023.
+1.	Wang, L.; Yin, Z.; Bu, Z.; Wang, A.; Mao, S.; Yi, Y.; Müller, D.; Chen, Y.; Wang, X. Quality assessment of aerosol lidars at 1064 nm in the framework of the MEMO campaign. Atmos. Meas. Tech. 2023, 16, 4307-4318, doi:10.5194/amt-16-4307-2023.
 
 [1]: https://git-scm.com/downloads
 [2]: https://yaml.org/

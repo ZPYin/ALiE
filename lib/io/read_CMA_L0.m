@@ -22,7 +22,7 @@ function [lidarData, chTag] = read_CMA_L0(dataFile, varargin)
 %        product
 %        version
 %        deviceNumber
-%        longtitude
+%        longitude
 %        latitude
 %        elevation
 %        scanMode
@@ -81,7 +81,7 @@ fread(fid, 7, 'short');
 lidarData.product = fread(fid, 1, 'ushort');
 lidarData.version = fread(fid, 1, 'ushort');
 lidarData.deviceNumber = fread(fid, 1, 'uint');
-lidarData.longtitude = fread(fid, 1, 'uint') / 1e4;
+lidarData.longitude = fread(fid, 1, 'uint') / 1e4;
 lidarData.latitude = fread(fid, 1, 'uint') / 1e4;
 lidarData.elevation = fread(fid, 1, 'uint') / 1e2;
 fread(fid, 1, 'ushort');
@@ -116,7 +116,7 @@ for iCh = 1:lidarData.numChannel
     lidarData.type = cat(2, lidarData.type, fread(fid, 1, 'ushort'));
     lidarData.resolution =  fread(fid, 1, 'ushort') / 100;
     lidarData.overlap = cat(2, lidarData.overlap, fread(fid, 1, 'ushort') / 10);
-    a= fread(fid, 1, 'uint');
+    fread(fid, 1, 'uint');
     nBin = fread(fid, 1, 'ushort');
 
     if p.Results.nMaxBin > nBin

@@ -101,7 +101,8 @@ LEMain('D:\Coding\Matlab\lidar_evaluation_1064\config\test_REAL_signalMerge_conf
 
 **如果你使用到本代码库，请引用如下文章，谢谢支持**
 
-Wang, L., Yin, Z., Bu, Z., Wang, A., Mao, S., Yi, Y., Müller, D., Chen, Y., and Wang, X.: Quality assessment of aerosol lidars at 1064 nm in the framework of the MEMO campaign, Atmos. Meas. Tech. Discuss. [preprint], https://doi.org/10.5194/amt-2023-23, in review, 2023.
+1.	Wang, L.; Yin, Z.; Bu, Z.; Wang, A.; Mao, S.; Yi, Y.; Müller, D.; Chen, Y.; Wang, X. Quality assessment of aerosol lidars at 1064 nm in the framework of the MEMO campaign. Atmos. Meas. Tech. 2023, 16, 4307-4318, doi:10.5194/amt-16-4307-2023.
+2.	步志超; 殷振平; 王龙龙; 王安宙; 毛松; 张江涛; 赵兵; 易洋; 陈玉宝; 王宣. 532 nm偏振激光雷达互比对实验及结果分析. 大气与环境光学学报, 1-12.
 
 [1]: https://git-scm.com/downloads
 [2]: https://yaml.org/
