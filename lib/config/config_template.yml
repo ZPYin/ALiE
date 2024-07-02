@@ -46,6 +46,11 @@ dataLoaderCfg:
     dataFilenamePattern: .*   # all files
     dataFormat: 6
     nMaxBin: 1960   # number of bins
+  TestTP:
+    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\TempTest\lidar
+    dataFilenamePattern: .*   # all files
+    dataFormat: 6
+    nMaxBin: 1960   # number of bins
   TestRF:
     dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\RayleighFitTest
     dataFilenamePattern: .*Lidar.*
@@ -316,6 +321,42 @@ internalChkCfg:
       wvmrRange: [0, 5]   # 水汽廓线展示范围 [g/kg]
       hRange: [0, 7000]   # 水汽廓线展示高度范围
       meanAbsDev: 0.3   # 允许最大水汽混合比偏差 [g/kg]
+  TestTP:
+    lidarNo: 1   # lidar number. (see ./docs/lidarList.md)
+    chTag: ['353', '354']   # 355e; 355p; 355s; 387; 407; 532e; 532p; 532s; 607; 1064e; 1064p; 1064s; 532pl; 532sl; 607l; 532ph; 532sh; 607h
+    figVisible: 'on'   # whether display figures
+    preprocessCfg:
+      hOffset: 0   # height offset. (m)
+      tOffset: 0   # time offset. (min)
+      deadTime: []   # deadtime (ns). If it's empty, deadtime correction is disabled.
+      bgBins: [1900, 1950]   # [start index, stop index] for background correction
+      nPretrigger: 0   # if nPretrigger < 0, move signal up
+      bgCorFile: ''   # data file of dark measurement results
+      overlapFile: ''
+    flagRetrievalChk: false   # backscatter retrieval check
+    flagSaturationChk: false   # signal saturation check
+    flagQuadrantChk: false   # quadrant check
+    flagOverlapChk: false   # overlap evaluation
+    flagRayleighChk: false   # Rayleigh fit check
+    flagBgNoiseChk: false   # background noise check
+    flagDetectRangeChk: false   # detection ability check
+    flagContOptChk: false   # continuous operation check
+    flagWVChk: false   # water vapor check
+    flagTempChk: true   # temperature check
+    tempChkCfg:
+      tRange: '2023-01-28 20:00:00 ~ 2023-01-28 20:30:00'
+      smoothwindow:
+        - [150]   # 信号平滑窗长（米）
+      fitRange: [1000, 5000]   # 温度拟合高度范围
+      flagTempFit: false   # 是否进行温度拟合
+      tempConst: [1, 1, 1]   # 默认的温度标定常数[a, b, c] a*(1/T)^2 + b*(1/T) + c
+      MeteorSource: 'websonde'   # 气球数据文件'localsonde'；网上气球'websonde'
+      WMOStationID: 54511   # 获取网上气球数据时的站点号（五位数字）
+      MeteorFile: 'C:\Users\ZPYin\Documents\Data\ALiE-TestData\WVTest\sonde\UPAR_WEA_CHN_MUL_FTM_SEC-56312-2023012812.txt'   # 气球数据文件决定路径
+      evalRange: [500, 4000]   # 温度误差评估高度范围
+      tempRange: [240, 300]   # 温度廓线展示范围 [K]
+      hRange: [0, 7000]   # 温度廓线展示高度范围
+      meanAbsDev: 4   # 允许最大温度偏差 [K]
 
 # external-check
 # Below is the struct of `externalChkCfg`, which was used to inter-compare lidars.

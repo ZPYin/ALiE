@@ -46,7 +46,6 @@ for iLidar = 1:length(lidarType)
     h5Filename = fullfile(config.dataSavePath, sprintf('%s_lidar_data.h5', lidarType{iLidar}));
     if exist(h5Filename, 'file') ~= 2
         warning('No lidar data for %s', lidarType{iLidar});
-        continue;
     end
 
     %% read lidar data
@@ -74,30 +73,53 @@ for iLidar = 1:length(lidarType)
         'overlapFile', lidarConfig.preprocessCfg.overlapFile);
 
     %% backscatter retrieval check
+    if ~ isfield(lidarConfig, 'flagRetrievalChk')
+        lidarConfig.flagRetrievalChk = false;
+    end
+
     if lidarConfig.flagRetrievalChk
         fprintf('[%s] Start retrieval test!\n', tNow);
-        retrievalChk(lidarConfig, reportFile, ...
-            'figFolder', config.resultPath, ...
-            'figFormat', config.figFormat);
+
+        if ~ isfield(lidarConfig, 'retrievalChkCfg')
+            warning('retrievalChkCfg must be set for retrieval test!');
+        else
+            retrievalChk(lidarConfig, reportFile, ...
+                'figFolder', config.resultPath, ...
+                'figFormat', config.figFormat);
+        end
+
         fprintf('[%s] Finish!\n', tNow);
     end
 
     %% detection ability check
+    if ~ isfield(lidarConfig, 'flagDetectRangeChk')
+        lidarConfig.flagDetectRangeChk = false;
+    end
+
     if lidarConfig.flagDetectRangeChk
         fprintf('[%s] Start detection range test!\n', tNow);
-        detectRangeChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
-            'figFolder', config.resultPath, ...
-            'figFormat', config.figFormat);
+
+        if ~ isfield(lidarConfig, 'detectRangeChkCfg')
+            warning('detectRangeChkCfg must be set for retrieval test!');
+        else
+            detectRangeChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
+                'figFolder', config.resultPath, ...
+                'figFormat', config.figFormat);
+        end
+
         fprintf('[%s] Finish!\n', tNow);
     end
 
     %% quadrant check
+    if ~ isfield(lidarConfig, 'flagQuadrantChk')
+        lidarConfig.flagQuadrantChk = false;
+    end
+
     if lidarConfig.flagQuadrantChk
         fprintf('[%s] Start telecover test!\n', tNow);
 
         if ~ isfield(lidarConfig, 'quadrantChkCfg')
             warning('quadrantChkCfg must be set for telecover test!');
-            continue;
         else
             quadrantChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
                 'figFolder', config.resultPath, ...
@@ -108,12 +130,15 @@ for iLidar = 1:length(lidarType)
     end
 
     %% continuous operation check
+    if ~ isfield(lidarConfig, 'contOptChkCfg')
+        lidarConfig.contOptChkCfg = false;
+    end
+
     if lidarConfig.flagContOptChk
         fprintf('[%s] Start continuous operation test!\n', tNow);
 
         if ~ isfield(lidarConfig, 'contOptChkCfg')
             warning('contOptChkCfg must be set for continuous operation test!');
-            continue;
         else
             contOptChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
                 'figFolder', config.resultPath, ...
@@ -124,12 +149,15 @@ for iLidar = 1:length(lidarType)
     end
 
     %% background noise check
+    if ~ isfield(lidarConfig, 'flagBgNoiseChk')
+        lidarConfig.flagBgNoiseChk = false;
+    end
+
     if lidarConfig.flagBgNoiseChk
         fprintf('[%s] Start background noise test!\n', tNow);
 
         if ~ isfield(lidarConfig, 'bgNoiseChkCfg')
             warning('bgNoiseChkCfg must be set for background noise test!');
-            continue;
         else
             bgNoiseChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
                 'figFolder', config.resultPath, ...
@@ -140,12 +168,15 @@ for iLidar = 1:length(lidarType)
     end
 
     %% Rayleigh fit check
+    if ~ isfield(lidarConfig, 'flagRayleighChk')
+        lidarConfig.flagRayleighChk = false;
+    end
+
     if lidarConfig.flagRayleighChk
         fprintf('[%s] Start Rayleigh test!\n', tNow);
 
         if ~ isfield(lidarConfig, 'RayleighChkCfg')
             warning('RayleighChkCfg must be set for Rayleigh test!');
-            continue;
         else
             RayleighChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
                 'figFolder', config.resultPath, ...
@@ -156,12 +187,15 @@ for iLidar = 1:length(lidarType)
     end
 
     %% Saturation check
+    if ~ isfield(lidarConfig, 'flagSaturationChk')
+        lidarConfig.flagSaturationChk = false;
+    end
+
     if lidarConfig.flagSaturationChk
         fprintf('[%s] Start Saturation test!\n', tNow);
 
         if ~ isfield(lidarConfig, 'saturationChkCfg')
             warning('saturationChkCfg must be set for saturation test!');
-            continue;
         else
             saturationChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
                 'figFolder', config.resultPath, ...
@@ -172,14 +206,36 @@ for iLidar = 1:length(lidarType)
     end
 
     %% Water Vapor check
+    if ~ isfield(lidarConfig, 'flagWVChk')
+        lidarConfig.flagWVChk = false;
+    end
+
     if lidarConfig.flagWVChk
         fprintf('[%s] Start water vapor test!\n', tNow);
 
         if ~ isfield(lidarConfig, 'wvChkCfg')
             warning('wvChkCfg must be set for water vapor test!');
-            continue;
         else
             wvChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
+                'figFolder', config.resultPath, ...
+                'figFormat', config.figFormat);
+        end
+
+        fprintf('[%s] Finish!\n', tNow);
+    end
+
+    %% Temperature check
+    if ~ isfield(lidarConfig, 'flagTempChk')
+        lidarConfig.flagTempChk = false;
+    end
+
+    if lidarConfig.flagTempChk
+        fprintf('[%s] Start temperature test!\n', tNow);
+
+        if ~ isfield(lidarConfig, 'tempChkCfg')
+            warning('tempChkCfg must be set for temperature test!');
+        else
+            tempChk(lidarData, lidarConfig, reportFile, lidarType{iLidar}, ...
                 'figFolder', config.resultPath, ...
                 'figFormat', config.figFormat);
         end
