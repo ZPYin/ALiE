@@ -4,7 +4,7 @@ function hdf5writedata(filename, location, data, varargin)
 % USAGE:
 %    % Usecase 1: save variable to HDF5 file
 %    hdf5writedata('/path/to/h5', '/data', data)
-% 
+%
 %    % Usecase 2: save variable to HDF5 file with attributes
 %    hdf5writedata('/path/to/h5', '/data', data, 'dataAttr', ...
 %                  struct('type', 'float'))
@@ -26,23 +26,28 @@ function hdf5writedata(filename, location, data, varargin)
 %        filling value (default: -999).
 %    flagArray: logical
 %
+% OUTPUTS:
+%
+% EXAMPLE:
+%
 % HISTORY:
-%    2021-09-24: first edition by Zhenping
-% .. Authors: - zhenping@tropos.de
+%    2019-11-11: first edition by Zhenping
+% .. Authors: - zp.yin@whu.edu.cn
 
 p = inputParser;
 p.KeepUnmatched = true;
 
 addRequired(p, 'filename', @ischar);
 addRequired(p, 'location', @ischar);
+addRequired(p, 'data');
 addParameter(p, 'dataAttr', struct(), @isstruct);
 addParameter(p, 'deflate', 6, @isnumeric);
 addParameter(p, 'FillValue', -999, @isnumeric);
 addParameter(p, 'flagArray', false, @islogical);
 
-parse(p, filename, location, varargin{:});
+parse(p, filename, location, data, varargin{:});
 
-if iscell(data) || ischar(data)
+if iscell(data) || ischar(data) || isstruct(data)
 
     % for non-numeric data
     slashPos = strfind(location, '/');

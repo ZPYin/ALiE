@@ -16,9 +16,8 @@ function [oData] = readALADat(file, varargin)
 %
 % OUTPUTS:
 %    oData: struct
-%        rawSignal: matrix
+%        rawSignal: matrix (height x channel)
 %        mTime: numeric
-%        hRes: numeric
 %        nPretrigger: numeric
 %        nShots: numeric
 %        channelLabel: cell
@@ -90,7 +89,7 @@ end
 
 rawSignal = [];
 for iCh = 1:length(channelLabel)
-    rawSignal = cat(2, rawSignal, lidarData{iCh}(1:(end - 1)));
+    rawSignal = cat(2, rawSignal, lidarData{iCh}(1:nMaxBin));
 end
 
 %% Remove empty channel
