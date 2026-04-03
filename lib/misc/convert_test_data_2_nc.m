@@ -1,4 +1,5 @@
 % Convert the EARLINET test data (ASCII) to NetCDF4 files
+%
 % Author: Zhenping Yin
 % UpdateTime: 2024-05-20
 
@@ -6,8 +7,8 @@ clc;
 close all;
 
 %% Parameter Definition
-oriDataPath = 'C:\Users\ZPYin\Documents\Coding\Matlab\ALiE\data\EARLINET_test_dataset\ASCII';
-dstDataPath = 'C:\Users\ZPYin\Documents\Coding\Matlab\ALiE\data\EARLINET_test_dataset\NC';
+oriDataPath = 'C:\Users\zhenp\Documents\Coding\Matlab\ALiE\data\EARLINET_test_dataset\ASCII';   % the original data path (of EARLINET ASCII files)
+dstDataPath = 'C:\Users\zhenp\Documents\Coding\Matlab\ALiE\data\EARLINET_test_dataset\NC';   % the destination data path (of converted NC files)
 
 %% Read Data
 
@@ -115,23 +116,16 @@ aLR1064 = dataTmp1064{5};
 
 %% Signal Preprocessing
 
-% signal accumulation
-sigAVG355 = sum(sig355, 2);
-sigAVG532 = sum(sig532, 2);
-sigAVG1064 = sum(sig1064, 2);
-sigAVG386 = sum(sig386, 2);
-sigAVG607 = sum(sig607, 2);
-
 % background subtract
-sigAVGNoBg355 = sigAVG355 - mean(sigAVG355((end - 50):(end - 5)));
-sigAVGNoBg532 = sigAVG532 - mean(sigAVG532((end - 50):(end - 5)));
-sigAVGNoBg1064 = sigAVG1064 - mean(sigAVG1064((end - 50):(end - 5)));
-sigAVGNoBg386 = sigAVG386 - mean(sigAVG386((end - 50):(end - 5)));
-sigAVGNoBg607 = sigAVG607 - mean(sigAVG607((end - 50):(end - 5)));
+sigNoBg355 = sig355 - repmat(mean(sig355((end - 50):(end - 5), :), 1), size(sig355, 1), 1);
+sigNoBg532 = sig532 - repmat(mean(sig532((end - 50):(end - 5), :), 1), size(sig355, 1), 1);
+sigNoBg1064 = sig1064 - repmat(mean(sig1064((end - 50):(end - 5), :), 1), size(sig355, 1), 1);
+sigNoBg386 = sig386 - repmat(mean(sig386((end - 50):(end - 5), :), 1), size(sig355, 1), 1);
+sigNoBg607 = sig607 - repmat(mean(sig607((end - 50):(end - 5), :), 1), size(sig355, 1), 1);
 
 %% Save as NC file
 
-% signal
+%% signal
 mode = netcdf.getConstant('NETCDF4');
 mode = bitor(mode, netcdf.getConstant('CLASSIC_MODEL'));
 mode = bitor(mode, netcdf.getConstant('CLOBBER'));
@@ -139,27 +133,30 @@ ncID = netcdf.create(fullfile(dstDataPath, 'EARLINET-Test-Signal.nc'), mode);
 
 % define dimensions
 dimID_height = netcdf.defDim(ncID, 'height', length(height355));
+dimID_prfIdx = netcdf.defDim(ncID, 'prfIdx', size(sig355, 2));
 
 % define variables
-varID_sig355 = netcdf.defVar(ncID, 'signal_355', 'NC_FLOAT', dimID_height);
-varID_sig532 = netcdf.defVar(ncID, 'signal_532', 'NC_FLOAT', dimID_height);
-varID_sig386 = netcdf.defVar(ncID, 'signal_386', 'NC_FLOAT', dimID_height);
-varID_sig607 = netcdf.defVar(ncID, 'signal_607', 'NC_FLOAT', dimID_height);
-varID_sig1064 = netcdf.defVar(ncID, 'signal_1064', 'NC_FLOAT', dimID_height);
+varID_sig355 = netcdf.defVar(ncID, 'signal_355', 'NC_FLOAT', [dimID_height, dimID_prfIdx]);
+varID_sig532 = netcdf.defVar(ncID, 'signal_532', 'NC_FLOAT', [dimID_height, dimID_prfIdx]);
+varID_sig386 = netcdf.defVar(ncID, 'signal_386', 'NC_FLOAT', [dimID_height, dimID_prfIdx]);
+varID_sig607 = netcdf.defVar(ncID, 'signal_607', 'NC_FLOAT', [dimID_height, dimID_prfIdx]);
+varID_sig1064 = netcdf.defVar(ncID, 'signal_1064', 'NC_FLOAT', [dimID_height, dimID_prfIdx]);
 varID_pressure = netcdf.defVar(ncID, 'pressure', 'NC_FLOAT', dimID_height);
 varID_temperature = netcdf.defVar(ncID, 'temperature', 'NC_FLOAT', dimID_height);
 varID_height = netcdf.defVar(ncID, 'height', 'NC_FLOAT', dimID_height);
+varID_prfIdx = netcdf.defVar(ncID, 'profile_ID', 'NC_FLOAT', dimID_prfIdx);
 
 % leave define mode
 netcdf.endDef(ncID);
 
 % write data to NC file
-netcdf.putVar(ncID, varID_sig355, sigAVGNoBg355);
-netcdf.putVar(ncID, varID_sig386, sigAVGNoBg386);
-netcdf.putVar(ncID, varID_sig532, sigAVGNoBg532);
-netcdf.putVar(ncID, varID_sig607, sigAVGNoBg607);
-netcdf.putVar(ncID, varID_sig1064, sigAVGNoBg1064);
+netcdf.putVar(ncID, varID_sig355, sigNoBg355);
+netcdf.putVar(ncID, varID_sig386, sigNoBg386);
+netcdf.putVar(ncID, varID_sig532, sigNoBg532);
+netcdf.putVar(ncID, varID_sig607, sigNoBg607);
+netcdf.putVar(ncID, varID_sig1064, sigNoBg1064);
 netcdf.putVar(ncID, varID_height, height355);
+netcdf.putVar(ncID, varID_prfIdx, 1:size(sig355, 2));
 netcdf.putVar(ncID, varID_temperature, temperature);
 netcdf.putVar(ncID, varID_pressure, pressure);
 
@@ -184,6 +181,9 @@ netcdf.putAtt(ncID, varID_sig607, 'description', 'simulated receiving signal at 
 netcdf.putAtt(ncID, varID_height, 'unit', 'm');
 netcdf.putAtt(ncID, varID_height, 'description', 'height above ground');
 
+netcdf.putAtt(ncID, varID_prfIdx, 'unit', '');
+netcdf.putAtt(ncID, varID_prfIdx, 'description', 'profile index');
+
 netcdf.putAtt(ncID, varID_pressure, 'unit', 'hPa');
 netcdf.putAtt(ncID, varID_pressure, 'description', 'atmospheric pressure');
 
@@ -201,11 +201,11 @@ netcdf.putAtt(ncID, varID_global, 'Disclaimer', 'Only for internal usage');
 % close NC file
 netcdf.close(ncID);
 
-% solution
+%% solution
 mode = netcdf.getConstant('NETCDF4');
 mode = bitor(mode, netcdf.getConstant('CLASSIC_MODEL'));
 mode = bitor(mode, netcdf.getConstant('CLOBBER'));
-ncID = netcdf.create(fullfile(dstDataPath, 'EARLINET-Test-Signal-Solution.nc'), mode);
+ncID = netcdf.create(fullfile(dstDataPath, 'EARLINET-Test-Solution.nc'), mode);
 
 % define dimensions
 dimID_height = netcdf.defDim(ncID, 'height', length(height355));

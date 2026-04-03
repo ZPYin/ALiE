@@ -1,15 +1,21 @@
+% Test Fernald and Raman method based on EARLINET test dataset.
+%
+% Author: Zhenping Yin
+% Date: 2026-03-15
+
 global LEToolboxInfo
 close all;
 
 %% Parameter definition
-dataFolder355 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', '355');
-dataFolder532 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', '532');
-dataFolder1064 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', '1064');
-dataFolder387 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', 'Raman1');
-dataFolder607 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', 'Raman2');
-solution355 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', 'Solutions', 'aerowv1.000.txt');
-solution532 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', 'Solutions', 'aerowv2.000.txt');
-solution1064 = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII', 'Solutions', 'aerowv3.000.txt');;  
+testDatasetPath = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_test_dataset', 'ASCII');
+dataFolder355 = fullfile(testDatasetPath, '355');
+dataFolder532 = fullfile(testDatasetPath, '532');
+dataFolder1064 = fullfile(testDatasetPath, '1064');
+dataFolder387 = fullfile(testDatasetPath, 'Raman1');
+dataFolder607 = fullfile(testDatasetPath, 'Raman2');
+solution355 = fullfile(testDatasetPath, 'Solutions', 'aerowv1.000.txt');
+solution532 = fullfile(testDatasetPath, 'Solutions', 'aerowv2.000.txt');
+solution1064 = fullfile(testDatasetPath, 'Solutions', 'aerowv3.000.txt');
 
 %% Read data
 dataFiles355 = listfile(dataFolder355, '.*.txt', 1);
@@ -25,14 +31,16 @@ signal387 = zeros(1999, 1);
 
 for iFile = 1:length(dataFiles355)
     fid = fopen(dataFiles355{iFile}, 'r');
-    data1 = textscan(fid, '%f%f', 'delimiter', ' ', 'MultipleDelimsAsOne', true, 'headerlines', 9);
+    data1 = textscan(fid, '%f%f', 'delimiter', ' ', ...
+                     'MultipleDelimsAsOne', true, 'headerlines', 9);
     fclose(fid);
 
     height355 = data1{1};
     signal355 = signal355 + data1{2};
 
     fid = fopen(dataFiles387{iFile}, 'r');
-    data1 = textscan(fid, '%f%f', 'delimiter', ' ', 'MultipleDelimsAsOne', true, 'headerlines', 9);
+    data1 = textscan(fid, '%f%f', 'delimiter', ' ', ...
+                     'MultipleDelimsAsOne', true, 'headerlines', 9);
     fclose(fid);
 
     signal387 = signal387 + data1{2};
@@ -45,7 +53,8 @@ signal607 = zeros(1999, 1);
 
 for iFile = 1:length(dataFiles532)
     fid = fopen(dataFiles532{iFile}, 'r');
-    data1 = textscan(fid, '%f%f', 'delimiter', ' ', 'MultipleDelimsAsOne', true, 'headerlines', 9);
+    data1 = textscan(fid, '%f%f', 'delimiter', ' ', ...
+                    'MultipleDelimsAsOne', true, 'headerlines', 9);
     fclose(fid);
 
     height532 = data1{1};
@@ -111,14 +120,14 @@ signal1064NoBg = signal1064 - bg1064;
 
 %% Molecular scattering
 [temperature, pressure, ~, ~] = read_meteordata(datenum(0, 1, 0, 0, 0, 0), height355, ...
-'meteor_data', 'standard_atmosphere');
+                                                'meteor_data', 'standard_atmosphere');
 [mBsc355, mExt355] = rayleigh_scattering(355, pressure, temperature + 273.14, 360, 80);
 [mBsc532, mExt532] = rayleigh_scattering(532, pressure, temperature + 273.14, 360, 80);
 [mBsc1064, mExt1064] = rayleigh_scattering(1064, pressure, temperature + 273.14, 360, 80);
 
 %% Raman retrieval
-aExt355R = LidarRamanExt(height355', signal387NoBg', 355, 387, 1, pressure', temperature' + 273.14, 40, 380, 70, 'moving');
-aExt532R = LidarRamanExt(height532', signal607NoBg', 532, 607, 1, pressure', temperature' + 273.14, 40, 380, 70, 'moving');
+aExt355R = LidarRamanExt(height355', signal387NoBg', 355, 387, 1, pressure', temperature' + 273.14, 20, 380, 70, 'movingslope');
+aExt532R = LidarRamanExt(height532', signal607NoBg', 532, 607, 1, pressure', temperature' + 273.14, 20, 380, 70, 'movingslope');
 [aBsc355R, aLR355] = LidarRamanBsc(height355', signal355NoBg', signal387NoBg', aExt355R, 1, mExt355', mBsc355', [7500, 8500], 355, 0, 5, true);
 [aBsc532R, aLR532] = LidarRamanBsc(height532', signal532NoBg', signal607NoBg', aExt532R, 1, mExt532', mBsc532', [7500, 8500], 532, 0, 5, true);
 
@@ -162,7 +171,7 @@ hold off;
 xlabel('Backscatter (Mm-1sr-1)');
 ylabel('');
 
-xlim([0, 3]);
+xlim([0, 5]);
 ylim([0, 10]);
 
 set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'YTicklabel', '', 'Box', 'on', 'FontSize', 11);
@@ -219,7 +228,7 @@ hold off;
 xlabel('Backscatter (Mm-1sr-1)');
 ylabel('');
 
-xlim([0, 3]);
+xlim([0, 5]);
 ylim([0, 10]);
 
 set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'YTicklabel', '', 'Box', 'on', 'FontSize', 11);
@@ -278,7 +287,7 @@ hold off;
 xlabel('Backscatter (Mm-1sr-1)');
 ylabel('');
 
-xlim([0, 3]);
+xlim([0, 5]);
 ylim([0, 10]);
 
 set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'YTicklabel', '', 'Box', 'on', 'FontSize', 11);
@@ -295,7 +304,7 @@ hold off;
 xlabel('Backscatter (Mm-1sr-1)');
 ylabel('');
 
-xlim([0, 3]);
+xlim([0, 5]);
 ylim([0, 10]);
 
 set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'YTicklabel', '', 'Box', 'on', 'FontSize', 11);
@@ -306,13 +315,13 @@ l.FontSize = 11;
 subplot('Position', subPos(4, :), 'Units', 'Normalized');
 hold on;
 p1 = plot(aExtTrue1064 ./ aLRTrue1064 * 1e6, height1064 * 1e-3, '-', 'Color', [234, 46, 73] / 255, 'LineWidth', 1, 'DisplayName', 'True (1064 nm)');
-p2 = plot(aBsc1064F * 1e6, height1064 * 1e-3, '-', 'Color', [191, 4, 38] / 255, 'LineWidth', 1, 'DisplayName', 'Fernald ret.');
+p2 = plot(aBsc1064F * 1e6, height1064 * 1e-3, '-', 'Color', [217, 121, 37] / 255, 'LineWidth', 1, 'DisplayName', 'Fernald ret.');
 hold off;
 
 xlabel('Backscatter (Mm-1sr-1)');
 ylabel('');
 
-xlim([0, 3]);
+xlim([0, 5]);
 ylim([0, 10]);
 
 set(gca, 'XMinorTick', 'on', 'YMinorTick', 'on', 'YTicklabel', '', 'Box', 'on', 'FontSize', 11);
