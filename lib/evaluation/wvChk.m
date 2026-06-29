@@ -112,6 +112,7 @@ case 'websonde'
     sonde.WVMR = WVMR_rs;
 
 case 'localsonde'
+
     sondeData = read_sonde(lidarConfig.wvChkCfg.MeteorFile);
     es = saturated_vapor_pres(sondeData.temperature);
     sonde.altitude = sondeData.height;

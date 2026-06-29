@@ -38,8 +38,7 @@ fprintf(fid, '\n## Retrieval Algorithm Check\n');
 %% read data
 
 % read signal
-sigFile = fullfile(LEToolboxInfo.projectDir, 'data', ...
-                   'EARLINET_Test_dataset', 'NC', 'EARLINET-Test-Signal.nc');
+sigFile = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_Test_dataset', 'NC', 'EARLINET-Test-Signal.nc');
 sig355 = ncread(sigFile, 'signal_355');
 sig386 = ncread(sigFile, 'signal_386');
 sig532 = ncread(sigFile, 'signal_532');
@@ -49,14 +48,24 @@ temperature = ncread(sigFile, 'temperature');   % [degree celsius]
 pressure = ncread(sigFile, 'pressure');   % [hPa]
 
 % read solutions
-slvFile = fullfile(LEToolboxInfo.projectDir, 'data', ...
-'EARLINET_Test_dataset', 'NC', 'EARLINET-Test-Signal-Solution.nc');
+slvFile = fullfile(LEToolboxInfo.projectDir, 'data', 'EARLINET_Test_dataset', 'NC', 'EARLINET-Test-Solution.nc');
 height = ncread(slvFile, 'height');
 aExt355 = ncread(slvFile, 'aerosol_extinction_coefficient_355');
 aBsc355 = ncread(slvFile, 'aerosol_backscatter_coefficient_355');
+% aLR355 = ncread(slvFile, 'lidar_ratio_355');
 aExt532 = ncread(slvFile, 'aerosol_extinction_coefficient_532');
 aBsc532 = ncread(slvFile, 'aerosol_backscatter_coefficient_532');
+% aLR532 = ncread(slvFile, 'lidar_ratio_532');
+% aExt1064 = ncread(slvFile, 'aerosol_extinction_coefficient_1064');
 aBsc1064 = ncread(slvFile, 'aerosol_backscatter_coefficient_1064');
+% aLR1064 = ncread(slvFile, 'lidar_ratio_1064');
+
+%% signal accumulation
+sig355 = sum(sig355, 2);
+sig386 = sum(sig386, 2);
+sig532 = sum(sig532, 2);
+sig607 = sum(sig607, 2);
+sig1064 = sum(sig1064, 2);
 
 %% molecule scattering
 [mBsc355, ~] = rayleigh_scattering(355, pressure, temperature + 273.14, 360, 80);
@@ -71,29 +80,35 @@ for iW = 1:size(piecewiseSM, 1)
     piecewiseSM(iW, 3) = round(piecewiseSM(iW, 3) / (height(2) - height(1)));
 end
 
+sig355Sm = smoothWin(sig355, piecewiseSM, 'moving');
+sig532Sm = smoothWin(sig532, piecewiseSM, 'moving');
 sig386Sm = smoothWin(sig386, piecewiseSM, 'moving');
 sig607Sm = smoothWin(sig607, piecewiseSM, 'moving');
+sig1064Sm = smoothWin(sig1064, piecewiseSM, 'moving');
 
 %% retrieval
 
 % Fernald retrieval (without smoothing)
 lr = 62.0;
-aBscFernald355 = CMAFernald(height, sig355, 0, lr, [11, 12] * 1e3, 0, mBsc355, 16);
+aBscFernald355 = CMAFernald(height, sig355, 0, lr, [11000, 12000], 0, mBsc355, 16);
 aBscFernald355 = transpose(aBscFernald355);
-aBscFernald532 = CMAFernald(height, sig532, 0, lr, [11, 12] * 1e3, 0, mBsc532, 16);
+aBscFernald532 = CMAFernald(height, sig532, 0, lr, [11000, 12000], 0, mBsc532, 16);
 aBscFernald532 = transpose(aBscFernald532);
-aBscFernald1064 = CMAFernald(height, sig1064, 0, lr, [11, 12] * 1e3, 0, mBsc1064, 16);
+aBscFernald1064 = CMAFernald(height, sig1064, 0, lr, [11000, 12000], 0, mBsc1064, 16);
 aBscFernald1064 = transpose(aBscFernald1064);
 
 % Raman retrieval
-aExtRaman355 = LidarRamanExt(transpose(height), transpose(sig386Sm), ...
-    355, 386, 1, transpose(pressure), transpose(temperature) + 273.14, ...
-    20, 360, 80, 'moving');
+aExtRaman355 = LidarRamanExt(transpose(height), transpose(sig386Sm), 355, 386, 1, transpose(pressure), transpose(temperature) + 273.14, 20, 360, 80, 'moving');
 aExtRaman355 = transpose(aExtRaman355);
-aExtRaman532 = LidarRamanExt(transpose(height), transpose(sig607Sm), ...
-    532, 607, 1, transpose(pressure), transpose(temperature) + 273.14, ...
-    20, 360, 80, 'moving');
+[aBscRaman355, aLR355] = LidarRamanBsc(transpose(height), transpose(sig355Sm), transpose(sig386Sm), transpose(aExtRaman355), 1, transpose(mExt355), transpose(mBsc355), [7000, 7500], 355, 0, 20, true);
+aBscRaman355 = transpose(aBscRaman355);
+aLR355 = transpose(aLR355);
+
+aExtRaman532 = LidarRamanExt(transpose(height), transpose(sig607Sm), 532, 607, 1, transpose(pressure), transpose(temperature) + 273.14, 20, 360, 80, 'moving');
 aExtRaman532 = transpose(aExtRaman532);
+[aBscRaman532, aLR532] = LidarRamanBsc(transpose(height), transpose(sig532Sm), transpose(sig607Sm), transpose(aExtRaman532), 1, transpose(mExt532), transpose(mBsc532), [7000, 7500], 532, 0, 20, true);
+aBscRaman532 = transpose(aBscRaman532);
+aLR532 = transpose(aLR532);
 
 %% signal evaluation
 
@@ -101,8 +116,12 @@ aExtRaman532 = transpose(aExtRaman532);
 aBscFernald355Dev = (aBscFernald355 - aBsc355) ./ aBsc355 * 100;
 aBscFernald532Dev = (aBscFernald532 - aBsc532) ./ aBsc532 * 100;
 aBscFernald1064Dev = (aBscFernald1064 - aBsc1064) ./ aBsc1064 * 100;
+aBscRaman355Dev = (aBscRaman355 - aBsc355) ./ aBsc355 * 100;
 aExtRaman355Dev = (aExtRaman355 - aExt355) ./ aExt355 * 100;
+aLRRaman355Dev = (aLR355 - aLR355) ./ aLR355 * 100;
+aBscRaman532Dev = (aBscRaman532 - aBsc532) ./ aBsc532 * 100;
 aExtRaman532Dev = (aExtRaman532 - aExt532) ./ aExt532 * 100;
+aLRRaman532Dev = (aLR532 - aLR532) ./ aLR532 * 100;
 
 % mean relative deviation
 nES = size(config.retrievalChkCfg.hChkRange, 1);
@@ -112,10 +131,18 @@ meanDevABscFernald532 = NaN(1, nES);
 stdDevABscFernald532 = NaN(1, nES);
 meanDevABscFernald1064 = NaN(1, nES);
 stdDevABscFernald1064 = NaN(1, nES);
+meanDevABscRaman355 = NaN(1, nES);
+stdDevABscRaman355 = NaN(1, nES);
 meanDevAExtRaman355 = NaN(1, nES);
 stdDevAExtRaman355 = NaN(1, nES);
+meanDevALRRaman355 = NaN(1, nES);
+stdDevALRRaman355 = NaN(1, nES);
+meanDevABscRaman532 = NaN(1, nES);
+stdDevABscRaman532 = NaN(1, nES);
 meanDevAExtRaman532 = NaN(1, nES);
 stdDevAExtRaman532 = NaN(1, nES);
+meanDevALRRaman532 = NaN(1, nES);
+stdDevALRRaman532 = NaN(1, nES);
 isPassFernald355Chk = false(1, nES);
 isPassFernald532Chk = false(1, nES);
 isPassFernald1064Chk = false(1, nES);
@@ -273,8 +300,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -327,8 +353,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -351,7 +376,7 @@ if (exist(LEToolboxInfo.institute_logo, 'file') == 2) && LEToolboxInfo.flagWater
 end
 
 if exist(p.Results.figFolder, 'dir')
-    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Fernald_ret_355nm_cmp.%s', p.Results.figFormat)), '-r300');
+    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Fernald_retrieval_355nm_comparison.%s', p.Results.figFormat)), '-r300');
 end
 
 % Fernald 532 nm
@@ -436,8 +461,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -490,8 +514,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -514,7 +537,7 @@ if (exist(LEToolboxInfo.institute_logo, 'file') == 2) && LEToolboxInfo.flagWater
 end
 
 if exist(p.Results.figFolder, 'dir')
-    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Fernald_ret_532nm_cmp.%s', p.Results.figFormat)), '-r300');
+    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Fernald_retrieval_532nm_comparison.%s', p.Results.figFormat)), '-r300');
 end
 
 % Fernald 1064 nm
@@ -599,8 +622,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -653,8 +675,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -677,7 +698,7 @@ if (exist(LEToolboxInfo.institute_logo, 'file') == 2) && LEToolboxInfo.flagWater
 end
 
 if exist(p.Results.figFolder, 'dir')
-    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Fernald_ret_1064nm_cmp.%s', p.Results.figFormat)), '-r300');
+    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Fernald_retrieval_1064nm_comparison.%s', p.Results.figFormat)), '-r300');
 end
 
 % Raman 355 nm
@@ -765,8 +786,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -819,8 +839,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -843,7 +862,7 @@ if (exist(LEToolboxInfo.institute_logo, 'file') == 2) && LEToolboxInfo.flagWater
 end
 
 if exist(p.Results.figFolder, 'dir')
-    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Raman_ret_355nm_cmp.%s', p.Results.figFormat)), '-r300');
+    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Raman_retrieval_355nm_comparison.%s', p.Results.figFormat)), '-r300');
 end
 
 % Raman 532 nm
@@ -931,8 +950,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -985,8 +1003,7 @@ for iPatch = 1:nES
         [config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
          config.retrievalChkCfg.hChkRange(iPatch, 2) * 1e-3, ...
-         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], ...
-        [160, 160, 160]/255);
+         config.retrievalChkCfg.hChkRange(iPatch, 1) * 1e-3], [160, 160, 160]/255);
     hShaded.FaceAlpha = 0.3;
     hShaded.EdgeColor = 'None';
     hold on;
@@ -1009,7 +1026,7 @@ if (exist(LEToolboxInfo.institute_logo, 'file') == 2) && LEToolboxInfo.flagWater
 end
 
 if exist(p.Results.figFolder, 'dir')
-    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Raman_ret_532nm_cmp.%s', p.Results.figFormat)), '-r300');
+    export_fig(gcf, fullfile(p.Results.figFolder, sprintf('Raman_retrieval_532nm_comparison.%s', p.Results.figFormat)), '-r300');
 end
 
 if strcmpi(config.figVisible, 'off')

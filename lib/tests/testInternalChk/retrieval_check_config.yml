@@ -4,15 +4,15 @@
 #
 ################################################################################
 
-resultPath: C:\Users\ZPYin\Desktop\数据评估\report   # 测试报告输出目录
-dataSavePath: C:\Users\ZPYin\Desktop\数据评估\data   # 雷达数据输出目录
+resultPath: C:\Users\zhenp\Desktop\数据评估\report   # 测试报告输出目录
+dataSavePath: C:\Users\zhenp\Desktop\数据评估\data   # 雷达数据输出目录
 figFormat: png   # 保存图片的格式
 
 # data loader configuration
 # Load lidar data to a specified directory (defined by `dataSavePath`)
 dataLoaderCfg:
   TestST:
-    dataPath: C:\Users\ZPYin\Documents\Data\ALiE-TestData\SaturationTest
+    dataPath: C:\Users\zhenp\Documents\Data\ALiE-TestData\SaturationTest
     dataFilenamePattern: .*
     dataFormat: 4
     chTag: ['1064p', '1064s']

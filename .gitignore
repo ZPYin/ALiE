@@ -6,6 +6,7 @@ lidar_evaluation
 tmp
 analysis
 wx_config
+confidential
 
 # exclude files
 .vscode
