@@ -1,6 +1,6 @@
 # Atmospheric Lidar Intercomparison Evaluator Software
 
-This repository includes code for analyzing atmospheric lidars within China Meteorological Administration (CMA) Lidar Network. Main features are:
+This repository includes code for analyzing atmospheric lidars in China Aerosol Raman Lidar Network (CARLNET). Main features are:
 
 - Data Conversion
 - Data Preprocessing
